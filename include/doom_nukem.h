@@ -1,5 +1,8 @@
 #ifndef DOOM_NUKEM_H
+
 # define DOOM_NUKEM_H
+
+/*LINUX*/
 # define RIGHT_ARROW 65363
 # define DOWN_ARROW 65364
 # define LEFT_ARROW 65361
@@ -7,6 +10,11 @@
 # define ESC 65307
 # define SP 32
 # define LCTRL 65507
+# define W_LN 119
+# define A_LN 97
+# define S_LN 115
+# define D_LN 100
+
 # define W 1200
 # define H 800
 # define JUMP_SPEED 0.03f
@@ -18,7 +26,7 @@
 # define hfov (0.73f*H)  // Affects the horizontal field of vision
 # define vfov (.2f*H)    // Affects the vertical field of vision
 //# include "/Users/user42/sdl/SDL2-2.0.8/include/SDL.h"
-# include "../minilibx_linux/mlx.h"
+# include "../minilibx_macos/mlx.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
