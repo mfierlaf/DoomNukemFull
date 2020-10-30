@@ -49,6 +49,7 @@ int		ft_key_hook(int key, t_mlx *mlx)
 		mlx->ducking = 1;
 		mlx->moving = 1;
 	}
+	menu_key_hook(key, mlx);
 	return (0);
 }
 

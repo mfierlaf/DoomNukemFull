@@ -25,4 +25,7 @@ void	init(t_mlx *mlx)
 	mlx->ducking = 0;
 	mlx->sectors = NULL;
 	mlx->num_sectors = 0;
+	mlx->menu.on = 1;
+	mlx->menu.gun_pointer = 0;
+	mlx->menu.bot_level = 2000;
 }

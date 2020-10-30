@@ -14,6 +14,8 @@
 
 # define KEYCODE_H
 
+
+# define BACKGROUND 1
 # define NOEVENTMASK 0L
 # define KPMASK (1L<<0)
 # define KEYRELEASEMASK (1L<<1)
