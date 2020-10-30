@@ -77,6 +77,7 @@ int kill_mlx(t_mlx *mlx)
 	exit(1);
 	return (0);
 }
+
 /*struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
 {
     return (vxs(vxs(x1,y1, x2,y2), (x1)-(x2), vxs(x3,y3, x4,y4), (x3)-(x4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)), \

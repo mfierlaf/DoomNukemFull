@@ -11,23 +11,36 @@
 /* ************************************************************************** */
 
 #include "../include/doom_nukem.h"
+
 #define Intersect(x1,y1, x2,y2, x3,y3, x4,y4) ((struct xy) { \
 		vxs(vxs(x1,y1, x2,y2), (x1)-(x2), vxs(x3,y3, x4,y4), (x3)-(x4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)), \
 		vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)) })
 
+unsigned OMP_SCALER_LOOP_BEGIN(a, b, c, d, f)
+{
+	float e;
+	struct Scaler s = Scaler_Init(a, a, (c)-1, (d) * 32768, (f) * 32768);
+	for (int b = (a); b < (c); ++b)
+	{ 
+    	e = Scaler_Next(&s) / 32768.f;
+	}
+	return ((unsigned)e);
+}
+
 void draw_screen(t_mlx *mlx)
 {
 	unsigned x;
-  unsigned n;
+	unsigned n;
 
-  x = -1;
-  n = -1;
+	x = -1;
+	n = -1;
 	enum { MaxQueue = 32 };  // maximum number of pending portal renders
 	struct item { int sectorno,sx1,sx2; } queue[MaxQueue], *head=queue, *tail=queue;
 	int ytop[W]= {0}, ybottom[W], renderedsectors[mlx->num_sectors];
 	while (++x < W)
 		ybottom[x] = H - 1;
-	while (++n < mlx->num_sectors) renderedsectors[n] = 0; //glitch if while loop
+	while (++n < mlx->num_sectors)
+		renderedsectors[n] = 0;
 
 	/* Begin whole-screen rendering from where the player is. */
 	*head = (struct item) { mlx->player.sector, 0, W - 1 };
@@ -35,15 +48,17 @@ void draw_screen(t_mlx *mlx)
 	do {
 		/* Pick a sector & slice from the queue to draw */
 		const struct item now = *tail;
-		if(++tail == queue+MaxQueue) tail = queue;
+		if (++tail == queue+MaxQueue) tail = queue;
 
-		if(renderedsectors[now.sectorno] & 0x21) continue; // Odd = still rendering, 0x20 = give up
+		if (renderedsectors[now.sectorno] & 0x21) continue; // Odd = still rendering, 0x20 = give up
 		++renderedsectors[now.sectorno];
 		t_sector* sect = &mlx->sectors[now.sectorno];
 		/* Render each wall of this sector that is facing towards player. */
 		// printf("TEST\n");
 		for (unsigned s = 0; s < sect->npoints; ++s)
 		{
+			int u0 = 0;
+			int u1 = TEXTURE_SIZE - 1;
 			// printf("hello1\n");
 			/* Acquire the x,y coordinates of the two endpoints (vertices) of this edge of the sector */
 			float vx1 = sect->vertex[s+0].x - mlx->player.where.x, vy1 = sect->vertex[s+0].y - mlx->player.where.y;
@@ -120,37 +135,87 @@ void draw_screen(t_mlx *mlx)
 			int beginx = max(x1, now.sx1), endx = min(x2, now.sx2);
 
 			int x = beginx - 1;
+			struct Scaler ya_int = Scaler_Init(x1,beginx,x2, y1a,y2a);
+            struct Scaler yb_int = Scaler_Init(x1,beginx,x2, y1b,y2b);
+            
+
+
+
+      //       void OMP_SCALER_LOOP_BEGIN(a, b, c, d, e, f)
+      //       {
+    		// 	struct Scaler e##int = Scaler_Init(a, a, (c)-1, (d) * 32768, (f) * 32768);
+    		// 	for (int b = (a); b < (c); ++b)
+    		// 	{ 
+		    //     	float e = Scaler_Next(&e##int) / 32768.f;
+   			// 	}
+   			// }
+
+
+		    
 			while (++x <= endx)
 			{
+				//TEXTURE MAPPING TEST
+				int txtx = (u0*((x2-x)*tz2) + u1*((x-x1)*tz1)) / ((x2-x)*tz2 + (x-x1)*tz1);
+				//TEXTURE MAPPING TEST
+
 				/* Calculate the Z coordinate for this point. (Only used for lighting.) */
 				int z = ((x - x1) * (tz2-tz1) / (x2-x1) + tz1) * 8;
 				/* Acquire the Y coordinates for our ceiling & floor for this X coordinate. Clamp them. */
-				int ya = (x - x1) * (y2a-y1a) / (x2-x1) + y1a, cya = clamp(ya, ytop[x],ybottom[x]); // top
-				int yb = (x - x1) * (y2b-y1b) / (x2-x1) + y1b, cyb = clamp(yb, ytop[x],ybottom[x]); // bottom
+				int ya = Scaler_Next(&ya_int);
+                int yb = Scaler_Next(&yb_int);
 
-				/* Render ceiling: everything above this sector's ceiling height. */
-			//	printf("1\n");
-				vline(x, ytop[x], cya-1, 0x111111, 0x222222, 0x111111, mlx);
-				//0x111111
-				//0x222222
-				//0x111111
-				/* Render floor: everything below this sector's floor height. */
-		//		printf("2\n");
-				vline(x, cyb+1, ybottom[x], 0x0000FF, 0x0000AA, 0x0000FF, mlx);
-				//0x0000FF
-				//0x0000AA
-				//0x0000FF
+				int cya = clamp(ya, ytop[x],ybottom[x]); // top
+				int cyb = clamp(yb, ytop[x],ybottom[x]); // bottom
+				//TEXTURE MAPPING TEST
+				#define CeilingFloorScreenCoordinatesToMapCoordinates(mapY, screenX,screenY, X,Z) \
+                    do { Z = (mapY)*H*vfov / ((H/2 - (screenY)) - mlx->player.yaw *H*vfov); \
+                         X = (Z) * (W/2 - (screenX)) / (W*hfov); \
+                         RelativeMapCoordinatesToAbsoluteOnes(X,Z); } while(0)
+                //
+                #define RelativeMapCoordinatesToAbsoluteOnes(X,Z) \
+                    do { float rtx = (Z) * pcos + (X) * psin; \
+                         float rtz = (Z) * psin - (X) * pcos; \
+                         X = rtx + mlx->player.where.x; Z = rtz + mlx->player.where.y; \
+                    } while(0)
+                for (int y=ytop[x]; y<=ybottom[x]; ++y)
+                {
+                    if(y >= cya && y <= cyb)
+                    {
+                    	y = cyb;
+                    	continue;
+                    }
+                    float hei = y < cya ? yceil : yfloor;
+                    float mapx;
+                    float mapz;
+                    CeilingFloorScreenCoordinatesToMapCoordinates(hei, x,y,  mapx,mapz);
+                    unsigned txtx = (mapx * 16), txtz = (mapz * 16);
+                    mlx->tex->tex_ternary = y < cya ? mlx->tex[5].data : mlx->tex[5].data;
+                    mlx->data[y * W + x] = mlx->tex->tex_ternary[(mlx->txty % 1024) * 1024 + (1)];
+
+                    //TODO EN BMP!!
+                    // int color = get_color(mlx->tab_bmp[0], (txtx % TEXTURE_SIZE), (mlx->txty % TEXTURE_SIZE));
+      				// if (color != FILTER_COLOR)
+        		// 		mlx->data[y * W + x] = color;
+                }
+                //TEXTURE MAPPING TEST
 
 				/* Is there another sector behind this edge? */
 				if (neighbor >= 0)
 				{
 					/* Same for _their_ floor and ceiling */
-					int nya = (x - x1) * (ny2a-ny1a) / (x2-x1) + ny1a, cnya = clamp(nya, ytop[x],ybottom[x]);
-					int nyb = (x - x1) * (ny2b-ny1b) / (x2-x1) + ny1b, cnyb = clamp(nyb, ytop[x],ybottom[x]);
-					/* If our ceiling is higher than their ceiling, render upper wall */
-					unsigned r1 = 0x010101 * (255-z), r2 = 0x040007 * (31-z/8);
+					int nya = (x - x1) * (ny2a-ny1a) / (x2-x1) + ny1a;
+					int nyb = (x - x1) * (ny2b-ny1b) / (x2-x1) + ny1b;
+					int cnya = clamp(nya, ytop[x],ybottom[x]);
+					int cnyb = clamp(nyb, ytop[x],ybottom[x]);
 
-					vline(x, cya, cnya-1, 0, x==x1||x==x2 ? 0 : r1, 0, mlx);
+                	//TEXTURE MAPPING TEST
+					// vline2(x, cya, cnya-1, (struct Scaler)Scaler_Init(ya,cya,yb, 0, TEXTURE_SIZE - 1), txtx, mlx);
+					vertical_line(x, cya, cnya-1, (struct Scaler)Scaler_Init(ya,cya,yb, 0, TEXTURE_SIZE - 1), txtx, mlx);
+					//TEXTURE MAPPING TEST
+
+					/* If our ceiling is higher than their ceiling, render upper wall */
+					// unsigned r1 = 0x010101 * (255-z), r2 = 0x040007 * (31-z/8); //NO TEXTURES
+					// vline(x, cya, cnya-1, 0, x==x1||x==x2 ? 0 : r1, 0, mlx); //NO TEXTURES
 					// Between our and their ceiling
 					//0
 					//x==x1||x==x2 ? 0 : r1
@@ -158,7 +223,11 @@ void draw_screen(t_mlx *mlx)
 					ytop[x] = clamp(max(cya, cnya), ytop[x], H-1);   // Shrink the remaining window below these ceilings
 					/* If our floor is lower than their floor, render bottom wall */
 
-					vline(x, cnyb+1, cyb, 0, x==x1||x==x2 ? 0 : r2, 0, mlx); // Between their and our floor
+					//TEXTURE MAPPING TEST
+					vertical_line(x, cnyb+1, cyb, (struct Scaler)Scaler_Init(ya,cnyb+1,yb, 0, TEXTURE_SIZE - 1), txtx, mlx);
+					//TEXTURE MAPPING TEST
+
+					// Between their and our floor
 					//0
 					//x==x1||x==x2 ? 0 : r2
 					//0
@@ -166,9 +235,13 @@ void draw_screen(t_mlx *mlx)
 				}
 				else
 				{
+					//TEXTURE MAPPING TEST
+					vertical_line(x, cya,cyb, (struct Scaler)Scaler_Init(ya,cya,yb, 0, TEXTURE_SIZE - 1), txtx, mlx);
+					//TEXTURE MAPPING TEST
+
 					/* There's no neighbor. Render wall from top (cya = ceiling level) to bottom (cyb = floor level). */
-					unsigned r = 0x010101 * (255-z);
-					vline(x, cya, cyb, 0, x==x1||x==x2 ? 0 : r, 0, mlx);
+					// unsigned r = 0x010101 * (255-z);  //NO TEXTURES
+					// vline(x, cya, cyb, 0, x==x1||x==x2 ? 0 : r, 0, mlx);  //NO TEXTURES
 					//0
 					//x==x1||x==x2 ? 0 : r
 					//0

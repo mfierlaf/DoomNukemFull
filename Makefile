@@ -19,7 +19,7 @@ FLAGS = -Wall -Wextra
 
  MLX_DIR = ./minilibx_macos
 
- MLX = -L$(MLX_DIR) -lmlx -framework OpenGL -framework Appkit
+ MLX = -L$(MLX_DIR) -lmlx -framework OpenGL -framework Appkit -fsanitize=address
 
 
 #****************#
@@ -34,8 +34,8 @@ INCL = ./header/
 LIBFT_DIR = ./libft/
 
 SRCS_DIR = ./src/
-SRCS =	main.c mouse_hook.c draw.c tools.c load.c move.c vline.c \
-expose.c init.c
+SRCS =	main.c mouse_hook.c draw.c tools.c load.c move.c vline.c bmp.c bmp_2.c \
+		bmp_3.c expose.c init.c
 
 FILES = $(addprefix $(SRCS_DIR),$(SRCS))
 OBJS_DIR = ./obj/
