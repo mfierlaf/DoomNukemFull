@@ -28,30 +28,30 @@ void		enter_menu(t_mlx *mlx)
 	// 	mlx->editor->on = 1;
 	// 	mlx->menu.on = 0;
 	// }
-	// else if (mlx->menu.gun_pointer == 2)
-	// {
-	// 	mlx->music.mute = !mlx->music.mute;
-	// 	music(mlx);
-	// }
+	if (mlx->menu.gun_pointer == 2)
+	{
+		mlx->music.mute = !mlx->music.mute;
+		music(mlx);
+	}
 	else if (mlx->menu.gun_pointer == 5)
 		kill_mlx(mlx);
 }
 
-// void		music_menu(int key, t_mlx *mlx)
-// {
-// 	if (key == LEFT_KEY && mlx->music.music > 0)
-// 	{
-// 		mlx->music.music -= 1;
-// 		system("pkill afplay");
-// 		music(mlx);
-// 	}
-// 	else if (key == RIGHT_KEY && mlx->music.music <= 2)
-// 	{
-// 		mlx->music.music += 1;
-// 		system("pkill afplay");
-// 		music(mlx);
-// 	}
-// }
+void		music_menu(int key, t_mlx *mlx)
+{
+	if (key == LEFT_KEY && mlx->music.music > 0)
+	{
+		mlx->music.music -= 1;
+		system("pkill afplay");
+		music(mlx);
+	}
+	else if (key == RIGHT_KEY && mlx->music.music <= 2)
+	{
+		mlx->music.music += 1;
+		system("pkill afplay");
+		music(mlx);
+	}
+}
 
 // void		switch_wepon(int key, t_mlx *mlx)
 // {
@@ -73,19 +73,19 @@ void		menu_key_hook(int key, t_mlx *mlx)
 			mlx->menu.gun_pointer += 1;
 		else if (key == UP_KEY && mlx->menu.gun_pointer > 0)
 			mlx->menu.gun_pointer -= 1;
-		// if (mlx->menu.gun_pointer == 3)
-		// 	music_menu(key, mlx);
-		// if (mlx->menu.gun_pointer == 4)
-		// {
-		// 	if (key == LEFT_KEY && mlx->menu.bot_level < 20000)
-		// 		mlx->menu.bot_level += 6000;
-		// 	else if (key == RIGHT_KEY && mlx->menu.bot_level >= 6000)
-		// 		mlx->menu.bot_level -= 6000;
-		// }
+		if (mlx->menu.gun_pointer == 3)
+			music_menu(key, mlx);
+		if (mlx->menu.gun_pointer == 4)
+		{
+			if (key == LEFT_KEY && mlx->menu.bot_level < 20000)
+				mlx->menu.bot_level += 6000;
+			else if (key == RIGHT_KEY && mlx->menu.bot_level >= 6000)
+				mlx->menu.bot_level -= 6000;
+		}
 		if (key == RTN_KEY)
 			enter_menu(mlx);
-		// if (!mlx->music.mute && (key == DOWN_KEY || key == UP_KEY))
-		// 	system("afplay ./music/beep.mp3 &");
+		if (!mlx->music.mute && (key == DOWN_KEY || key == UP_KEY))
+			system("afplay ./music/beep.mp3 &");
 		menu(mlx);
 	}
 	// switch_wepon(key, mlx);

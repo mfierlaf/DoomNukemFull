@@ -27,5 +27,7 @@ void	init(t_mlx *mlx)
 	mlx->num_sectors = 0;
 	mlx->menu.on = 1;
 	mlx->menu.gun_pointer = 0;
-	mlx->menu.bot_level = 2000;
+	mlx->menu.bot_level = 20000;
+	mlx->music.music = 0;
+	mlx->music.mute = 1;
 }

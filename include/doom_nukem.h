@@ -15,7 +15,7 @@
 # define S_LN 115
 # define D_LN 100
 
-# define DIFF_BMP 3
+# define DIFF_BMP 4
 # define FILTER_COLOR 0x980088
 # define W 1200
 # define H 800
@@ -105,15 +105,21 @@ typedef struct        s_color
 
 
 typedef struct s_point  {
-    int x;
-    int y;
+  int x;
+  int y;
 }               t_point;
 
 typedef struct s_menu  {
-    int on;
-    int gun_pointer;
-    int bot_level;
+  int on;
+  int gun_pointer;
+  int bot_level;
 }               t_menu;
+
+typedef struct s_music  {
+  int           mute;
+  int           music;
+  char*         name;
+}               t_music;
 
 
 // typedef struct	s_player
@@ -124,14 +130,6 @@ typedef struct s_menu  {
 //     int rt_speed; // rotation speed of the camera for the Player
 // }		t_player;
 
-/*typedef	struct	s_sdl {
-    void *sdl;
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-    t_player  *player; // Added for mlx use
-    t_sector  *sectors; // Added for mlx use
-    t_wall    *walls; // Added for mlx use
-} t_sdl;*/
 
 typedef struct s_player
 {
@@ -180,6 +178,7 @@ typedef	struct s_mlx
   int     moving;
   unsigned txty;
   t_menu  menu;
+  t_music music;
   t_tex   tex[6];
   t_bmp   *tab_bmp[DIFF_BMP];
 
@@ -239,6 +238,7 @@ void        *free_bmp(t_bmp *bmp, int *data, unsigned char *tmp);
 void         menu(t_mlx *mlx);
 void      draw_image(t_point point, float zoom, t_bmp *bmp, t_mlx *mlx);
 void    menu_key_hook(int key, t_mlx *mlx);
+void    music(t_mlx *mlx);
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 #endif //DOOM_NUKEM_H

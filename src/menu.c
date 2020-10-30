@@ -50,24 +50,60 @@ void		choose_level(t_mlx *mlx)
 	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
 		/ 2.35, 0xfa2d2d, "Bot:");
 	if (mlx->menu.bot_level == 20000)
-		mlx_string_put(mlx->mlx, mlx->win, W / 8.53 + 110,
+		mlx_string_put(mlx->mlx, mlx->win, W / 8.53,
 		H / 2.35, 0xD67B1F, "1");
 	else if (mlx->menu.bot_level == 14000)
-		mlx_string_put(mlx->mlx, mlx->win, W / 8.53 + 110,
+		mlx_string_put(mlx->mlx, mlx->win, W / 8.53,
 		H / 2.35, 0xD67B1F, "2");
 	else if (mlx->menu.bot_level == 8000)
-		mlx_string_put(mlx->mlx, mlx->win, W / 8.53 + 110,
+		mlx_string_put(mlx->mlx, mlx->win, W / 8.53,
 		H / 2.35, 0xD67B1F, "3");
 	else if (mlx->menu.bot_level == 2000)
-		mlx_string_put(mlx->mlx, mlx->win, W / 8.53 + 110,
+		mlx_string_put(mlx->mlx, mlx->win, W / 8.53,
 		H / 2.35, 0xD67B1F, "4");
+}
+
+void		choose_music(t_mlx *mlx)
+{
+	if (mlx->music.music == 0)
+	{
+		mlx->music.name = "Sandstorm";
+		system("afplay ./music/sandstorm.mp3 &");
+	}
+	else if (mlx->music.music == 1)
+	{
+		mlx->music.name = "Crab rave";
+		system("afplay ./music/crab_rave.mp3 &");
+	}
+	else if (mlx->music.music == 2)
+	{
+		mlx->music.name = "Roundabout";
+		system("afplay ./music/roundabout.mp3 &");
+	}
+	else if (mlx->music.music == 3)
+	{
+		mlx->music.name = "No music";
+		system("pkill afplay");
+	}
+}
+
+void		music(t_mlx *mlx)
+{
+	mlx->music.name = "Sandstorm";
+	if (!mlx->music.mute)
+		choose_music(mlx);
+	else
+	{
+		mlx->music.name = "No music";
+		system("pkill afplay");
+	}
 }
 
 void		menu_strings(t_mlx *mlx)
 {
 	char	*song;
 
-	// song = ft_itoa(mlx->music.music);
+	song = ft_itoa(mlx->music.music);
 	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
 		/ 15.36, 0xfa2d2d, "DOOM-NUKEM");
 	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
@@ -76,8 +112,8 @@ void		menu_strings(t_mlx *mlx)
 		/ 3.75, 0xfa2d2d, "Edit map");
 	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
 		/ 3.15, 0xfa2d2d, "Mute");
-	// mlx_string_put(mlx->mlx, mlx->win, W / 25.6 + 65,
-	// 	H / 2.72, 0xD67B1F, mlx->music.music_name);
+	mlx_string_put(mlx->mlx, mlx->win, W / 25.6 + 65,
+		H / 2.72, 0xD67B1F, mlx->music.name);
 	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
 		/ 2.72, 0xfa2d2d, "Music:");
 	choose_level(mlx);
@@ -143,16 +179,12 @@ void		menu(t_mlx *mlx)
 	coord.x = 0;
 	coord.y = -160;
 	draw_image(coord, 0.55, mlx->tab_bmp[BACKGROUND], mlx);
-	
-	// coord.x = -W + 100;
-	// coord.y = -110;
-	// draw_image(coord, 0.3, mlx->tab_bmp[2], mlx);
 	menu_gun(mlx);
-	// if (mlx->music.mute == 1)
-	// {
-	// 	coord.x = W / 25.6;
-	// 	coord.y = H / 1.2;
-	// 	draw_image(coord, 0.5, mlx->tab_sprite[85], mlx);
-	// }
+	if (mlx->music.mute == 1)
+	{
+		coord.x = W / 25.6;
+		coord.y = H / 1.2;
+		draw_image(coord, 0.5, mlx->tab_bmp[3], mlx);
+	}
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 }

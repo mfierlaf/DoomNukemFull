@@ -73,6 +73,7 @@ void load_texture(t_mlx *mlx)
     mlx->tab_bmp[0] = new_bmp("textures/minecraft_texture.bmp");
     mlx->tab_bmp[1] = new_bmp("textures/doom.bmp");
     mlx->tab_bmp[2] = new_bmp("textures/hand_gun.bmp");
+    mlx->tab_bmp[3] = new_bmp("textures/mute.bmp");
 }
 
 void unload_data(t_mlx *mlx)

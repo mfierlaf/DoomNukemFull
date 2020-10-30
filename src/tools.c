@@ -70,6 +70,7 @@ void 	clear_img(t_mlx *mlx)
 
 int kill_mlx(t_mlx *mlx)
 {
+	system("pkill afplay");
 	unload_data(mlx);
 	mlx = NULL;
 	// TODO free shit
