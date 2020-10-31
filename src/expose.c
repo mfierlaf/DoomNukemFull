@@ -35,6 +35,7 @@ int		expose(t_mlx *mlx)
 	if (mlx->menu.on)
 	{
 		menu(mlx);
+		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 		menu_strings(mlx);
 	}
 	else
@@ -139,6 +140,8 @@ int		expose(t_mlx *mlx)
 		if (pushing)
 			mlx->moving = 1;
 		draw_screen(mlx);
+		draw_hud(mlx);
+		shoot_anim(mlx);
 		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 	}
 	return (0);

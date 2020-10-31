@@ -71,9 +71,38 @@ void load_texture(t_mlx *mlx)
     mlx->tex[5].img = mlx_xpm_file_to_image(mlx->mlx, "textures/colors_big_reversed.xpm", &width, &height);
     mlx->tex[5].data = (int *)mlx_get_data_addr(mlx->tex[5].img, &mlx->tex[5].bpp, &mlx->tex[5].sl, &mlx->tex[5].endian);
     mlx->tab_bmp[0] = new_bmp("textures/minecraft_texture.bmp");
-    mlx->tab_bmp[1] = new_bmp("textures/doom.bmp");
-    mlx->tab_bmp[2] = new_bmp("textures/hand_gun.bmp");
-    mlx->tab_bmp[3] = new_bmp("textures/mute.bmp");
+    mlx->tab_bmp[BACKGROUND] = new_bmp("textures/doom.bmp");
+    mlx->tab_bmp[HAND_GUN] = new_bmp("textures/hand_gun.bmp");
+    mlx->tab_bmp[MUTE] = new_bmp("textures/mute.bmp");
+    mlx->tab_bmp[KNIFE] = new_bmp("textures/knife.bmp");
+    mlx->tab_bmp[GUN] = new_bmp("textures/gun.bmp");
+    mlx->tab_bmp[BIG_GUN] = new_bmp("textures/big_gun.bmp");
+    mlx->tab_bmp[BLUE_KEY] = new_bmp("textures/blue_key.bmp");
+	mlx->tab_bmp[SHIELD] = new_bmp("textures/shield.bmp");
+
+	mlx->tab_anim[CARABIN_ANIM_0] = new_bmp("textures/carabin_0.bmp");
+	mlx->tab_anim[CARABIN_ANIM_1] = new_bmp("textures/carabin_1.bmp");
+	mlx->tab_anim[CARABIN_ANIM_2] = new_bmp("textures/carabin_2.bmp");
+	mlx->tab_anim[CARABIN_ANIM_3] = new_bmp("textures/carabin_3.bmp");
+	mlx->tab_anim[CARABIN_ANIM_4] = new_bmp("textures/carabin_4.bmp");
+	mlx->tab_anim[GATLIN_ANIM_0] = new_bmp("textures/gatling_0.bmp");
+	mlx->tab_anim[GATLIN_ANIM_1] = new_bmp("textures/gatling_1.bmp");
+	mlx->tab_anim[GATLIN_ANIM_2] = new_bmp("textures/gatling_2.bmp");
+	mlx->tab_anim[GATLIN_ANIM_3] = new_bmp("textures/gatling_3.bmp");
+	mlx->tab_anim[GATLIN_ANIM_4] = new_bmp("textures/gatling_4.bmp");
+	mlx->tab_anim[GUN_ANIM_0] = new_bmp("textures/gun_0.bmp");
+	mlx->tab_anim[GUN_ANIM_1] = new_bmp("textures/gun_1.bmp");
+	mlx->tab_anim[GUN_ANIM_2] = new_bmp("textures/gun_2.bmp");
+	mlx->tab_anim[GUN_ANIM_3] = new_bmp("textures/gun_3.bmp");
+	mlx->tab_anim[GUN_ANIM_4] = new_bmp("textures/gun_4.bmp");
+	mlx->tab_anim[KNIFE_ANIM_0] = new_bmp("textures/knife_0.bmp");
+	mlx->tab_anim[KNIFE_ANIM_1] = new_bmp("textures/knife_1.bmp");
+	mlx->tab_anim[KNIFE_ANIM_2] = new_bmp("textures/knife_2.bmp");
+	mlx->tab_anim[KNIFE_ANIM_3] = new_bmp("textures/knife_3.bmp");
+	mlx->tab_anim[KNIFE_ANIM_4] = new_bmp("textures/knife_4.bmp");
+
+	
+
 }
 
 void unload_data(t_mlx *mlx)

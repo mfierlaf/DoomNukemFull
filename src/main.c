@@ -26,6 +26,8 @@ int	main(void)
 		&mlx->endian);
 	init(mlx);
 	load_data(mlx);
+	mlx->player.life = 100;
+	mlx->player.is_dead = 0;
 	load_texture(mlx);
 	mlx_hook(mlx->win, MOTIONNOTIFY, POINTERMOTIONMASK, mouse_hook, mlx);
 	mlx_hook(mlx->win, KP, KPMASK, ft_key_hook, mlx);

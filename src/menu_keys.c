@@ -53,17 +53,17 @@ void		music_menu(int key, t_mlx *mlx)
 	}
 }
 
-// void		switch_wepon(int key, t_mlx *mlx)
-// {
-// 	if (key == K1_KEY)
-// 		mlx->weapon.anim = 15;
-// 	if (key == K2_KEY && mlx->inventory.weapon_type[2])
-// 		mlx->weapon.anim = 10;
-// 	if (key == K3_KEY && mlx->inventory.weapon_type[0])
-// 		mlx->weapon.anim = 0;
-// 	if (key == K4_KEY && mlx->inventory.weapon_type[1])
-// 		mlx->weapon.anim = 5;
-// }
+void		switch_wepon(int key, t_mlx *mlx)
+{
+	if (key == K1_KEY)
+		mlx->weapon.anim = 15;
+	if (key == K2_KEY && mlx->inventory.weapon_type[2])
+		mlx->weapon.anim = 10;
+	if (key == K3_KEY && mlx->inventory.weapon_type[0])
+		mlx->weapon.anim = 0;
+	if (key == K4_KEY && mlx->inventory.weapon_type[1])
+		mlx->weapon.anim = 5;
+}
 
 void		menu_key_hook(int key, t_mlx *mlx)
 {
@@ -88,5 +88,5 @@ void		menu_key_hook(int key, t_mlx *mlx)
 			system("afplay ./music/beep.mp3 &");
 		menu(mlx);
 	}
-	// switch_wepon(key, mlx);
+	switch_wepon(key, mlx);
 }

@@ -30,4 +30,17 @@ void	init(t_mlx *mlx)
 	mlx->menu.bot_level = 20000;
 	mlx->music.music = 0;
 	mlx->music.mute = 1;
+	mlx->inventory.ammo = 10;
+	mlx->inventory.shield = 10;
+	mlx->inventory.keys = 0;
+	mlx->inventory.weapon_type[0] = 1;
+	mlx->inventory.weapon_type[1] = 1;
+	mlx->inventory.weapon_type[2] = 1;
+	mlx->inventory.weapon_type[3] = 1;
+	mlx->inventory.count = 0;
+	mlx->weapon.anim = KNIFE_ANIM_0;
+	mlx->weapon.damage = 50;
+	mlx->player.life = 100;
+	mlx->player.is_dead = 0;
+	mlx->anim.curr_anim = 0;
 }

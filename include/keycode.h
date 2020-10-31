@@ -16,6 +16,39 @@
 
 
 # define BACKGROUND 1
+# define HAND_GUN 2
+# define MUTE 3
+# define KNIFE 4
+# define GUN 5
+# define BIG_GUN 5
+# define BLUE_KEY 6
+# define SHIELD 7
+
+# define ANIM_NB 20
+# define CARABIN_ANIM_0 0
+# define CARABIN_ANIM_1 1
+# define CARABIN_ANIM_2 2
+# define CARABIN_ANIM_3 3
+# define CARABIN_ANIM_4 4
+# define GATLIN_ANIM_0 5
+# define GATLIN_ANIM_1 6
+# define GATLIN_ANIM_2 7
+# define GATLIN_ANIM_3 8
+# define GATLIN_ANIM_4 9
+# define GUN_ANIM_0 10
+# define GUN_ANIM_1 11
+# define GUN_ANIM_2 12
+# define GUN_ANIM_3 13
+# define GUN_ANIM_4 14
+# define KNIFE_ANIM_0 15
+# define KNIFE_ANIM_1 16
+# define KNIFE_ANIM_2 17
+# define KNIFE_ANIM_3 18
+# define KNIFE_ANIM_4 19
+
+
+
+
 # define NOEVENTMASK 0L
 # define KPMASK (1L<<0)
 # define KEYRELEASEMASK (1L<<1)

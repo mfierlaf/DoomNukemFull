@@ -186,5 +186,4 @@ void		menu(t_mlx *mlx)
 		coord.y = H / 1.2;
 		draw_image(coord, 0.5, mlx->tab_bmp[3], mlx);
 	}
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 }

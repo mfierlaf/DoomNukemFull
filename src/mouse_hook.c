@@ -49,8 +49,33 @@ int		ft_key_hook(int key, t_mlx *mlx)
 		mlx->ducking = 1;
 		mlx->moving = 1;
 	}
+	shoot_key(key, mlx);
 	menu_key_hook(key, mlx);
 	return (0);
+}
+
+void			shoot_key(int key, t_mlx *mlx)
+{
+	if (key == Z_KEY)
+	{
+		if (mlx->inventory.ammo || mlx->weapon.anim == 15)
+		{
+			if (mlx->weapon.anim < 15)
+			{
+				if (!mlx->music.mute)
+					system("afplay ./music/gun.mp3 &");
+				// mlx->anim.shoot = 1;
+				mlx->inventory.ammo--;
+			// 	shoot_direction(mlx);
+			}
+			// shoot(mlx);
+			if (mlx->weapon.anim <= 15 && !mlx->music.mute)
+				system("afplay ./music/stab.mp3 &");
+			mlx->anim.started = 1;
+		}
+		else if (mlx->weapon.anim < 15 && !mlx->music.mute)
+			system("afplay ./music/click.mp3 &");
+	}
 }
 
 int		stop_movement(int key, t_mlx *mlx)

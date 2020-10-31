@@ -15,7 +15,7 @@
 # define S_LN 115
 # define D_LN 100
 
-# define DIFF_BMP 4
+# define DIFF_BMP 28
 # define FILTER_COLOR 0x980088
 # define W 1200
 # define H 800
@@ -121,6 +121,31 @@ typedef struct s_music  {
   char*         name;
 }               t_music;
 
+typedef struct  s_inventory
+{
+  int           ammo;
+  int           weapon_type[4];
+  int           keys;
+  int           shield;
+  int           count;
+  // int           grail;
+}             t_inventory;
+
+typedef struct  s_weapon
+{
+  int           anim;
+  int           damage;
+  // t_point         dir_shoot;
+}             t_weapon;
+
+typedef struct        s_anim
+{
+  int           started;
+  // int           curr_anim_walk;
+  int           curr_anim;
+  // int           shoot;
+}             t_anim;
+
 
 // typedef struct	s_player
 // {
@@ -140,6 +165,8 @@ typedef struct s_player
     float anglecos;
     float yaw;   // Looking towards (and sin() and cos() thereof)
     unsigned sector;                        // Which sector the player is currently in
+    int           life;
+    int           is_dead;
 } t_player;
 
 typedef struct s_sector
@@ -179,8 +206,13 @@ typedef	struct s_mlx
   unsigned txty;
   t_menu  menu;
   t_music music;
+  t_weapon weapon;
+  t_inventory inventory;
+  t_anim anim;
   t_tex   tex[6];
+  t_bmp *tab_anim[ANIM_NB];
   t_bmp   *tab_bmp[DIFF_BMP];
+
 
   t_point mouse;
 	t_player  player;
@@ -238,7 +270,15 @@ void        *free_bmp(t_bmp *bmp, int *data, unsigned char *tmp);
 void         menu(t_mlx *mlx);
 void      draw_image(t_point point, float zoom, t_bmp *bmp, t_mlx *mlx);
 void    menu_key_hook(int key, t_mlx *mlx);
+void    menu_strings(t_mlx *mlx);
 void    music(t_mlx *mlx);
+void      filled_rect(t_point size, int x, int y, t_mlx *mlx);
+void      draw_rect(t_point size, int x, int y, t_mlx *mlx);
+void      line(int x0, int y0, int x1, int y1, t_mlx *mlx);
+void      draw_pixel(int x, int y, t_mlx *mlx);
+void      draw_hud(t_mlx *mlx);
+void        shoot_anim(t_mlx *mlx);
+void      shoot_key(int key, t_mlx *mlx);
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 #endif //DOOM_NUKEM_H
