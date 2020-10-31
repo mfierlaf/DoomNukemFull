@@ -60,8 +60,8 @@ void			draw_shield(t_mlx *mlx)
 	gap = 3;
 	while (i <= mlx->inventory.shield)
 	{
-		coord.x = i + W / 4.5 + gap * i;
-		coord.y = H / 1.23;
+		coord.x = i + W / 4 + gap * i;
+		coord.y = H / 1.15;
 		draw_image(coord, 1, mlx->tab_bmp[SHIELD], mlx);
 		i += 10;
 	}
@@ -84,7 +84,7 @@ void			draw_weapon_hud(t_mlx *mlx)
 {
 	t_point coord;
 
-	coord.x = W / 1.25;
+	coord.x = W / 1.15;
 	if (mlx->inventory.weapon_type[3])
 	{
 		coord.y = H / -15.3;
@@ -97,14 +97,14 @@ void			draw_weapon_hud(t_mlx *mlx)
 	}
 	if (mlx->inventory.weapon_type[0])
 	{
-		coord.x = W / 1.23;
+		coord.x = W / 1.15;
 		coord.y = H / 6.9;
 		draw_image(coord, 2, mlx->tab_bmp[GUN], mlx);
 	}
 	if (mlx->inventory.weapon_type[1])
 	{
-		coord.x = W / 1.18;
-		coord.y = H / 3;
+		coord.x = W / 1.12;
+		coord.y = H / 3.5;
 		draw_image(coord, 1.5, mlx->tab_bmp[BIG_GUN], mlx);
 	}
 }
@@ -116,7 +116,7 @@ void			draw_hud(t_mlx *mlx)
 
 	draw_weapon_hud(mlx);
 	coord.x = W / 1.158;
-	coord.y = H / 1.53;
+	coord.y = H / 1.25;
 	draw_image(coord, 2, mlx->tab_bmp[BLUE_KEY], mlx);
 	draw_ammo(mlx);
 	draw_life_bar(mlx);
@@ -125,11 +125,11 @@ void			draw_hud(t_mlx *mlx)
 	size.x = W / 6.14;
 	size.y = H / 12.36;
 	if (mlx->weapon.anim >= 15)
-		draw_rect(size, W / 1.20, H / 6.79, mlx);
+		draw_rect(size, W / 1.20, H / 25, mlx);
 	else if (mlx->weapon.anim >= 10 && mlx->weapon.anim <= 14)
-		draw_rect(size, W / 1.20, H / 3.8, mlx);
+		draw_rect(size, W / 1.20, H / 7, mlx);
 	else if (mlx->weapon.anim >= 0 && mlx->weapon.anim <= 4)
-		draw_rect(size, W / 1.20, H / 2.7, mlx);
+		draw_rect(size, W / 1.20, H / 4.2, mlx);
 	else
-		draw_rect(size, W / 1.20, H / 2.05, mlx);
+		draw_rect(size, W / 1.20, H / 3, mlx);
 }

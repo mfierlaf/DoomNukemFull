@@ -20,9 +20,9 @@
 # define MUTE 3
 # define KNIFE 4
 # define GUN 5
-# define BIG_GUN 5
-# define BLUE_KEY 6
-# define SHIELD 7
+# define BIG_GUN 6
+# define BLUE_KEY 7
+# define SHIELD 8
 
 # define ANIM_NB 20
 # define CARABIN_ANIM_0 0

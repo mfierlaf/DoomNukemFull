@@ -47,19 +47,19 @@ void			draw_image(t_point point, float zoom, t_bmp *bmp, t_mlx *mlx)
 
 void		choose_level(t_mlx *mlx)
 {
-	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
+	mlx_string_put(mlx->mlx, mlx->win, W / 50, H
 		/ 2.35, 0xfa2d2d, "Bot:");
 	if (mlx->menu.bot_level == 20000)
-		mlx_string_put(mlx->mlx, mlx->win, W / 8.53,
+		mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.35, 0xD67B1F, "1");
 	else if (mlx->menu.bot_level == 14000)
-		mlx_string_put(mlx->mlx, mlx->win, W / 8.53,
+		mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.35, 0xD67B1F, "2");
 	else if (mlx->menu.bot_level == 8000)
-		mlx_string_put(mlx->mlx, mlx->win, W / 8.53,
+		mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.35, 0xD67B1F, "3");
 	else if (mlx->menu.bot_level == 2000)
-		mlx_string_put(mlx->mlx, mlx->win, W / 8.53,
+		mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.35, 0xD67B1F, "4");
 }
 
@@ -104,20 +104,20 @@ void		menu_strings(t_mlx *mlx)
 	char	*song;
 
 	song = ft_itoa(mlx->music.music);
-	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
+	mlx_string_put(mlx->mlx, mlx->win, W / 50, H
 		/ 15.36, 0xfa2d2d, "DOOM-NUKEM");
-	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
+	mlx_string_put(mlx->mlx, mlx->win, W / 50, H
 		/ 4.75, 0xfa2d2d, "Start");
-	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
+	mlx_string_put(mlx->mlx, mlx->win, W / 50, H
 		/ 3.75, 0xfa2d2d, "Edit map");
-	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
+	mlx_string_put(mlx->mlx, mlx->win, W / 50, H
 		/ 3.15, 0xfa2d2d, "Mute");
-	mlx_string_put(mlx->mlx, mlx->win, W / 25.6 + 65,
+	mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.72, 0xD67B1F, mlx->music.name);
-	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
+	mlx_string_put(mlx->mlx, mlx->win, W / 50, H
 		/ 2.72, 0xfa2d2d, "Music:");
 	choose_level(mlx);
-	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
+	mlx_string_put(mlx->mlx, mlx->win, W / 50, H
 		/ 2.05, 0xfa2d2d, "QUIT");
 	// if (mlx->player->is_dead == 1)
 	// 	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H

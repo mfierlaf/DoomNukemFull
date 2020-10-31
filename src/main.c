@@ -29,6 +29,7 @@ int	main(void)
 	mlx->player.life = 100;
 	mlx->player.is_dead = 0;
 	load_texture(mlx);
+	mlx_hook(mlx->win, BUTTONPRESS, BUTTONPRESSMASK, shoot_key, mlx);
 	mlx_hook(mlx->win, MOTIONNOTIFY, POINTERMOTIONMASK, mouse_hook, mlx);
 	mlx_hook(mlx->win, KP, KPMASK, ft_key_hook, mlx);
 	mlx_hook(mlx->win, KEYRELEASE, KEYRELEASEMASK, stop_movement, mlx);

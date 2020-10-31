@@ -278,7 +278,7 @@ void      line(int x0, int y0, int x1, int y1, t_mlx *mlx);
 void      draw_pixel(int x, int y, t_mlx *mlx);
 void      draw_hud(t_mlx *mlx);
 void        shoot_anim(t_mlx *mlx);
-void      shoot_key(int key, t_mlx *mlx);
+void      shoot_key(int key, int x, int y, t_mlx *mlx);
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 #endif //DOOM_NUKEM_H

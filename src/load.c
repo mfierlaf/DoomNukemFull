@@ -70,7 +70,7 @@ void load_texture(t_mlx *mlx)
     mlx->tex[4].data = (int *)mlx_get_data_addr(mlx->tex[4].img, &mlx->tex[4].bpp, &mlx->tex[4].sl, &mlx->tex[4].endian);
     mlx->tex[5].img = mlx_xpm_file_to_image(mlx->mlx, "textures/colors_big_reversed.xpm", &width, &height);
     mlx->tex[5].data = (int *)mlx_get_data_addr(mlx->tex[5].img, &mlx->tex[5].bpp, &mlx->tex[5].sl, &mlx->tex[5].endian);
-    mlx->tab_bmp[0] = new_bmp("textures/minecraft_texture.bmp");
+    mlx->tab_bmp[0] = new_bmp("textures/brick.bmp");
     mlx->tab_bmp[BACKGROUND] = new_bmp("textures/doom.bmp");
     mlx->tab_bmp[HAND_GUN] = new_bmp("textures/hand_gun.bmp");
     mlx->tab_bmp[MUTE] = new_bmp("textures/mute.bmp");

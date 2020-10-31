@@ -75,7 +75,7 @@ void        vertical_line(int x, int y1, int y2, struct Scaler ty /*scaler_init*
     for (int y = y1; y <= y2; ++y)
     {
       mlx->txty = Scaler_Next(&ty);
-      color = get_color(mlx->tab_bmp[0], (txtx % TEXTURE_SIZE), (mlx->txty % TEXTURE_SIZE));
+      color = get_color(mlx->tab_bmp[0], (txtx % mlx->tab_bmp[0]->header.width_px), (mlx->txty % mlx->tab_bmp[0]->header.height_px));
       if (color != FILTER_COLOR)
         mlx->data[y * W + x] = color;
     }

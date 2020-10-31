@@ -49,14 +49,16 @@ int		ft_key_hook(int key, t_mlx *mlx)
 		mlx->ducking = 1;
 		mlx->moving = 1;
 	}
-	shoot_key(key, mlx);
+	// shoot_key(key, mlx);
 	menu_key_hook(key, mlx);
 	return (0);
 }
 
-void			shoot_key(int key, t_mlx *mlx)
+void			shoot_key(int key, int x, int y, t_mlx *mlx)
 {
-	if (key == Z_KEY)
+	x++;
+	y++;
+	if (key == BUT1_KEY)
 	{
 		if (mlx->inventory.ammo || mlx->weapon.anim == 15)
 		{
@@ -69,7 +71,7 @@ void			shoot_key(int key, t_mlx *mlx)
 			// 	shoot_direction(mlx);
 			}
 			// shoot(mlx);
-			if (mlx->weapon.anim <= 15 && !mlx->music.mute)
+			else if (mlx->weapon.anim <= 15 && !mlx->music.mute)
 				system("afplay ./music/stab.mp3 &");
 			mlx->anim.started = 1;
 		}
