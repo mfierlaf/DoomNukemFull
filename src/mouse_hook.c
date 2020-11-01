@@ -27,7 +27,7 @@ int		mouse_hook(int x, int y, t_mlx *mlx)
 int		ft_key_hook(int key, t_mlx *mlx)
 {
 	if (key == ESC_KEY || key == ESC)
-		kill_mlx(mlx);
+		kill_mlx("", mlx);
 	if (key == UP_KEY || key == W_KEY || key == UP_ARROW || key == W_LN)
 		mlx->wasd[0] = 1;
 	if (key == LEFT_KEY || key == A_KEY || key == LEFT_ARROW || key == A_LN)

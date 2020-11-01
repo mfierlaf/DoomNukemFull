@@ -68,8 +68,9 @@ void 	clear_img(t_mlx *mlx)
 		mlx->data[i] = 0x000000;
 }
 
-int kill_mlx(t_mlx *mlx)
+int kill_mlx(char *message, t_mlx *mlx)
 {
+	ft_putstr(message);
 	system("pkill afplay");
 	unload_data(mlx);
 	mlx = NULL;

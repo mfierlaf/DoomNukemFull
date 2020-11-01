@@ -12,32 +12,44 @@
 
 #include "../include/doom_nukem.h"
 
-void load_data(t_mlx *mlx)
+void	load_data(t_mlx *mlx)
 {
-	FILE* fp = fopen("./map-clear.txt", "rt");
-	if(!fp) { perror("./map-clear.txt"); exit(1); }
-	char Buf[256], word[256], *ptr;
+	int		fd;
+	char	*Line;
+
+	if ((fd = open("./map-clear.txt", O_RDONLY)) < 0)
+		kill_mlx("ERROR IN MAP\n", mlx);
+	char word[256], *ptr;
 	struct xy* vert = NULL, v;
 	int n , m, NumVertices = 0;
-	while(fgets(Buf, sizeof Buf, fp))
-		switch(sscanf(ptr = Buf, "%32s%n", word, &n) == 1 ? word[0] : '\0')
+	while (get_next_line(fd, &Line) > 0)
+		switch(sscanf(ptr = Line, "%32s%n", word, &n) == 1 ? word[0] : '\0')
 		{
 			case 'v': // vertex
-				for(sscanf(ptr += n, "%f%n", &v.y, &n); sscanf(ptr += n, "%f%n", &v.x, &n) == 1; )
-				{ vert = realloc(vert, ++NumVertices * sizeof(*vert)); vert[NumVertices-1] = v; }
+				for (sscanf(ptr += n, "%f%n", &v.y, &n); sscanf(ptr += n, "%f%n", &v.x, &n) == 1; )
+				{
+					vert = realloc(vert, ++NumVertices * sizeof(*vert));
+					vert[NumVertices-1] = v;
+				}
 				break;
 			case 's': // sector
-			  mlx->sectors = realloc(mlx->sectors, ++mlx->num_sectors * sizeof(*mlx->sectors));
+			  	mlx->sectors = realloc(mlx->sectors, ++mlx->num_sectors * sizeof(*mlx->sectors));
 				t_sector* sect = &mlx->sectors[mlx->num_sectors-1];
 				int* num = NULL;
-				sscanf(ptr += n, "%f%f%n", &sect->floor,&sect->ceil, &n);
-				for(m=0; sscanf(ptr += n, "%32s%n", word, &n) == 1 && word[0] != '#'; )
-				{ num = realloc(num, ++m * sizeof(*num)); num[m-1] = word[0]=='x' ? -1 : atoi(word); }
-				sect->npoints   = m /= 2;
-				sect->neighbors = malloc( (m  ) * sizeof(*sect->neighbors) );
-				sect->vertex    = malloc( (m+1) * sizeof(*sect->vertex)    );
-				for(n=0; n<m; ++n) sect->neighbors[n] = num[m + n];
-				for(n=0; n<m; ++n) sect->vertex[n+1]  = vert[num[n]]; // TODO: Range checking
+				sscanf(ptr += n, "%f%f%n", &sect->floor, &sect->ceil, &n);
+				m = 0;
+				while (sscanf(ptr += n, "%32s%n", word, &n) == 1 && word[0] != '#')
+				{
+					num = realloc(num, ++m * sizeof(*num));
+					num[m - 1] = word[0]=='x' ? -1 : ft_atoi(word);
+				}
+				sect->npoints = m /= 2;
+				sect->neighbors = malloc( (m) * sizeof(*sect->neighbors) );
+				sect->vertex = malloc( (m + 1) * sizeof(*sect->vertex)    );
+				for (n = 0; n<m; ++n)
+					sect->neighbors[n] = num[m + n];
+				for (n = 0; n<m; ++n)
+					sect->vertex[n + 1]  = vert[num[n]]; // TODO: Range checking
 				sect->vertex[0] = sect->vertex[m]; // Ensure the vertexes form a loop
 				free(num);
 				break;
@@ -47,7 +59,7 @@ void load_data(t_mlx *mlx)
 					 mlx->player = (struct s_player) { {v.x, v.y, 0}, {0,0,0}, angle,0,0,0, n }; // TODO: Range checking
 					 mlx->player.where.z = mlx->sectors[mlx->player.sector].floor + EyeHeight;
 		}
-	fclose(fp);
+	close(fd);
 	free(vert);
 }
 

@@ -34,7 +34,7 @@ void		enter_menu(t_mlx *mlx)
 		music(mlx);
 	}
 	else if (mlx->menu.gun_pointer == 5)
-		kill_mlx(mlx);
+		kill_mlx("", mlx);
 }
 
 void		music_menu(int key, t_mlx *mlx)

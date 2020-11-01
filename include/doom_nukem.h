@@ -249,7 +249,7 @@ double	vxs(double a, double b, double c, double d);
 double	max(double a, double b);
 double	min(double a, double b);
 void 	clear_img(t_mlx *mlx);
-int kill_mlx(t_mlx *mlx);
+int kill_mlx(char *message, t_mlx *mlx);
 // EXPOSE.C
 int expose(t_mlx *mlx);
 // INIT.C
@@ -279,6 +279,7 @@ void      draw_pixel(int x, int y, t_mlx *mlx);
 void      draw_hud(t_mlx *mlx);
 void        shoot_anim(t_mlx *mlx);
 void      shoot_key(int key, int x, int y, t_mlx *mlx);
+
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 #endif //DOOM_NUKEM_H
