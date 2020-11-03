@@ -16,49 +16,68 @@ void	load_data(t_mlx *mlx)
 {
 	int		fd;
 	char	*Line;
+	char	**split_line;
+	struct xy	*vert = NULL;
+	struct xy	v;
+	int n;
+	int num_vertices = 0;
+	int vertex_len = 0;
+	int j = 0;
 
 	if ((fd = open("./map-clear.txt", O_RDONLY)) < 0)
 		kill_mlx("ERROR IN MAP\n", mlx);
-	char word[256], *ptr;
-	struct xy* vert = NULL, v;
-	int n , m, NumVertices = 0;
 	while (get_next_line(fd, &Line) > 0)
-		switch(sscanf(ptr = Line, "%32s%n", word, &n) == 1 ? word[0] : '\0')
+	{
+		if (!(split_line = ft_strsplit(Line, ' ')))
+			kill_mlx("ERROR IN MAP\n", mlx);
+		if (split_line[0][0] == 'm') // vertex
 		{
-			case 'v': // vertex
-				for (sscanf(ptr += n, "%f%n", &v.y, &n); sscanf(ptr += n, "%f%n", &v.x, &n) == 1; )
-				{
-					vert = realloc(vert, ++NumVertices * sizeof(*vert));
-					vert[NumVertices-1] = v;
-				}
-				break;
-			case 's': // sector
-			  	mlx->sectors = realloc(mlx->sectors, ++mlx->num_sectors * sizeof(*mlx->sectors));
-				t_sector* sect = &mlx->sectors[mlx->num_sectors-1];
-				int* num = NULL;
-				sscanf(ptr += n, "%f%f%n", &sect->floor, &sect->ceil, &n);
-				m = 0;
-				while (sscanf(ptr += n, "%32s%n", word, &n) == 1 && word[0] != '#')
-				{
-					num = realloc(num, ++m * sizeof(*num));
-					num[m - 1] = word[0]=='x' ? -1 : ft_atoi(word);
-				}
-				sect->npoints = m /= 2;
-				sect->neighbors = malloc( (m) * sizeof(*sect->neighbors) );
-				sect->vertex = malloc( (m + 1) * sizeof(*sect->vertex)    );
-				for (n = 0; n<m; ++n)
-					sect->neighbors[n] = num[m + n];
-				for (n = 0; n<m; ++n)
-					sect->vertex[n + 1]  = vert[num[n]]; // TODO: Range checking
-				sect->vertex[0] = sect->vertex[m]; // Ensure the vertexes form a loop
-				free(num);
-				break;
-			case 'p':; // player
-					 float angle;
-					 sscanf(ptr += n, "%f %f %f %d", &v.x, &v.y, &angle, &n);
-					 mlx->player = (struct s_player) { {v.x, v.y, 0}, {0,0,0}, angle,0,0,0, n }; // TODO: Range checking
-					 mlx->player.where.z = mlx->sectors[mlx->player.sector].floor + EyeHeight;
+			num_vertices = ft_atoi(split_line[1]);
+			vert = malloc(num_vertices * sizeof(vert));
 		}
+		else if (split_line[0][0] == 'v') // vertex
+		{
+			int i = 1;
+			while (split_line[++i])
+			{
+				vert[j].y = atof(split_line[1]);
+				vert[j].x = atof(split_line[i]);
+				j++;
+			}
+		}
+		else if (split_line[0][0] == 's') // sector
+		{
+		  	mlx->sectors = realloc(mlx->sectors, ++mlx->num_sectors * sizeof(*mlx->sectors));
+			t_sector* sect = &mlx->sectors[mlx->num_sectors - 1];
+			sect->floor = atof(split_line[1]);
+			sect->ceil = atof(split_line[2]);
+			while (split_line[vertex_len] != NULL)
+				vertex_len++;
+			vertex_len -= 3; //vertex_len (sans floor ceil et la lettre)
+			sect->npoints = vertex_len / 2;
+			vertex_len /= 2;
+			sect->neighbors = malloc((vertex_len) * sizeof(*sect->neighbors));
+			sect->vertex = malloc((vertex_len + 1) * sizeof(*sect->vertex));
+			n = -1;
+			while (++n < vertex_len)
+				sect->neighbors[n] = ft_atoi(split_line[vertex_len + n + 3]);
+			n = -1;
+			while (++n < vertex_len)
+				sect->vertex[n + 1] = vert[ft_atoi(split_line[n + 3])];
+			sect->vertex[0] = sect->vertex[vertex_len]; // Ensure the vertexes form a loop
+		}
+		else if (split_line[0][0] == 'p') // player
+		{
+			float angle;
+			v.x = ft_atoi(split_line[1]);;
+			v.y = ft_atoi(split_line[2]);;
+			angle = ft_atoi(split_line[3]);;
+			n = ft_atoi(split_line[4]);
+			mlx->player = (struct s_player) { {v.x, v.y, 0}, {0,0,0}, angle,0,0,0, n }; // TODO: Range checking
+			mlx->player.where.z = mlx->sectors[mlx->player.sector].floor + EyeHeight;
+		}
+		// free(line);
+	}
 	close(fd);
 	free(vert);
 }
@@ -112,9 +131,6 @@ void load_texture(t_mlx *mlx)
 	mlx->tab_anim[KNIFE_ANIM_2] = new_bmp("textures/knife_2.bmp");
 	mlx->tab_anim[KNIFE_ANIM_3] = new_bmp("textures/knife_3.bmp");
 	mlx->tab_anim[KNIFE_ANIM_4] = new_bmp("textures/knife_4.bmp");
-
-	
-
 }
 
 void unload_data(t_mlx *mlx)
