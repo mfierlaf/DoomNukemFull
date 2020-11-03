@@ -14,6 +14,14 @@
 # define A_LN 97
 # define S_LN 115
 # define D_LN 100
+# define E_LN 101
+# define Q_LN 113
+# define ENTR_LN 65293
+# define K1_LN 38
+# define K2_LN 233
+# define K3_LN 34
+# define K4_LN 39
+# define K5_LN 40
 
 # define DIFF_BMP 28
 # define FILTER_COLOR 0x980088

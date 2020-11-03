@@ -39,13 +39,13 @@ void		enter_menu(t_mlx *mlx)
 
 void		music_menu(int key, t_mlx *mlx)
 {
-	if (key == LEFT_KEY && mlx->music.music > 0)
+	if ((key == LEFT_KEY || key == LEFT_ARROW) && mlx->music.music > 0)
 	{
 		mlx->music.music -= 1;
 		system("pkill afplay");
 		music(mlx);
 	}
-	else if (key == RIGHT_KEY && mlx->music.music <= 2)
+	else if ((key == RIGHT_KEY || key == RIGHT_ARROW) && mlx->music.music <= 2)
 	{
 		mlx->music.music += 1;
 		system("pkill afplay");
@@ -55,13 +55,13 @@ void		music_menu(int key, t_mlx *mlx)
 
 void		switch_wepon(int key, t_mlx *mlx)
 {
-	if (key == K1_KEY)
+	if (key == K1_KEY || key == K1_LN)
 		mlx->weapon.anim = 15;
-	if (key == K2_KEY && mlx->inventory.weapon_type[2])
+	if ((key == K2_KEY || key == K2_LN) && mlx->inventory.weapon_type[2])
 		mlx->weapon.anim = 10;
-	if (key == K3_KEY && mlx->inventory.weapon_type[0])
+	if ((key == K3_KEY || key == K3_LN) && mlx->inventory.weapon_type[0])
 		mlx->weapon.anim = 0;
-	if (key == K4_KEY && mlx->inventory.weapon_type[1])
+	if ((key == K4_KEY || key == K4_LN) && mlx->inventory.weapon_type[1])
 		mlx->weapon.anim = 5;
 }
 
@@ -69,22 +69,22 @@ void		menu_key_hook(int key, t_mlx *mlx)
 {
 	if (mlx->menu.on)
 	{
-		if (key == DOWN_KEY && mlx->menu.gun_pointer < 5)
+		if ((key == DOWN_KEY || key == DOWN_ARROW) && mlx->menu.gun_pointer < 5)
 			mlx->menu.gun_pointer += 1;
-		else if (key == UP_KEY && mlx->menu.gun_pointer > 0)
+		else if ((key == UP_KEY || key == UP_ARROW) && mlx->menu.gun_pointer > 0)
 			mlx->menu.gun_pointer -= 1;
 		if (mlx->menu.gun_pointer == 3)
 			music_menu(key, mlx);
 		if (mlx->menu.gun_pointer == 4)
 		{
-			if (key == LEFT_KEY && mlx->menu.bot_level < 20000)
+			if ((key == LEFT_KEY || key == LEFT_ARROW) && mlx->menu.bot_level < 20000)
 				mlx->menu.bot_level += 6000;
-			else if (key == RIGHT_KEY && mlx->menu.bot_level >= 6000)
+			else if ((key == RIGHT_KEY || key == RIGHT_ARROW) && mlx->menu.bot_level >= 6000)
 				mlx->menu.bot_level -= 6000;
 		}
-		if (key == RTN_KEY)
+		if (key == RTN_KEY || key == ENTR_LN)
 			enter_menu(mlx);
-		if (!mlx->music.mute && (key == DOWN_KEY || key == UP_KEY))
+		if (!mlx->music.mute && (key == DOWN_KEY || key == UP_KEY || key == DOWN_ARROW || key == UP_ARROW))
 			system("afplay ./music/beep.mp3 &");
 		menu(mlx);
 	}
