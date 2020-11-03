@@ -44,7 +44,7 @@ int		ft_key_hook(int key, t_mlx *mlx)
 			mlx->falling = 1;
 		}
 	}
-	if (key == LCTRL_KEY)
+	if (key == LCTRL_KEY || key == LCTRL)
 	{
 		mlx->ducking = 1;
 		mlx->moving = 1;
@@ -90,7 +90,7 @@ int		stop_movement(int key, t_mlx *mlx)
 		mlx->wasd[2] = 0;
 	if (key == RIGHT_KEY || key == D_KEY || key == RIGHT_ARROW || key == D_LN)
 		mlx->wasd[3] = 0;
-	if (key == LCTRL_KEY)
+	if (key == LCTRL_KEY || key == LCTRL)
 	{
 		mlx->ducking = 0;
 		mlx->moving = 0;

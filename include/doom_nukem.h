@@ -34,8 +34,8 @@
 # define DuckHeight 2.5  // And when crouching
 # define HeadMargin 1    // How much room there is above camera before the head hits the ceiling
 # define KneeHeight 2    // How tall obstacles the player can simply walk over without jumping
-# define hfov (0.73f*H)  // Affects the horizontal field of vision
-# define vfov (0.2f*H)    // Affects the vertical field of vision
+# define HFOV (0.73f * H / W)  // Affects the horizontal field of vision
+# define VFOV (0.2f)    // Affects the vertical field of vision
 //# include "/Users/user42/sdl/SDL2-2.0.8/include/SDL.h"
 # include "../minilibx_macos/mlx.h"
 # include <stdio.h>
@@ -43,6 +43,7 @@
 # include <math.h>
 # include "../libft/incl/libft.h"
 # include "keycode.h"
+# include <stdint.h>
 # include <fcntl.h>
 
 typedef struct        s_bmp_header

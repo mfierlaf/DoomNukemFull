@@ -108,8 +108,8 @@ void draw_screen(t_mlx *mlx)
 				}
 			}
 			/* Do perspective transformation */
-			float xscale1 = hfov / tz1, yscale1 = vfov / tz1;    int x1 = W/2 - (int)(tx1 * xscale1);
-			float xscale2 = hfov / tz2, yscale2 = vfov / tz2;    int x2 = W/2 - (int)(tx2 * xscale2);
+			float xscale1 = (W * HFOV) / tz1, yscale1 = (H * VFOV) / tz1;    int x1 = W/2 - (int)(tx1 * xscale1);
+			float xscale2 = (W * HFOV) / tz2, yscale2 = (H * VFOV) / tz2;    int x2 = W/2 - (int)(tx2 * xscale2);
 			if (x1 >= x2 || x2 < now.sx1 || x1 > now.sx2) continue; // Only render if it's visible
 			/* Acquire the floor and ceiling heights, relative to where the player's view is */
 			float yceil  = sect->ceil  - mlx->player.where.z;
@@ -168,8 +168,8 @@ void draw_screen(t_mlx *mlx)
 				int cyb = clamp(yb, ytop[x],ybottom[x]); // bottom
 				//TEXTURE MAPPING TEST
 				#define CeilingFloorScreenCoordinatesToMapCoordinates(mapY, screenX,screenY, X,Z) \
-                    do { Z = (mapY)*H*vfov / ((H/2 - (screenY)) - mlx->player.yaw *H*vfov); \
-                         X = (Z) * (W/2 - (screenX)) / (W*hfov); \
+                    do { Z = (mapY)*H*VFOV / ((H/2 - (screenY)) - mlx->player.yaw *H*VFOV); \
+                         X = (Z) * (W/2 - (screenX)) / (W*HFOV); \
                          RelativeMapCoordinatesToAbsoluteOnes(X,Z); } while(0)
                 //
                 #define RelativeMapCoordinatesToAbsoluteOnes(X,Z) \
@@ -189,8 +189,8 @@ void draw_screen(t_mlx *mlx)
                     float mapz;
                     CeilingFloorScreenCoordinatesToMapCoordinates(hei, x,y,  mapx,mapz);
                     unsigned txtx = (mapx * 16), txtz = (mapz * 16);
-                    mlx->tex->tex_ternary = y < cya ? mlx->tex[5].data : mlx->tex[5].data;
-                    mlx->data[y * W + x] = mlx->tex->tex_ternary[(mlx->txty % 1024) * 1024 + (1)];
+                    mlx->tex->tex_ternary = y < cya ? mlx->tex[2].data : mlx->tex[1].data;
+                    mlx->data[y * W + x] = mlx->tex->tex_ternary[(txtx % TEXTURE_SIZE)* TEXTURE_SIZE + (txtz % TEXTURE_SIZE)];
 
                     //TODO EN BMP!!
                     // int color = get_color(mlx->tab_bmp[0], (txtx % TEXTURE_SIZE), (mlx->txty % TEXTURE_SIZE));
