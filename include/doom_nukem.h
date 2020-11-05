@@ -196,6 +196,17 @@ typedef struct    s_tex
     int         *tex_ternary;  
 }                t_tex;
 
+typedef struct s_editor
+{
+    int         map_img_width;
+    int         on;
+    void        *img;
+    int         *data;
+    int   endian;
+    int   sl;
+    int   bpp;
+}               t_editor;
+
 typedef	struct s_mlx
 {
 	void   *mlx;
@@ -222,7 +233,7 @@ typedef	struct s_mlx
   t_bmp *tab_anim[ANIM_NB];
   t_bmp   *tab_bmp[DIFF_BMP];
 
-
+  t_editor editor;
   t_point mouse;
 	t_player  player;
 	t_sector  *sectors;
