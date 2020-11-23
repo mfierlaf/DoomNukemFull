@@ -37,7 +37,7 @@
 # define HFOV (0.73f * H / W)  // Affects the horizontal field of vision
 # define VFOV (0.2f)    // Affects the vertical field of vision
 //# include "/Users/user42/sdl/SDL2-2.0.8/include/SDL.h"
-# include "../minilibx_macos/mlx.h"
+# include "../minilibx_linux/mlx.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
@@ -45,6 +45,8 @@
 # include "keycode.h"
 # include <stdint.h>
 # include <fcntl.h>
+
+struct Scaler { int result, bop, fd, ca, cache; };
 
 typedef struct        s_bmp_header
 {
@@ -155,6 +157,16 @@ typedef struct        s_anim
   // int           shoot;
 }             t_anim;
 
+struct item
+{
+  int sectorno;
+  int sx1;
+  int sx2;
+};
+
+
+
+
 
 // typedef struct	s_player
 // {
@@ -182,7 +194,7 @@ typedef struct s_sector
 {
     float floor, ceil;
     struct xy { float x,y; } *vertex; // Each vertex has an x and y coordinate
-    signed char *neighbors;           // Each edge may have a corresponding neighboring sector
+    signed char *neighbors;           // Each edge may have a corresponding mlx->neighboring sector
     unsigned npoints;                 // How many vertexes there are
 } t_sector;
 
@@ -196,16 +208,61 @@ typedef struct    s_tex
     int         *tex_ternary;  
 }                t_tex;
 
-typedef struct s_editor
+typedef struct s_draw 
 {
-    int         map_img_width;
-    int         on;
-    void        *img;
-    int         *data;
-    int   endian;
-    int   sl;
-    int   bpp;
-}               t_editor;
+  float mapx;
+  float mapz;
+  int neighbor;
+  int y2a;
+  int y1a;
+  int y1b;
+  int y2b;
+  int ny1a;
+  int ny2a;
+  int ny1b;
+  int ny2b;
+  float pcos;
+  float psin;
+  float yceil;
+  float yfloor;
+  int ytop[W];
+  int ybottom[W];
+  struct Scaler ya_int;
+  struct Scaler yb_int;
+  int x1;
+  int x2;
+  float tz1;
+  float tz2;
+  int u1;
+  int u0;
+  int endx;
+  int beginx;
+  int txtx;
+  int z;
+  int ya;
+  int yb;
+  int cya;
+  int cyb;
+  float tx1;
+  float tx2;
+  struct item now;
+  t_sector* sect;
+  int check;
+  int MaxQueue;
+  struct item queue[32];
+  struct item *head;
+  struct item *tail;
+  int *renderedsectors;
+  struct xy i1;
+  struct xy i2;
+  float nearz;
+  float yscale1;
+  float yscale2;
+  float mapy;
+  int nya;
+  int nyb;
+  int cnya;
+}               t_draw;
 
 typedef	struct s_mlx
 {
@@ -233,14 +290,15 @@ typedef	struct s_mlx
   t_bmp *tab_anim[ANIM_NB];
   t_bmp   *tab_bmp[DIFF_BMP];
 
-  t_editor editor;
+
   t_point mouse;
 	t_player  player;
 	t_sector  *sectors;
+  t_draw    draw;
 }				t_mlx;
 
-struct Scaler { int result, bop, fd, ca, cache; };
-/* Sectors: Floor and ceiling height; list of edge vertices and neighbors */
+
+/* Sectors: Floor and ceiling height; list of edge vertices and mlx->neighbors */
 
 
 
@@ -260,16 +318,29 @@ int stop_movement(int key, t_mlx *mlx);
 void vline(int x, int y1,int y2, int top, int middle, int bottom, t_mlx *mlx);
 // DRAW.C
 void draw_screen(t_mlx *mlx);
+void  drawing(t_mlx *mlx, t_draw *draw);
+void  boucle_drawing(t_mlx *mlx, t_draw *draw, int x);
+void  draw_vline(t_mlx *mlx, t_draw *draw, int x);
+void  check_edge(t_mlx *mlx, t_draw *draw);
+int perspective(t_mlx *mlx, t_draw *draw, int s);
+void  players_view_tz2(t_mlx *mlx, t_draw *draw);
+void  players_view(t_mlx *mlx, t_draw *draw);
+void  behind_player(t_mlx *mlx, t_draw *draw);
+void  render(t_mlx *mlx, t_draw *draw);
+void render_declaration(t_mlx *mlx, t_draw *draw, int s);
+void draw_start(t_mlx *mlx, t_draw *draw);
 // TOOLS.C
 double	clamp(double a, double b, double c);
 double	point_side(double px, double py, double x0, double y0, double x1, double y1);
 int		intersect_box(double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3);
 int		overlap(double a,double b,double c,double d);
-double	vxs(double a, double b, double c, double d);
+float	vxs(float a, float b, float c, float d);
 double	max(double a, double b);
 double	min(double a, double b);
 void 	clear_img(t_mlx *mlx);
 int kill_mlx(char *message, t_mlx *mlx);
+float Yaw(float y, float z, t_mlx *mlx);
+struct xy Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 // EXPOSE.C
 int expose(t_mlx *mlx);
 // INIT.C
