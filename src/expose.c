@@ -38,12 +38,6 @@ int		expose(t_mlx *mlx)
 		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 		menu_strings(mlx);
 	}
-	else if (mlx->editor.on)
-	{
-		mlx_clear_window(mlx->mlx, mlx->win);
-		map_editor(mlx);
-		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->editor.img, 0, 0);
-	}
 	else
 	{
 		s = -1;
@@ -145,7 +139,7 @@ int		expose(t_mlx *mlx)
 		mlx->player.velocity.y = mlx->player.velocity.y * (1 - acceleration) + move_vec[1] * acceleration;
 		if (pushing)
 			mlx->moving = 1;
-		draw_screen(mlx);
+		draw_screen(mlx->player.velocity.x, mlx->player.velocity.y, mlx);
 		draw_hud(mlx);
 		shoot_anim(mlx);
 		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);

@@ -24,9 +24,6 @@ int	main(void)
 	mlx->img = mlx_new_image(mlx->mlx, W, H);
 	mlx->data = (int *)mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->sl,
 		&mlx->endian);
-	mlx->editor.img = mlx_new_image(mlx->mlx, ((3 * W) / 4), H);
-	mlx->editor.data = (int *)mlx_get_data_addr(mlx->editor.img, &mlx->editor.bpp, &mlx->editor.sl,
-	 	&mlx->editor.endian);
 	init(mlx);
 	load_data(mlx);
 	mlx->player.life = 100;

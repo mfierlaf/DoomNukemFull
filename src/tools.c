@@ -33,7 +33,7 @@ double	clamp(double a, double b, double c)
 	return (min(max(a,b), c));
 }
 
-double	vxs(double a, double b, double c, double d)
+float	vxs(float a, float b, float c, float d)
 {
 	return ((a) * (d) - (c) * (b));
 }
@@ -78,6 +78,19 @@ int kill_mlx(char *message, t_mlx *mlx)
 
 	exit(1);
 	return (0);
+}
+
+float	Yaw(float y, float z, t_mlx *mlx)
+{
+	return (y + z * mlx->player.yaw);
+}
+
+struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
+{
+	struct xy result;
+	result.x = vxs(vxs(x1,y1, x2,y2), (x1)-(x2), vxs(x3,y3, x4,y4), (x3)-(x4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4));
+	result.y = vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4));
+	return (result);
 }
 
 /*struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
