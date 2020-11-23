@@ -72,44 +72,38 @@ int		expose(t_mlx *mlx)
 			}
 		}
 		/* Horizontal collision detection */
-		if(mlx->moving)
-        {
-            float px = mlx->player.where.x,    py = mlx->player.where.y;
-            float dx = mlx->player.velocity.x, dy = mlx->player.velocity.y;
-
-            sect = &mlx->sectors[mlx->player.sector];
-            /* Check if the player is about to cross one of the sector's edges */
-            for(int s = 0; s < sect->npoints; ++s)
-                if(intersect_box(px,py, px+dx,py+dy,
-                             sect->vertex[s+0].x, sect->vertex[s+0].y,
-                             sect->vertex[s+1].x, sect->vertex[s+1].y)
-                && point_side(px+dx, py+dy,
-                             sect->vertex[s+0].x, sect->vertex[s+0].y,
-                             sect->vertex[s+1].x, sect->vertex[s+1].y) < 0)
-                {
-                    float hole_low = 9e9, hole_high = -9e9;
-                    if(sect->neighbors[s] >= 0)
-                    {
-                        /* Check where the hole is. */
-                        hole_low  = max( sect->floor, mlx->sectors[sect->neighbors[s]].floor );
-                        hole_high = min( sect->ceil,  mlx->sectors[sect->neighbors[s]].ceil  );
-                    }
-                    /* Check whether we're bumping into a wall. */
-                    if(hole_high < mlx->player.where.z+HeadMargin
-                    || hole_low > mlx->player.where.z-eyeheight+KneeHeight)
-                    {
-                        /* Bumps into a wall! Slide along the wall. */
-                        /* This formula is from Wikipedia article "vector projection". */
-                        float xd = sect->vertex[s+1].x - sect->vertex[s+0].x;
-                        float yd = sect->vertex[s+1].y - sect->vertex[s+0].y;
-                        mlx->player.velocity.x = xd * (dx*xd + dy*yd) / (xd*xd + yd*yd);
-                        mlx->player.velocity.y = yd * (dx*xd + dy*yd) / (xd*xd + yd*yd);
-                        mlx->moving = 0;
-                    }
-                }
-            move_player(mlx, mlx->player.velocity.x, mlx->player.velocity.y);
-            mlx->falling = 1;
-        }
+		if (mlx->moving)
+		{
+			px = mlx->player.where.x;
+			py = mlx->player.where.y;
+			dx = mlx->player.velocity.x;
+			dy = mlx->player.velocity.y;
+			sect = &mlx->sectors[mlx->player.sector];
+			vert = sect->vertex;
+			/* Check if the player is about to cross one of the sector's edges */
+			while (++s < sect->npoints)
+				if (intersect_box(px, py, px + dx, py + dy, vert[s + 0].x, vert[s + 0].y, vert[s + 1].x, vert[s + 1].y)
+						&& point_side(px + dx, py + dy, vert[s + 0].x, vert[s + 0].y, vert[s + 1].x, vert[s + 1].y) < 0)
+				{
+					/* Check where the hole is. */
+					hole_low  = sect->neighbors[s] < 0 ? 9e9 : max(sect->floor, mlx->sectors[sect->neighbors[s]].floor);
+					hole_high = sect->neighbors[s] < 0 ? -9e9 : min(sect->ceil, mlx->sectors[sect->neighbors[s]].ceil);
+					/* Check whether we're bumping into a wall. */
+					if (hole_high < mlx->player.where.z + HeadMargin
+							|| hole_low > mlx->player.where.z - eyeheight + KneeHeight)
+					{
+						/* Bumps into a wall! Slide along the wall. */
+						/* This formula is from Wikipedia article "vector projection". */
+						xd = vert[s + 1].x - vert[s + 0].x;
+						yd = vert[s + 1].y - vert[s + 0].y;
+						dx = xd * (dx * xd + yd * dy) / (xd * xd + yd * yd);
+						dy = yd * (dx * xd + yd * dy) / (xd * xd + yd * yd);
+						mlx->moving = 0;
+					}
+				}
+				move_player(mlx, dx, dy);
+				mlx->falling = 1;
+			}
 		
 		/* mouse aiming */
 		mlx->player.angle += mlx->mouse.x * 0.01f;
@@ -145,7 +139,7 @@ int		expose(t_mlx *mlx)
 		mlx->player.velocity.y = mlx->player.velocity.y * (1 - acceleration) + move_vec[1] * acceleration;
 		if (pushing)
 			mlx->moving = 1;
-		draw_screen(mlx);
+		draw_screen(mlx->player.velocity.x, mlx->player.velocity.y, mlx);
 		draw_hud(mlx);
 		shoot_anim(mlx);
 		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
