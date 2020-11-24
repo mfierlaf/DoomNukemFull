@@ -43,4 +43,6 @@ void	init(t_mlx *mlx)
 	mlx->player.life = 100;
 	mlx->player.is_dead = 0;
 	mlx->anim.curr_anim = 0;
+	mlx->editor.on = 0;
+	mlx->editor.map_img_width = ((3 * W) / 4);
 }
