@@ -38,13 +38,13 @@ typedef int Texture[1024][1024];
 struct TextureSet { Texture texture, normalmap, lightmap, lightmap_diffuseonly; };
 #endif
 
-/* Sectors: Floor and ceiling height; list of wall vertexes and mlx->neighbors */
+/* Sectors: Floor and ceiling height; list of wall vertexes and neighbors */
 static struct sector
 {
     float floor, ceil;
     struct xy { float x, y; } *vertex; /* Each vertex has an x and y coordinate */
     unsigned short npoints;            /* How many vertexes there are */
-    signed char *mlx->neighbors;            /* Each pair of vertexes may have a corresponding mlx->neighboring sector */
+    signed char *neighbors;            /* Each pair of vertexes may have a corresponding neighboring sector */
 #ifdef VisibilityTracking
     int visible;
 #endif
@@ -138,12 +138,12 @@ static void LoadData(void)
                     numbers[m++] = word[0]=='x' ? -1 : strtof(word,0);
                 }
                 sect->npoints   = m /= 2;
-                sect->mlx->neighbors = malloc( (m  ) * sizeof(*sect->mlx->neighbors) );
+                sect->neighbors = malloc( (m  ) * sizeof(*sect->neighbors) );
                 sect->vertex    = malloc( (m+1) * sizeof(*sect->vertex)    );
 #ifdef VisibilityTracking
                 sect->visible = 0;
 #endif
-                for(n=0; n<m; ++n) sect->mlx->neighbors[n] = numbers[m + n];
+                for(n=0; n<m; ++n) sect->neighbors[n] = numbers[m + n];
                 for(n=0; n<m; ++n)
                 {
                     int v = numbers[n];
@@ -175,7 +175,7 @@ static void LoadData(void)
 static void UnloadData(void)
 {
     for(unsigned a=0; a<NumSectors; ++a)
-        free(sectors[a].vertex), free(sectors[a].mlx->neighbors);
+        free(sectors[a].vertex), free(sectors[a].neighbors);
     free(sectors);
     sectors    = NULL;
     NumSectors = 0;
@@ -450,16 +450,16 @@ rescan:;
 
         /* Check where the hole is. */
         float hole_low = 9e9, hole_high = -9e9;
-        if(sect->mlx->neighbors[s] >= 0)
+        if(sect->neighbors[s] >= 0)
         {
-            hole_low  = max( sect->floor, sectors[sect->mlx->neighbors[s]].floor );
-            hole_high = min( sect->ceil,  sectors[sect->mlx->neighbors[s]].ceil  );
+            hole_low  = max( sect->floor, sectors[sect->neighbors[s]].floor );
+            hole_high = min( sect->ceil,  sectors[sect->neighbors[s]].ceil  );
         }
 
         if(y >= hole_low && y <= hole_high)
         {
             // The point fit in between this hole.
-            origin_sectorno = sect->mlx->neighbors[s];
+            origin_sectorno = sect->neighbors[s];
             origin.x        = x + (target.x - origin.x)*1e-2;
             origin.y        = y + (target.y - origin.y)*1e-2;
             origin.z        = z + (target.z - origin.z)*1e-2;
@@ -855,10 +855,10 @@ static void BuildLightmaps(void)
                 struct xyz bitangent = {0,1,0};
 
                 float hole_low = 9e9, hole_high = -9e9;
-                if(sect->mlx->neighbors[s] >= 0)
+                if(sect->neighbors[s] >= 0)
                 {
-                    hole_low  = max( sect->floor, sectors[sect->mlx->neighbors[s]].floor );
-                    hole_high = min( sect->ceil,  sectors[sect->mlx->neighbors[s]].ceil  );
+                    hole_low  = max( sect->floor, sectors[sect->neighbors[s]].floor );
+                    hole_high = min( sect->ceil,  sectors[sect->neighbors[s]].ceil  );
                 }
 
                 if(round == 1)
@@ -876,7 +876,7 @@ static void BuildLightmaps(void)
                         OMP_SCALER_LOOP_BEGIN(0,y,1024, sect->ceil, txty, sect->floor);
                             struct TextureSet* texture = &sect->uppertextures[s];
 
-                            if(sect->mlx->neighbors[s] >= 0 && txty < hole_high)
+                            if(sect->neighbors[s] >= 0 && txty < hole_high)
                             {
                                 if(txty > hole_low) continue;
                                 texture = &sect->lowertextures[s];
@@ -908,7 +908,7 @@ static void BuildLightmaps(void)
                         OMP_SCALER_LOOP_BEGIN(0,y,1024, sect->ceil, txty, sect->floor);
                             struct TextureSet* texture = &sect->uppertextures[s];
 
-                            if(sect->mlx->neighbors[s] >= 0 && txty < hole_high)
+                            if(sect->neighbors[s] >= 0 && txty < hole_high)
                             {
                                 if(txty > hole_low) continue;
                                 texture = &sect->lowertextures[s];
@@ -1219,12 +1219,12 @@ static void DrawMap(void)
             line( X0+vert[b].y*X, Y0+x0*Y,
                   X0+vert[b+1].y*X, Y0+x1*Y,
                    (a == player.sector)
-                   ? (sect->mlx->neighbors[b] >= 0 ? 0xFF5533 : 0xFFFFFF)
+                   ? (sect->neighbors[b] >= 0 ? 0xFF5533 : 0xFFFFFF)
 #ifdef VisibilityTracing
                  : (sect->visible)
-                 ?   (sect->mlx->neighbors[b] >= 0 ? 0xFF3333 : 0xAAAAAA)
+                 ?   (sect->neighbors[b] >= 0 ? 0xFF3333 : 0xAAAAAA)
 #endif
-                   : (sect->mlx->neighbors[b] >= 0 ? 0x880000 : 0x6A6A6A)
+                   : (sect->neighbors[b] >= 0 ? 0x880000 : 0x6A6A6A)
                 );
 
             line( X0+vert[b].y*X-2, Y0+x0*Y-2, X0+vert[b].y*X+2, Y0+x0*Y-2, vertcolor);
@@ -1277,18 +1277,18 @@ Rescan:
             fprintf(stderr, "Internal error: Sector %u: Vertexes don't form a loop!\n", a);
         }
     }
-    // Verify that for each edge that has a mlx->neighbor, the mlx->neighbor
-    // has this same mlx->neighbor.
+    // Verify that for each edge that has a neighbor, the neighbor
+    // has this same neighbor.
     for(unsigned a=0; a<NumSectors; ++a)
     {
         const struct sector* sect = &sectors[a];
         const struct xy* const vert = sect->vertex;
         for(unsigned b = 0; b < sect->npoints; ++b)
         {
-            if(sect->mlx->neighbors[b] >= (int)NumSectors)
+            if(sect->neighbors[b] >= (int)NumSectors)
             {
-                fprintf(stderr, "Sector %u: Contains mlx->neighbor %d (too large, number of sectors is %u)\n",
-                    a, sect->mlx->neighbors[b], NumSectors);
+                fprintf(stderr, "Sector %u: Contains neighbor %d (too large, number of sectors is %u)\n",
+                    a, sect->neighbors[b], NumSectors);
             }
             struct xy point1 = vert[b], point2 = vert[b+1];
 
@@ -1303,18 +1303,18 @@ Rescan:
                     && neigh->vertex[c+0].x == point2.x
                     && neigh->vertex[c+0].y == point2.y)
                     {
-                        if(neigh->mlx->neighbors[c] != (int)a)
+                        if(neigh->neighbors[c] != (int)a)
                         {
-                            fprintf(stderr, "Sector %d: mlx->neighbor behind line (%g,%g)-(%g,%g) should be %u, %d found instead. Fixing.\n",
-                                d, point2.x,point2.y, point1.x,point1.y, a, neigh->mlx->neighbors[c]);
-                            neigh->mlx->neighbors[c] = a;
+                            fprintf(stderr, "Sector %d: Neighbor behind line (%g,%g)-(%g,%g) should be %u, %d found instead. Fixing.\n",
+                                d, point2.x,point2.y, point1.x,point1.y, a, neigh->neighbors[c]);
+                            neigh->neighbors[c] = a;
                             goto Rescan;
                         }
-                        if(sect->mlx->neighbors[b] != (int)d)
+                        if(sect->neighbors[b] != (int)d)
                         {
-                            fprintf(stderr, "Sector %u: mlx->neighbor behind line (%g,%g)-(%g,%g) should be %u, %d found instead. Fixing.\n",
-                                a, point1.x,point1.y, point2.x,point2.y, d, sect->mlx->neighbors[b]);
-                            sect->mlx->neighbors[b] = d;
+                            fprintf(stderr, "Sector %u: Neighbor behind line (%g,%g)-(%g,%g) should be %u, %d found instead. Fixing.\n",
+                                a, point1.x,point1.y, point2.x,point2.y, d, sect->neighbors[b]);
+                            sect->neighbors[b] = d;
                             goto Rescan;
                         }
                         else
@@ -1322,9 +1322,9 @@ Rescan:
                     }
                 }
             }
-            if(sect->mlx->neighbors[b] >= 0 && sect->mlx->neighbors[b] < (int)NumSectors && found != 1)
-                fprintf(stderr, "Sectors %u and its mlx->neighbor %d don't share line (%g,%g)-(%g,%g)\n",
-                    a, sect->mlx->neighbors[b],
+            if(sect->neighbors[b] >= 0 && sect->neighbors[b] < (int)NumSectors && found != 1)
+                fprintf(stderr, "Sectors %u and its neighbor %d don't share line (%g,%g)-(%g,%g)\n",
+                    a, sect->neighbors[b],
                     point1.x,point1.y, point2.x,point2.y);
         }
     }
@@ -1344,8 +1344,8 @@ Rescan:
                     continue;
                     // Note: This used to be a problem for my engine, but is not anymore, so it is disabled.
                     //       If you enable this change, you will not need the IntersectBox calls in some locations anymore.
-                    if(sect->mlx->neighbors[b] == sect->mlx->neighbors[c]) continue;
-                    fprintf(stderr, "Sector %u: Edges %u-%u and %u-%u are parallel, but have different mlx->neighbors. This would pose problems for collision detection.\n",
+                    if(sect->neighbors[b] == sect->neighbors[c]) continue;
+                    fprintf(stderr, "Sector %u: Edges %u-%u and %u-%u are parallel, but have different neighbors. This would pose problems for collision detection.\n",
                         a,  b,c, c,d);
                     break;
                 case -1:
@@ -1413,7 +1413,7 @@ Rescan:
             for(unsigned n = 0; n < sect->npoints; ++n)
             {
                 unsigned m = (c + n) % sect->npoints;
-                neigh1[chain1_length]  = sect->mlx->neighbors[m];
+                neigh1[chain1_length]  = sect->neighbors[m];
                 vert1[chain1_length++] = sect->vertex[m];
                 if(m == e) { vert1[chain1_length] = vert1[0]; break; }
             }
@@ -1423,21 +1423,21 @@ Rescan:
             for(unsigned n = 0; n < sect->npoints; ++n)
             {
                 unsigned m = (e + n) % sect->npoints;
-                neigh2[chain2_length]  = sect->mlx->neighbors[m];
+                neigh2[chain2_length]  = sect->neighbors[m];
                 vert2[chain2_length++] = sect->vertex[m];
                 if(m == c) { vert2[chain2_length] = vert2[0]; break; }
             }
             neigh2[chain2_length-1] = a;
             // Change sect into using chain1.
             free(sect->vertex);    sect->vertex    = vert1;
-            free(sect->mlx->neighbors); sect->mlx->neighbors = neigh1;
+            free(sect->neighbors); sect->neighbors = neigh1;
             sect->npoints = chain1_length;
             // Create another sector that uses chain2.
             sectors = realloc(sectors, ++NumSectors * sizeof(*sectors));
             sect = &sectors[a];
             sectors[NumSectors-1] = (struct sector) { sect->floor, sect->ceil, vert2, chain2_length, neigh2 };
-            // The other sector may now have mlx->neighbors that think
-            // their mlx->neighbor is still the old sector. Rescan to fix it.
+            // The other sector may now have neighbors that think
+            // their neighbor is still the old sector. Rescan to fix it.
             goto Rescan;
         }
     }
@@ -1493,7 +1493,7 @@ Rescan:
         }
         fprintf(fp, "%*s", 24-wid, "");
         for(unsigned s=0; s<sectors[n].npoints; ++s)
-            fprintf(fp, "%d ", sectors[n].mlx->neighbors[s]);
+            fprintf(fp, "%d ", sectors[n].neighbors[s]);
         fprintf(fp, "\n");
     }
 
@@ -1529,14 +1529,14 @@ static void MovePlayer(float dx, float dy)
 {
     float px = player.where.x,    py = player.where.y;
     /* Check if this movement crosses one of this sector's edges
-     * that have a mlx->neighboring sector on the other side.
+     * that have a neighboring sector on the other side.
      * Because the edge vertices of each sector are defined in
      * clockwise order, PointSide will always return -1 for a point
      * that is outside the sector and 0 or 1 for a point that is inside.
      */
     const struct sector* const sect = &sectors[player.sector];
     for(int s = 0; s < sect->npoints; ++s)
-        if(sect->mlx->neighbors[s] >= 0
+        if(sect->neighbors[s] >= 0
         && IntersectBox(px,py, px+dx,py+dy,
                         sect->vertex[s+0].x, sect->vertex[s+0].y,
                         sect->vertex[s+1].x, sect->vertex[s+1].y)
@@ -1544,7 +1544,7 @@ static void MovePlayer(float dx, float dy)
                      sect->vertex[s+0].x, sect->vertex[s+0].y,
                      sect->vertex[s+1].x, sect->vertex[s+1].y) < 0)
         {
-            player.sector = sect->mlx->neighbors[s];
+            player.sector = sect->neighbors[s];
             printf("Player is now in sector %d\n", player.sector);
             break;
         }
@@ -1579,7 +1579,7 @@ static void vline2(int x, int y1,int y2, struct Scaler ty,unsigned txtx, const s
 static void DrawScreen(void)
 {
     struct item { short sectorno,sx1,sx2; } queue[MaxQueue], *head=queue, *tail=queue;
-    short draw.ytop[W]={0}, ybottom[W], renderedsectors[NumSectors];
+    short ytop[W]={0}, ybottom[W], renderedsectors[NumSectors];
     for(unsigned x=0; x<W; ++x) ybottom[x] = H-1;
     for(unsigned n=0; n<NumSectors; ++n) renderedsectors[n] = 0;
 #ifdef VisibilityTracking
@@ -1617,7 +1617,7 @@ static void DrawScreen(void)
 
         /* This loop can be used to illustrate currently rendering window. Should be disabled otherwise. */
         //for(unsigned x=now.sx1; x<=now.sx2; ++x)
-        //    vline(x, draw.ytop[x], ybottom[x], 0x003300, 0x00AA00, 0x003300);
+        //    vline(x, ytop[x], ybottom[x], 0x003300, 0x00AA00, 0x003300);
 
         for(int s = 0; s < sect->npoints; ++s)
         {
@@ -1667,16 +1667,16 @@ static void DrawScreen(void)
             #define Yaw(y,z) (y + z*player.yaw)
             int y1a = H/2 + (int)(-Yaw(yceil, tz1) * yscale1), y1b = H/2 + (int)(-Yaw(yfloor, tz1) * yscale1);
             int y2a = H/2 + (int)(-Yaw(yceil, tz2) * yscale2), y2b = H/2 + (int)(-Yaw(yfloor, tz2) * yscale2);
-            /* Check the edge type. mlx->neighbor=-1 means wall, other=boundary between two sectors. */
-            int mlx->neighbor = sect->mlx->neighbors[s];
+            /* Check the edge type. neighbor=-1 means wall, other=boundary between two sectors. */
+            int neighbor = sect->neighbors[s];
             float nyceil=0, nyfloor=0;
 
-            if(mlx->neighbor >= 0)
+            if(neighbor >= 0)
             {
                 /* Something is showing through this wall (portal). */
-                /* Perspective-transform the floor and ceiling coordinates of the mlx->neighboring sector. */
-                nyceil  = sectors[mlx->neighbor].ceil  - player.where.z;
-                nyfloor = sectors[mlx->neighbor].floor - player.where.z;
+                /* Perspective-transform the floor and ceiling coordinates of the neighboring sector. */
+                nyceil  = sectors[neighbor].ceil  - player.where.z;
+                nyfloor = sectors[neighbor].floor - player.where.z;
             }
             int ny1a = H/2 + (int)( -Yaw(nyceil, tz1) * yscale1), ny1b = H/2 + (int)( -Yaw(nyfloor, tz1) * yscale1);
             int ny2a = H/2 + (int)( -Yaw(nyceil, tz2) * yscale2), ny2b = H/2 + (int)( -Yaw(nyfloor, tz2) * yscale2);
@@ -1716,8 +1716,8 @@ static void DrawScreen(void)
                 int ya = Scaler_Next(&ya_int);
                 int yb = Scaler_Next(&yb_int);
                 /* Clamp the ya & yb */
-                int cya = clamp(ya, draw.ytop[x], ybottom[x]);
-                int cyb = clamp(yb, draw.ytop[x], ybottom[x]);
+                int cya = clamp(ya, ytop[x], ybottom[x]);
+                int cyb = clamp(yb, ytop[x], ybottom[x]);
 
                 // Our perspective calculation produces these two:
                 //     screenX = W/2 + -mapX              * (W*hfov) / mapZ
@@ -1756,7 +1756,7 @@ static void DrawScreen(void)
                 // too slow for the platforms targeted by Doom and Duke3D.
                 // In any case, there's no neat way to do it.
                 // It is why the SNES port of Doom didn't do floor & ceiling textures at all.
-                for (int y=draw.ytop[x]; y<=ybottom[x]; ++y)
+                for (int y=ytop[x]; y<=ybottom[x]; ++y)
                 {
                     if(y >= cya && y <= cyb) { y = cyb; continue; }
                     float hei = y < cya ? yceil    : yfloor;
@@ -1776,7 +1776,7 @@ static void DrawScreen(void)
                 }
 #else
                 /* Render ceiling: everything above this sector's ceiling height. */
-                vline(x, draw.ytop[x], cya-1, 0x111111 ,0x222222,0x111111);
+                vline(x, ytop[x], cya-1, 0x111111 ,0x222222,0x111111);
                 /* Render floor: everything below this sector's floor height. */
                 vline(x, cyb+1, ybottom[x], 0x0000FF,0x0000AA,0x0000FF);
 #endif
@@ -1793,10 +1793,10 @@ static void DrawScreen(void)
                  VisibleFloorEnds[n][x] = (struct xy){FloorXend,FloorZend};
                  VisibleFloors[n][x] = 1;
                 }
-                if((cya-1) >= draw.ytop[x])
+                if((cya-1) >= ytop[x])
                 {
                  float CeilXbegin, CeilZbegin, CeilXend, CeilZend;
-                 CeilingFloorScreenCoordinatesToMapCoordinates(yceil, x,draw.ytop[x],     CeilXbegin,CeilZbegin);
+                 CeilingFloorScreenCoordinatesToMapCoordinates(yceil, x,ytop[x],     CeilXbegin,CeilZbegin);
                  CeilingFloorScreenCoordinatesToMapCoordinates(yceil, x,cya-1,       CeilXend,  CeilZend);
                  VisibleCeilBegins[n][x] = (struct xy){CeilXbegin,CeilZbegin};
                  VisibleCeilEnds[n][x] = (struct xy){CeilXend,CeilZend};
@@ -1806,14 +1806,14 @@ static void DrawScreen(void)
 #endif
 
                 /* Is there another sector behind this edge? */
-                if(mlx->neighbor >= 0)
+                if(neighbor >= 0)
                 {
                     /* Same for _their_ floor and ceiling */
                     int nya = Scaler_Next(&nya_int);
                     int nyb = Scaler_Next(&nyb_int);
                     /* Clamp ya2 & yb2 */
-                    int cnya = clamp(nya, draw.ytop[x],ybottom[x]);
-                    int cnyb = clamp(nyb, draw.ytop[x],ybottom[x]);
+                    int cnya = clamp(nya, ytop[x],ybottom[x]);
+                    int cnyb = clamp(nyb, ytop[x],ybottom[x]);
                     /* If our ceiling is higher than their ceiling, render upper wall */
 #ifdef TextureMapping
                     vline2(x, cya, cnya-1, (struct Scaler)Scaler_Init(ya,cya,yb, 0,1023), txtx, &sect->uppertextures[s]);
@@ -1825,7 +1825,7 @@ static void DrawScreen(void)
   #endif
                     vline(x, cya, cnya-1, 0, x==x1||x==x2 ? 0 : r1, 0);
 #endif
-                    draw.ytop[x] = clamp(max(cya, cnya), draw.ytop[x], H-1);
+                    ytop[x] = clamp(max(cya, cnya), ytop[x], H-1);
 
                     // If our floor is lower than their floor, render bottom wall
 #ifdef TextureMapping
@@ -1837,12 +1837,12 @@ static void DrawScreen(void)
 
                     /* These vlines can be used to illustrate the frame being rendered. */
                     /* They should be disabled otherwise. */
-                    //vline(x, draw.ytop[x],ybottom[x], 0x330000,0xAA0000,0x330000);
+                    //vline(x, ytop[x],ybottom[x], 0x330000,0xAA0000,0x330000);
                     //vline(x, cya,cyb, 0x330000,0xAA0000,0x330000);
                 }
                 else
                 {
-                    /* There's no mlx->neighbor. Render wall. */
+                    /* There's no neighbor. Render wall. */
 #ifdef TextureMapping
                     vline2(x, cya,cyb, (struct Scaler)Scaler_Init(ya,cya,yb, 0,1023), txtx, &sect->uppertextures[s]);
 #else
@@ -1862,12 +1862,12 @@ static void DrawScreen(void)
 
             }
             /* Schedule the other sector for rendering within the window formed by this wall. */
-            if(mlx->neighbor >= 0 && endx >= beginx && (head+MaxQueue+1-tail)%MaxQueue)
+            if(neighbor >= 0 && endx >= beginx && (head+MaxQueue+1-tail)%MaxQueue)
             {
-                *head = (struct item) { mlx->neighbor, beginx, endx };
+                *head = (struct item) { neighbor, beginx, endx };
                 if(++head == queue+MaxQueue) head = queue;
                 //if(tail-- == queue) tail = queue+MaxQueue-1;
-                //*tail = (struct item) { mlx->neighbor, beginx, endx };
+                //*tail = (struct item) { neighbor, beginx, endx };
             }
         }
         ++renderedsectors[now.sectorno];
@@ -1961,11 +1961,11 @@ int main(int argc, char** argv)
                              sect->vertex[s+1].x, sect->vertex[s+1].y) < 0)
                 {
                     float hole_low = 9e9, hole_high = -9e9;
-                    if(sect->mlx->neighbors[s] >= 0)
+                    if(sect->neighbors[s] >= 0)
                     {
                         /* Check where the hole is. */
-                        hole_low  = max( sect->floor, sectors[sect->mlx->neighbors[s]].floor );
-                        hole_high = min( sect->ceil,  sectors[sect->mlx->neighbors[s]].ceil  );
+                        hole_low  = max( sect->floor, sectors[sect->neighbors[s]].floor );
+                        hole_high = min( sect->ceil,  sectors[sect->neighbors[s]].ceil  );
                     }
                     /* Check whether we're bumping into a wall. */
                     if(hole_high < player.where.z+HeadMargin

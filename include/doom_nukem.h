@@ -37,7 +37,7 @@
 # define HFOV (0.73f * H / W)  // Affects the horizontal field of vision
 # define VFOV (0.2f)    // Affects the vertical field of vision
 //# include "/Users/user42/sdl/SDL2-2.0.8/include/SDL.h"
-# include "../minilibx_linux/mlx.h"
+# include "../minilibx_macos/mlx.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
@@ -45,8 +45,6 @@
 # include "keycode.h"
 # include <stdint.h>
 # include <fcntl.h>
-
-struct Scaler { int result, bop, fd, ca, cache; };
 
 typedef struct        s_bmp_header
 {
@@ -157,16 +155,6 @@ typedef struct        s_anim
   // int           shoot;
 }             t_anim;
 
-struct item
-{
-  int sectorno;
-  int sx1;
-  int sx2;
-};
-
-
-
-
 
 // typedef struct	s_player
 // {
@@ -194,7 +182,7 @@ typedef struct s_sector
 {
     float floor, ceil;
     struct xy { float x,y; } *vertex; // Each vertex has an x and y coordinate
-    signed char *neighbors;           // Each edge may have a corresponding mlx->neighboring sector
+    signed char *neighbors;           // Each edge may have a corresponding neighboring sector
     unsigned npoints;                 // How many vertexes there are
 } t_sector;
 
@@ -207,6 +195,26 @@ typedef struct    s_tex
     int         endian;
     int         *tex_ternary;  
 }                t_tex;
+
+typedef struct s_editor
+{
+    int         map_img_width;
+    int         on;
+    void        *img;
+    int         *data;
+    int   endian;
+    int   sl;
+    int   bpp;
+}               t_editor;
+
+struct item
+{
+  int sectorno;
+  int sx1;
+  int sx2;
+};
+
+struct Scaler { int result, bop, fd, ca, cache; };
 
 typedef struct s_draw 
 {
@@ -290,15 +298,14 @@ typedef	struct s_mlx
   t_bmp *tab_anim[ANIM_NB];
   t_bmp   *tab_bmp[DIFF_BMP];
 
-
+  t_editor editor;
   t_point mouse;
 	t_player  player;
 	t_sector  *sectors;
-  t_draw    draw;
 }				t_mlx;
 
 
-/* Sectors: Floor and ceiling height; list of edge vertices and mlx->neighbors */
+/* Sectors: Floor and ceiling height; list of edge vertices and neighbors */
 
 
 
@@ -329,6 +336,8 @@ void  behind_player(t_mlx *mlx, t_draw *draw);
 void  render(t_mlx *mlx, t_draw *draw);
 void render_declaration(t_mlx *mlx, t_draw *draw, int s);
 void draw_start(t_mlx *mlx, t_draw *draw);
+float Yaw(float y, float z, t_mlx *mlx);
+struct xy Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 // TOOLS.C
 double	clamp(double a, double b, double c);
 double	point_side(double px, double py, double x0, double y0, double x1, double y1);
@@ -339,8 +348,6 @@ double	max(double a, double b);
 double	min(double a, double b);
 void 	clear_img(t_mlx *mlx);
 int kill_mlx(char *message, t_mlx *mlx);
-float Yaw(float y, float z, t_mlx *mlx);
-struct xy Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 // EXPOSE.C
 int expose(t_mlx *mlx);
 // INIT.C

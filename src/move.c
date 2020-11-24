@@ -14,7 +14,7 @@
 
 /*
 ** Check if this movement crosses one of this sector's edges
-** that have a mlx->neighboring sector on the other side.
+** that have a neighboring sector on the other side.
 ** Because the edge vertices of each sector are defined in
 ** clockwise order, point_side will always return -1 for a point
 ** that is outside the sector and 0 or 1 for a point that is inside.
