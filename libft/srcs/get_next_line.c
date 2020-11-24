@@ -69,3 +69,34 @@ int				get_next_line(const int fd, char **line)
 	}
 	return (1);
 }
+
+int				get_next_line_bin(const int fd, char **line)
+{
+	static char	*s[FOPEN_MAX];
+	char		*tmp;
+	char		buff[9];
+	int			read_len;
+	char		*tmp2;
+
+	if (fd < 0 || BUFF_SIZE < 1 || !line || read(fd, buff, 0) < 0 ||
+			(!s[fd] && !(s[fd] = ft_strnew(0))))
+		return (-1);
+	while (!ft_strchr(s[fd], '\n') && (read_len = read(fd, buff, 8)))
+	{
+		tmp2 = buff;
+		ft_binary_to_string(&tmp2, buff);
+		buff[read_len] = '\0';
+		tmp = s[fd];
+		if (!(s[fd] = ft_strjoin(tmp, tmp2)))
+			return (-1);
+		ft_strdel(&tmp);
+	}
+	if (!(*line = ft_strsub(s[fd], 0, find_eol(s[fd]))))
+		return (-1);
+	if (split_s(&s[fd]))
+	{
+		ft_strdel(line);
+		return (0);
+	}
+	return (1);
+}
