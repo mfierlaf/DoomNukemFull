@@ -37,7 +37,7 @@
 # define HFOV (0.73f * H / W)  // Affects the horizontal field of vision
 # define VFOV (0.2f)    // Affects the vertical field of vision
 //# include "/Users/user42/sdl/SDL2-2.0.8/include/SDL.h"
-# include "../minilibx_macos/mlx.h"
+# include "../minilibx_linux/mlx.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
@@ -214,7 +214,14 @@ struct item
   int sx2;
 };
 
-struct Scaler { int result, bop, fd, ca, cache; };
+struct Scaler
+{
+  int result;
+  int bop;
+  int fd;
+  int ca;
+  int cache;
+};
 
 typedef struct s_draw 
 {
@@ -336,8 +343,6 @@ void  behind_player(t_mlx *mlx, t_draw *draw);
 void  render(t_mlx *mlx, t_draw *draw);
 void render_declaration(t_mlx *mlx, t_draw *draw, int s);
 void draw_start(t_mlx *mlx, t_draw *draw);
-float Yaw(float y, float z, t_mlx *mlx);
-struct xy Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 // TOOLS.C
 double	clamp(double a, double b, double c);
 double	point_side(double px, double py, double x0, double y0, double x1, double y1);
@@ -348,6 +353,8 @@ double	max(double a, double b);
 double	min(double a, double b);
 void 	clear_img(t_mlx *mlx);
 int kill_mlx(char *message, t_mlx *mlx);
+float Yaw(float y, float z, t_mlx *mlx);
+struct xy Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 // EXPOSE.C
 int expose(t_mlx *mlx);
 // INIT.C

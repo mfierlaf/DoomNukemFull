@@ -38,12 +38,12 @@ int		expose(t_mlx *mlx)
 		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 		menu_strings(mlx);
 	}
-	else if (mlx->editor.on)
-	{
-		mlx_clear_window(mlx->mlx, mlx->win);
-		map_editor(mlx);
-		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->editor.img, 0, 0);
-	}
+	// else if (mlx->editor.on)
+	// {
+	// 	mlx_clear_window(mlx->mlx, mlx->win);
+	// 	map_editor(mlx);
+	// 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->editor.img, 0, 0);
+	// }
 	else
 	{
 		s = -1;
