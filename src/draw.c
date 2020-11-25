@@ -84,6 +84,7 @@ void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
 			* TEXTURE_SIZE + (txtz % TEXTURE_SIZE)];
 	}
 	draw_vline(mlx, draw, x);
+	draw_sprites(x, mlx);
 }
 
 void	drawing(t_mlx *mlx, t_draw *draw)
@@ -293,9 +294,10 @@ void	draw_screen(t_mlx *mlx)
 		draw.ytop[x] = 0;
 	}
 	x = -1;
-	if ((draw.renderedsectors = malloc(sizeof(int) * mlx->num_sectors))\
-		== NULL)
-		return (NULL);
+	draw.renderedsectors = malloc(sizeof(int) * mlx->num_sectors);
+	// if ((draw.renderedsectors = malloc(sizeof(int) * mlx->num_sectors))\
+	// 	== NULL)
+	// 	return (NULL);
 	while (++x < W)
 	{
 		draw.ybottom[x] = H - 1;

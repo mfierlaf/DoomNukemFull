@@ -12,6 +12,16 @@
 
 #include "../include/doom_nukem.h"
 
+static int		read_object(int i, char **split_line, t_mlx *mlx)
+{
+	printf("i: %d\n", i);
+	mlx->objects[i].pos.x = atof(split_line[1]);
+	mlx->objects[i].pos.y = atof(split_line[2]);
+	printf("obj.x: %f\n", mlx->objects[i].pos.x);
+	printf("obj.y: %f\n", mlx->objects[i].pos.y);
+	return (i++);
+}
+
 struct	xy*	read_map(char **split_line, t_mlx *mlx)
 {
 	int			num_vertices;
@@ -89,9 +99,11 @@ void		load_data(t_mlx *mlx)
 	int			n;
 	int			j;
 	int			k;
+	int			i;
 
 	j = 0;
 	k = -1;
+	i = 0;
 	if ((fd = open("./map-clear.txt", O_RDONLY)) < 0)
 		kill_mlx("ERROR IN MAP\n", mlx);
 	while (get_next_line(fd, &line) > 0)
@@ -104,6 +116,8 @@ void		load_data(t_mlx *mlx)
 			vert = read_vertices(&j, vert, split_line);
 		else if (split_line[0][0] == 's')
 			n = read_sector(&k, vert, split_line, mlx);
+		else if (split_line[0][0] == 'o')
+			i = read_object(i, split_line, mlx);
 		else if (split_line[0][0] == 'p')
 			read_player(n, split_line, mlx);
 	}
@@ -140,6 +154,10 @@ void		load_texture(t_mlx *mlx)
 	mlx->tab_bmp[BIG_GUN] = new_bmp("textures/big_gun.bmp");
 	mlx->tab_bmp[BLUE_KEY] = new_bmp("textures/blue_key.bmp");
 	mlx->tab_bmp[SHIELD] = new_bmp("textures/shield.bmp");
+	mlx->tab_bmp[ARMOR] = new_bmp("textures/armor.bmp");
+
+
+
 	mlx->tab_anim[CARABIN_ANIM_0] = new_bmp("textures/carabin_0.bmp");
 	mlx->tab_anim[CARABIN_ANIM_1] = new_bmp("textures/carabin_1.bmp");
 	mlx->tab_anim[CARABIN_ANIM_2] = new_bmp("textures/carabin_2.bmp");

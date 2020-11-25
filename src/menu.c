@@ -12,13 +12,6 @@
 
 #include "../include/doom_nukem.h"
 
-int				valid_pixel(int x, int y)
-{
-	if (x >= 0 && x < W && y >= 0 && y < H)
-		return (1);
-	return (0);
-}
-
 void			draw_image(t_point point, float zoom, t_bmp *bmp, t_mlx *mlx)
 {
 	int		x_draw;

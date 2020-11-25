@@ -23,6 +23,7 @@
 # define K4_LN 39
 # define K5_LN 40
 
+# define NB_OBJ 1
 # define DIFF_BMP 28
 # define FILTER_COLOR 0x980088
 # define W 1200
@@ -36,8 +37,10 @@
 # define KneeHeight 2    // How tall obstacles the player can simply walk over without jumping
 # define HFOV (0.73f * H / W)  // Affects the horizontal field of vision
 # define VFOV (0.2f)    // Affects the vertical field of vision
+# define SLICE ((HFOV * 2) / W)
 //# include "/Users/user42/sdl/SDL2-2.0.8/include/SDL.h"
-# include "../minilibx_linux/mlx.h"
+// # include "../minilibx_linux/mlx.h"
+# include "../minilibx_macos/mlx.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
@@ -112,17 +115,44 @@ typedef struct        s_color
   int           off_g;
 }             t_color;
 
+typedef struct        s_pos
+{
+  float x;
+  float y;
+  float z;
+}                     t_pos;
 
 typedef struct s_point  {
   int x;
   int y;
 }               t_point;
 
+typedef struct s_line
+{
+  t_pos  orig;
+  t_pos  end;
+}             t_line;
+
 typedef struct s_menu  {
   int on;
   int gun_pointer;
   int bot_level;
 }               t_menu;
+
+typedef struct        s_obj
+{
+  int           tex;
+  int           lootable;
+  t_pos    pos;
+  t_line        sprite_line;
+  int           order;
+  float         distance;
+  int           life;
+  int           isbot;
+  int           initial_tex;
+  int           nb_anim_walk;
+  int           nb_anim;
+}               t_obj;
 
 typedef struct s_music  {
   int           mute;
@@ -304,6 +334,7 @@ typedef	struct s_mlx
   t_tex   tex[6];
   t_bmp *tab_anim[ANIM_NB];
   t_bmp   *tab_bmp[DIFF_BMP];
+  t_obj   objects[NB_OBJ];
 
   t_editor editor;
   t_point mouse;
@@ -355,6 +386,14 @@ void 	clear_img(t_mlx *mlx);
 int kill_mlx(char *message, t_mlx *mlx);
 float Yaw(float y, float z, t_mlx *mlx);
 struct xy Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
+t_pos       new_pos(float x, float y);
+t_line        new_line(t_pos orig, t_pos end);
+t_pos       get_intersection(t_line line1, t_line line2, float slope1, float slope2);
+char        check_valid_inter(t_pos inter, t_line line1, t_line line2);
+float       get_slope(t_line line);
+float get_dist(t_pos p1, t_pos p2);
+float       get_angle(t_pos p1, t_pos rel_dir);
+int       valid_pixel(int x, int y);
 // EXPOSE.C
 int expose(t_mlx *mlx);
 // INIT.C
@@ -384,6 +423,10 @@ void      draw_pixel(int x, int y, t_mlx *mlx);
 void      draw_hud(t_mlx *mlx);
 void        shoot_anim(t_mlx *mlx);
 void      shoot_key(int key, int x, int y, t_mlx *mlx);
+//SPRITES.c
+void draw_sprites(int x, t_mlx *mlx);
+void                vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig,
+    t_pos sp_end, int draw_start, int draw_end, t_pos inter, t_bmp *curr_bmp);
 
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);

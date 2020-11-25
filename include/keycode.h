@@ -23,6 +23,7 @@
 # define BIG_GUN 6
 # define BLUE_KEY 7
 # define SHIELD 8
+# define ARMOR 9
 
 # define ANIM_NB 20
 # define CARABIN_ANIM_0 0
