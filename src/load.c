@@ -17,6 +17,7 @@ static int		read_object(int i, char **split_line, t_mlx *mlx)
 	printf("i: %d\n", i);
 	mlx->objects[i].pos.x = atof(split_line[1]);
 	mlx->objects[i].pos.y = atof(split_line[2]);
+	mlx->objects[i].sector = atof(split_line[3]);
 	printf("obj.x: %f\n", mlx->objects[i].pos.x);
 	printf("obj.y: %f\n", mlx->objects[i].pos.y);
 	return (i++);

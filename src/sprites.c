@@ -84,19 +84,20 @@ void draw_sprites(int x, t_mlx *mlx)
         b = new_pos(dist_pa * cosf(angle - off_angle) + pl_pos.x,
             dist_pa * -sinf(angle - off_angle) + pl_pos.y);
         off_angle = (x - (W * 0.5)) * SLICE;
+        angle = atan2(mlx->player.anglesin, mlx->player.anglecos);
         t_pos rel_dir;
         rel_dir.x = pl_pos.x + cos(angle + off_angle) * 50;
-        rel_dir.y = pl_pos.x + sin(angle + off_angle) * 50;
+        rel_dir.y = pl_pos.y + sin(angle + off_angle) * 50;
         t_line ray = new_line(pl_pos, rel_dir);
         inter = get_intersection(ray, new_line(a, b),
-        get_slope(ray), get_slope(new_line(a, b)));
-        if (!isinf(inter.x) && !isinf(inter.y))// && var->obj[var->obj[i].order].tex >= 0)
+            get_slope(ray), get_slope(new_line(a, b)));
+        if (!isinf(inter.x) && !isinf(inter.y) && mlx->player.sector == mlx->objects[i].sector)// && var->obj[var->obj[i].order].tex >= 0)
         {
-            dist = get_dist(pl_pos, inter);
+            dist = get_dist(pl_pos, sp_pos);
             if (dist == 0.0)
                 dist = 0.01;
             line_height = (float)H / dist;
-            draw_start = (float)H * 0.5 - line_height * 0.5;
+            draw_start = (float)H * 0.5 - line_height * 0.5 - mlx->mouse.y;
             draw_end = draw_start + line_height;
             // if (wall_dist > dist)
             vertical_sprite_lines(mlx, x, a, b, draw_start, draw_end,

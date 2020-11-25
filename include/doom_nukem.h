@@ -141,9 +141,10 @@ typedef struct s_menu  {
 
 typedef struct        s_obj
 {
+  unsigned int  sector;
   int           tex;
   int           lootable;
-  t_pos    pos;
+  t_pos         pos;
   t_line        sprite_line;
   int           order;
   float         distance;
