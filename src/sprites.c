@@ -83,6 +83,7 @@ void draw_sprites(int x, t_mlx *mlx)
             dist_pa * -sinf(angle + off_angle) + pl_pos.y);
         b = new_pos(dist_pa * cosf(angle - off_angle) + pl_pos.x,
             dist_pa * -sinf(angle - off_angle) + pl_pos.y);
+        mlx->objects[i].sprite_line = new_line(a, b);
         // float slice = M_PI / (3.0 * (float)W);
         float slice = ((HFOV * 2) / (float)W);
         off_angle = (x - (W * 0.5)) * slice;
@@ -112,9 +113,9 @@ void draw_sprites(int x, t_mlx *mlx)
         // txb = vxb * mlx->player.anglesin - vyb * mlx->player.anglecos;
         // tyb = vxb * mlx->player.anglecos + vyb * mlx->player.anglesin;
 
-        t_line ray = new_line(pl_pos, rel_dir);
-        inter = get_intersection(ray, new_line(a, b),
-            get_slope(ray), get_slope(new_line(a, b)));
+        mlx->ray = new_line(pl_pos, rel_dir);
+        inter = get_intersection(mlx->ray, new_line(a, b),
+            get_slope(mlx->ray), get_slope(new_line(a, b)));
 
 
         // float vx = inter.x - mlx->player.where.x;

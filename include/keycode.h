@@ -14,7 +14,6 @@
 
 # define KEYCODE_H
 
-
 # define PRIEST_1 0
 # define PRIEST_2 1
 # define PRIEST_3 2
@@ -53,22 +52,6 @@
 # define NORMAL_DEAD_7 35
 # define NORMAL_DEAD_8 36
 
-# define BRICK 37
-# define BACKGROUND 38
-# define HAND_GUN 39
-# define MUTE 40
-# define KNIFE 41
-# define GUN 42
-# define BIG_GUN 43
-# define BLUE_KEY 45
-# define SHIELD 46
-# define ARMOR 47
-# define CHICKEN_LEG 48
-# define MED_KIT 49
-# define AMMO 50
-# define GOLDEN_KEY 51
-# define CHALICE 52
-
 # define ANIM_NB 20
 # define CARABIN_ANIM_0 0
 # define CARABIN_ANIM_1 1
@@ -90,6 +73,24 @@
 # define KNIFE_ANIM_2 17
 # define KNIFE_ANIM_3 18
 # define KNIFE_ANIM_4 19
+
+# define BRICK 37
+# define BACKGROUND 38
+# define HAND_GUN 39
+# define MUTE 40
+# define KNIFE 41
+# define GUN 42
+# define BIG_GUN 43
+# define BLUE_KEY 45
+# define SHIELD 46
+# define ARMOR 47
+# define CHICKEN_LEG 48
+# define MED_KIT 49
+# define AMMO 50
+# define GOLDEN_KEY 51
+# define CHALICE 52
+
+
 
 
 

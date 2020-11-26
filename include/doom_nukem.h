@@ -337,6 +337,7 @@ typedef	struct s_mlx
   int     ducking;
   int     moving;
   unsigned txty;
+  t_line ray;
   t_menu  menu;
   t_music music;
   t_weapon weapon;
@@ -449,6 +450,9 @@ void        sprite_anim_death(int sprite, t_mlx *mlx);
 void        sprite_anim_walk(int sprite, t_mlx *mlx);
 // LOOT.c
 void        pick_up_loot(t_mlx *mlx);
+// WEAPON.C
+void        weapon_choice(t_mlx *mlx);
+void        shoot(t_mlx *mlx);
 
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);

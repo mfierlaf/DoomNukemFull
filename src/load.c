@@ -197,21 +197,21 @@ void		load_texture(t_mlx *mlx)
 	mlx->tab_bmp[NORMAL_DEAD_8] = new_bmp("textures/hitler_5_7.bmp");
 
 
-	mlx->tab_bmp[GATLIN_ANIM_0] = new_bmp("textures/gatling_0.bmp");
-	mlx->tab_bmp[GATLIN_ANIM_1] = new_bmp("textures/gatling_1.bmp");
-	mlx->tab_bmp[GATLIN_ANIM_2] = new_bmp("textures/gatling_2.bmp");
-	mlx->tab_bmp[GATLIN_ANIM_3] = new_bmp("textures/gatling_3.bmp");
-	mlx->tab_bmp[GATLIN_ANIM_4] = new_bmp("textures/gatling_4.bmp");
-	mlx->tab_bmp[GUN_ANIM_0] = new_bmp("textures/gun_0.bmp");
-	mlx->tab_bmp[GUN_ANIM_1] = new_bmp("textures/gun_1.bmp");
-	mlx->tab_bmp[GUN_ANIM_2] = new_bmp("textures/gun_2.bmp");
-	mlx->tab_bmp[GUN_ANIM_3] = new_bmp("textures/gun_3.bmp");
-	mlx->tab_bmp[GUN_ANIM_4] = new_bmp("textures/gun_4.bmp");
-	mlx->tab_bmp[KNIFE_ANIM_0] = new_bmp("textures/knife_0.bmp");
-	mlx->tab_bmp[KNIFE_ANIM_1] = new_bmp("textures/knife_1.bmp");
-	mlx->tab_bmp[KNIFE_ANIM_2] = new_bmp("textures/knife_2.bmp");
-	mlx->tab_bmp[KNIFE_ANIM_3] = new_bmp("textures/knife_3.bmp");
-	mlx->tab_bmp[KNIFE_ANIM_4] = new_bmp("textures/knife_4.bmp");
+	// mlx->tab_bmp[GATLIN_ANIM_0] = new_bmp("textures/gatling_0.bmp");
+	// mlx->tab_bmp[GATLIN_ANIM_1] = new_bmp("textures/gatling_1.bmp");
+	// mlx->tab_bmp[GATLIN_ANIM_2] = new_bmp("textures/gatling_2.bmp");
+	// mlx->tab_bmp[GATLIN_ANIM_3] = new_bmp("textures/gatling_3.bmp");
+	// mlx->tab_bmp[GATLIN_ANIM_4] = new_bmp("textures/gatling_4.bmp");
+	// mlx->tab_bmp[GUN_ANIM_0] = new_bmp("textures/gun_0.bmp");
+	// mlx->tab_bmp[GUN_ANIM_1] = new_bmp("textures/gun_1.bmp");
+	// mlx->tab_bmp[GUN_ANIM_2] = new_bmp("textures/gun_2.bmp");
+	// mlx->tab_bmp[GUN_ANIM_3] = new_bmp("textures/gun_3.bmp");
+	// mlx->tab_bmp[GUN_ANIM_4] = new_bmp("textures/gun_4.bmp");
+	// mlx->tab_bmp[KNIFE_ANIM_0] = new_bmp("textures/knife_0.bmp");
+	// mlx->tab_bmp[KNIFE_ANIM_1] = new_bmp("textures/knife_1.bmp");
+	// mlx->tab_bmp[KNIFE_ANIM_2] = new_bmp("textures/knife_2.bmp");
+	// mlx->tab_bmp[KNIFE_ANIM_3] = new_bmp("textures/knife_3.bmp");
+	// mlx->tab_bmp[KNIFE_ANIM_4] = new_bmp("textures/knife_4.bmp");
 
 	mlx->tab_bmp[BACKGROUND] = new_bmp("textures/doom.bmp");
 	mlx->tab_bmp[HAND_GUN] = new_bmp("textures/hand_gun.bmp");

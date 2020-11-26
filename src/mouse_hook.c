@@ -70,15 +70,11 @@ int			shoot_key(int key, int x, int y, t_mlx *mlx)
 		{
 			if (mlx->weapon.anim < 15)
 			{
-				if (!mlx->music.mute)
-					system("afplay ./music/gun.mp3 &");
-				// mlx->anim.shoot = 1;
+				mlx->anim.shoot = 1;
 				mlx->inventory.ammo--;
-			// 	shoot_direction(mlx);
+				// shoot_direction(mlx);
 			}
-			// shoot(mlx);
-			else if (mlx->weapon.anim <= 15 && !mlx->music.mute)
-				system("afplay ./music/stab.mp3 &");
+			shoot(mlx);
 			mlx->anim.started = 1;
 		}
 		else if (mlx->weapon.anim < 15 && !mlx->music.mute)

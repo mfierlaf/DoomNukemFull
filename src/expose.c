@@ -46,16 +46,6 @@ int		expose(t_mlx *mlx)
 	// }
 	else
 	{
-		if (mlx->player.life <= 0)
-		{
-			mlx->player.is_dead = 1;
-			mlx->menu.on = 1;
-		}
-		else if (mlx->inventory.grail)
-		{
-			mlx->player.is_dead = 2;
-			mlx->menu.on = 1;
-		}
 		s = -1;
 		yaw = 0;
 		mlx->player.angle = 0;
@@ -161,11 +151,21 @@ int		expose(t_mlx *mlx)
 		mlx->player.dir.y = old_dir_x * sin(rot_speed) +
 			mlx->player.dir.y * cos(rot_speed);
 
-
 		if (pushing)
 			mlx->moving = 1;
+		if (mlx->player.life <= 0)
+		{
+			mlx->player.is_dead = 1;
+			mlx->menu.on = 1;
+		}
+		else if (mlx->inventory.grail)
+		{
+			mlx->player.is_dead = 2;
+			mlx->menu.on = 1;
+		}
 		draw_screen(mlx);
 		draw_hud(mlx);
+		weapon_choice(mlx);
 		shoot_anim(mlx);
 		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 		if (mlx->inventory.count < 300)
