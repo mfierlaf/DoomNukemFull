@@ -14,8 +14,6 @@
 
 void				moving_bot(int sprite, t_mlx *mlx)
 {
-	float			dist_bot;
-
 	if (mlx->objects[sprite].life >= 0)
 	{
 		mlx->objects[sprite].pos.x += (mlx->player.where.x -

@@ -24,7 +24,7 @@
 # define K5_LN 40
 
 # define NB_OBJ 1
-# define DIFF_BMP 48
+# define DIFF_BMP 53
 # define FILTER_COLOR 0x980088
 # define W 1200
 # define H 800
@@ -169,7 +169,7 @@ typedef struct  s_inventory
   int           keys;
   int           shield;
   int           count;
-  // int           grail;
+  int           grail;
 }             t_inventory;
 
 typedef struct  s_weapon
@@ -362,9 +362,9 @@ typedef	struct s_mlx
 //int key_press(int key, t_sdl *sdl);
 //void erase_putback(t_sdl *sdl, t_player *player, t_sector *sectors, t_wall *walls);
 // LOAD.C
-void LoadData(t_mlx *ml);
+void load_data(t_mlx *ml);
 void load_texture(t_mlx *mlx);
-void UnloadData(t_mlx *mlx);
+void    unload_data(t_mlx *mlx);
 // MOVE.C
 void move_player(t_mlx *mlx, float dx, float dy);
 // MOUSE_HOOK.C
@@ -380,9 +380,9 @@ void  boucle_drawing(t_mlx *mlx, t_draw *draw, int x);
 void  draw_vline(t_mlx *mlx, t_draw *draw, int x);
 void  check_edge(t_mlx *mlx, t_draw *draw);
 int perspective(t_mlx *mlx, t_draw *draw, int s);
-void  players_view_tz2(t_mlx *mlx, t_draw *draw);
-void  players_view(t_mlx *mlx, t_draw *draw);
-void  behind_player(t_mlx *mlx, t_draw *draw);
+void  players_view_tz2(t_draw *draw);
+void  players_view(t_draw *draw);
+void  behind_player(t_draw *draw);
 void  render(t_mlx *mlx, t_draw *draw);
 void render_declaration(t_mlx *mlx, t_draw *draw, int s);
 void draw_start(t_mlx *mlx, t_draw *draw);
@@ -413,6 +413,7 @@ void init(t_mlx *mlx);
 void    sprite_var(int sprite, t_mlx *mlx);
 int Scaler_Next(struct Scaler *i);
 void vline2(int x, int y1, int y2, struct Scaler ty, unsigned txtx, t_mlx *mlx);
+void        vertical_line(int x, int y1, int y2, struct Scaler ty, unsigned txtx, t_mlx *mlx);
 struct Scaler Scaler_Init(int a, int b, int c, int d, int f);
 int         get_color(t_bmp *bmp, int x, int y);
 t_bmp       *new_bmp(char *str);
@@ -428,13 +429,14 @@ void         menu(t_mlx *mlx);
 void      draw_image(t_point point, float zoom, t_bmp *bmp, t_mlx *mlx);
 void    menu_key_hook(int key, t_mlx *mlx);
 void    menu_strings(t_mlx *mlx);
+void    story(t_mlx *mlx);
 void    music(t_mlx *mlx);
 void      filled_rect(t_point size, int x, int y, t_mlx *mlx);
 void      draw_rect(t_point size, int x, int y, t_mlx *mlx);
 void      line(int x0, int y0, int x1, int y1, t_mlx *mlx);
 void      draw_pixel(int x, int y, t_mlx *mlx);
 void      draw_hud(t_mlx *mlx);
-void      shoot_key(int key, int x, int y, t_mlx *mlx);
+int      shoot_key(int key, int x, int y, t_mlx *mlx);
 //SPRITES.C
 void draw_sprites(int x, t_mlx *mlx);
 void                vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig,
@@ -445,6 +447,8 @@ void        bot(int sprite, t_mlx *mlx);
 void        shoot_anim(t_mlx *mlx);
 void        sprite_anim_death(int sprite, t_mlx *mlx);
 void        sprite_anim_walk(int sprite, t_mlx *mlx);
+// LOOT.c
+void        pick_up_loot(t_mlx *mlx);
 
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);

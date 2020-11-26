@@ -92,11 +92,14 @@ void			draw_hud(t_mlx *mlx)
 {
 	t_point	coord;
 	t_point size;
+	char* key_num;
 
 	draw_weapon_hud(mlx);
 	coord.x = W / 1.158;
 	coord.y = H / 1.25;
 	draw_image(coord, 2, mlx->tab_bmp[BLUE_KEY], mlx);
+	key_num = ft_itoa(mlx->inventory.keys);
+	mlx_string_put(mlx->mlx, mlx->win, W / 2, H / 2, 0x3D90B4, "key_num");
 	draw_ammo(mlx);
 	draw_life_bar(mlx);
 	if (mlx->inventory.shield)

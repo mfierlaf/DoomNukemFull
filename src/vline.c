@@ -66,7 +66,7 @@ int Scaler_Next(struct Scaler *i)
 //     }
 // }
 
-void        vertical_line(int x, int y1, int y2, struct Scaler ty /*scaler_init*/, unsigned txtx, t_mlx *mlx)
+void        vertical_line(int x, int y1, int y2, struct Scaler ty, unsigned txtx, t_mlx *mlx)
 {
     int color;
 

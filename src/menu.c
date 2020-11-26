@@ -42,13 +42,13 @@ void		choose_level(t_mlx *mlx)
 {
 	mlx_string_put(mlx->mlx, mlx->win, W / 50, H
 		/ 2.35, 0xfa2d2d, "Bot:");
-	if (mlx->menu.bot_level == 40000)
+	if (mlx->menu.bot_level == 38000)
 		mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.35, 0xD67B1F, "1");
-	else if (mlx->menu.bot_level == 20000)
+	else if (mlx->menu.bot_level == 28000)
 		mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.35, 0xD67B1F, "2");
-	else if (mlx->menu.bot_level == 14000)
+	else if (mlx->menu.bot_level == 18000)
 		mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.35, 0xD67B1F, "3");
 	else if (mlx->menu.bot_level == 8000)
@@ -112,12 +112,12 @@ void		menu_strings(t_mlx *mlx)
 	choose_level(mlx);
 	mlx_string_put(mlx->mlx, mlx->win, W / 50, H
 		/ 2.05, 0xfa2d2d, "QUIT");
-	// if (mlx->player->is_dead == 1)
-	// 	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
-	// 	/ 1.50, 0xfa2d2d, "YOU LOST!");
-	// else if (mlx->player->is_dead == 2)
-	// 	mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
-	// 	/ 1.50, 0xfa2d2d, "YOU WON!");
+	if (mlx->player.is_dead == 1)
+		mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
+		/ 1.50, 0xfa2d2d, "YOU LOST!");
+	else if (mlx->player.is_dead == 2)
+		mlx_string_put(mlx->mlx, mlx->win, W / 25.6, H
+		/ 1.50, 0xfa2d2d, "YOU WON!");
 }
 
 void		menu_gun2(t_mlx *mlx)
@@ -178,5 +178,26 @@ void		menu(t_mlx *mlx)
 		coord.x = W / 25.6;
 		coord.y = H / 1.2;
 		draw_image(coord, 0.5, mlx->tab_bmp[MUTE], mlx);
+	}
+}
+
+void		story(t_mlx *mlx)
+{
+	char *keys;
+
+	keys = ft_itoa(mlx->inventory.keys);
+	mlx_string_put(mlx->mlx, mlx->win, W / 1.16, H / 1.075, 0x3D90B4, keys);
+	free(keys);
+	if (mlx->inventory.count < 300)
+	{
+		mlx_string_put(mlx->mlx, mlx->win, W / 128, H
+			/ 1.5, 0x3D90B4, "Hello and welcome to planet Doom.");
+		mlx_string_put(mlx->mlx, mlx->win, W / 128, H
+			/ 1.4, 0x3D90B4, "You have been in a crash with your vessel");
+		mlx_string_put(mlx->mlx, mlx->win, W / 128, H
+			/ 1.32, 0x3D90B4, "on this \
+			planet ruled by futuristic nazis.");
+		mlx_string_put(mlx->mlx, mlx->win, W / 128, H
+			/ 1.25, 0x3D90B4, "Find the grail and you will be free.");
 	}
 }

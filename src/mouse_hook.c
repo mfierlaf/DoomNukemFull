@@ -53,12 +53,14 @@ int		ft_key_hook(int key, t_mlx *mlx)
 	}
 	if (key == M_KEY) // || key == M_KEY_LN)
 		mlx->menu.on = !mlx->menu.on;
+	if (key == E_KEY)
+		pick_up_loot(mlx);
 	// shoot_key(key, mlx);
 	menu_key_hook(key, mlx);
 	return (0);
 }
 
-void			shoot_key(int key, int x, int y, t_mlx *mlx)
+int			shoot_key(int key, int x, int y, t_mlx *mlx)
 {
 	x += 0;
 	y += 0;
@@ -82,6 +84,7 @@ void			shoot_key(int key, int x, int y, t_mlx *mlx)
 		else if (mlx->weapon.anim < 15 && !mlx->music.mute)
 			system("afplay ./music/click.mp3 &");
 	}
+	return (0);
 }
 
 int		stop_movement(int key, t_mlx *mlx)

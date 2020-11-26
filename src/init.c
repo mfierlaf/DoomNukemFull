@@ -38,16 +38,16 @@ void		enemy_anim_num(int sprite, t_mlx *mlx)
 
 void		sprite_var(int sprite, t_mlx *mlx)
 {
-	if (mlx->objects[sprite].tex == BLUE_KEY ||
-			mlx->objects[sprite].tex == 32 ||
-			mlx->objects[sprite].tex == 6 ||
-			mlx->objects[sprite].tex == 26 ||
-			mlx->objects[sprite].tex == 86 ||
-			mlx->objects[sprite].tex == 1 ||
-			mlx->objects[sprite].tex == 88 ||
-			mlx->objects[sprite].tex == 8 ||
-			mlx->objects[sprite].tex == 23 ||
-			mlx->objects[sprite].tex == 10)
+	if (mlx->objects[sprite].tex == CHICKEN_LEG ||
+			mlx->objects[sprite].tex == MED_KIT ||
+			mlx->objects[sprite].tex == BIG_GUN ||
+			mlx->objects[sprite].tex == GUN ||
+			mlx->objects[sprite].tex == HAND_GUN ||
+			mlx->objects[sprite].tex == AMMO ||
+			mlx->objects[sprite].tex == SHIELD ||
+			mlx->objects[sprite].tex == BLUE_KEY ||
+			mlx->objects[sprite].tex == GOLDEN_KEY ||
+			mlx->objects[sprite].tex == CHALICE)
 		mlx->objects[sprite].lootable = 1;
 	else
 		mlx->objects[sprite].lootable = 0;
@@ -74,7 +74,7 @@ void	init(t_mlx *mlx)
 	mlx->num_sectors = 0;
 	mlx->menu.on = 1;
 	mlx->menu.gun_pointer = 0;
-	mlx->menu.bot_level = 40000;
+	mlx->menu.bot_level = 38000;
 	mlx->music.music = 0;
 	mlx->music.mute = 1;
 	mlx->inventory.ammo = 10;
@@ -85,6 +85,7 @@ void	init(t_mlx *mlx)
 	mlx->inventory.weapon_type[2] = 1;
 	mlx->inventory.weapon_type[3] = 1;
 	mlx->inventory.count = 0;
+	mlx->inventory.grail = 0;
 	mlx->weapon.anim = KNIFE_ANIM_0;
 	mlx->weapon.damage = 50;
 	mlx->player.life = 100;

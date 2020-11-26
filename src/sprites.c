@@ -123,13 +123,13 @@ void draw_sprites(int x, t_mlx *mlx)
         // float yscale = (H * VFOV) / (inter.y) / 200;
 
 
-        if (!isinf(inter.x) && !isinf(inter.y)) // && mlx->player.sector == mlx->objects[i].sector)// && var->obj[var->obj[i].order].tex >= 0)
+        if (!isinf(inter.x) && !isinf(inter.y) && mlx->objects[i].tex >= 0) // && mlx->player.sector == mlx->objects[i].sector)
         {
             dist = get_dist(pl_pos, inter);
             if (dist == 0.0)
                 dist = 0.01;
             line_height = (float)H / dist;
-            draw_start = H * 0.5 - line_height * 0.5 - mlx->mouse.y;
+            draw_start = H * 0.5 - line_height * 0.5 - mlx->mouse.y + mlx->sectors[mlx->objects[i].sector].floor;
             draw_end = draw_start + line_height;
             // if (wall_dist > dist)
             bot(i, mlx);

@@ -46,6 +46,16 @@ int		expose(t_mlx *mlx)
 	// }
 	else
 	{
+		if (mlx->player.life <= 0)
+		{
+			mlx->player.is_dead = 1;
+			mlx->menu.on = 1;
+		}
+		else if (mlx->inventory.grail)
+		{
+			mlx->player.is_dead = 2;
+			mlx->menu.on = 1;
+		}
 		s = -1;
 		yaw = 0;
 		mlx->player.angle = 0;
@@ -145,7 +155,6 @@ int		expose(t_mlx *mlx)
 		mlx->player.velocity.y = mlx->player.velocity.y * (1 - acceleration) + move_vec[1] * acceleration;
 
 		float rot_speed = ((2 * M_PI) * (mlx->mouse.x - mlx->player.old_dir.x)) / W;
-		printf("rot_speed %f\n", rot_speed);
 		float old_dir_x = mlx->player.dir.x;
 		mlx->player.dir.x = mlx->player.dir.x * cos(rot_speed) -
 			mlx->player.dir.y * sin(rot_speed);
@@ -159,6 +168,9 @@ int		expose(t_mlx *mlx)
 		draw_hud(mlx);
 		shoot_anim(mlx);
 		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
+		if (mlx->inventory.count < 300)
+			mlx->inventory.count++;
+		story(mlx);
 	}
 	return (0);
 }

@@ -20,6 +20,7 @@ static int		read_object(int i, char **split_line, t_mlx *mlx)
 	mlx->objects[i].sector = ft_atoi(split_line[3]);
 	mlx->objects[i].tex = ft_atoi(split_line[4]);
 	mlx->objects[i].life = ft_atoi(split_line[5]);
+	mlx->objects[i].lootable = ft_atoi(split_line[6]);
 	sprite_var(i, mlx);
 	printf("life: %d\n", mlx->objects[i].life);
 	printf("obj.x: %f\n", mlx->objects[i].pos.x);
@@ -222,7 +223,11 @@ void		load_texture(t_mlx *mlx)
 	mlx->tab_bmp[SHIELD] = new_bmp("textures/shield.bmp");
 	mlx->tab_bmp[ARMOR] = new_bmp("textures/armor.bmp");
 	mlx->tab_bmp[BRICK] = new_bmp("textures/brick.bmp");
-
+	mlx->tab_bmp[CHICKEN_LEG] = new_bmp("textures/chicken_leg.bmp");
+	mlx->tab_bmp[MED_KIT] = new_bmp("textures/med_kit.bmp");
+	mlx->tab_bmp[AMMO] = new_bmp("textures/ammo.bmp");
+	mlx->tab_bmp[GOLDEN_KEY] = new_bmp("textures/golden_key.bmp");
+	mlx->tab_bmp[CHALICE] = new_bmp("textures/chalice.bmp");
 
 
 	mlx->tab_anim[CARABIN_ANIM_0] = new_bmp("textures/carabin_0.bmp");

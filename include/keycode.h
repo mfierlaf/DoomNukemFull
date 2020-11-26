@@ -63,6 +63,11 @@
 # define BLUE_KEY 45
 # define SHIELD 46
 # define ARMOR 47
+# define CHICKEN_LEG 48
+# define MED_KIT 49
+# define AMMO 50
+# define GOLDEN_KEY 51
+# define CHALICE 52
 
 # define ANIM_NB 20
 # define CARABIN_ANIM_0 0
