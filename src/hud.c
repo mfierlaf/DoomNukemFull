@@ -12,27 +12,6 @@
 
 #include "../include/doom_nukem.h"
 
-void				shoot_anim(t_mlx *mlx)
-{
-	int zoom;
-	t_point coord;
-
-	zoom = W / 213.3;
-	if (mlx->anim.started == 1)
-	{
-		mlx->weapon.anim++;
-		if (mlx->weapon.anim % 5 == 0)
-		{
-			mlx->weapon.anim -= 5;
-			mlx->anim.started = 0;
-		}
-	}
-	coord.x = W / 2 - mlx->tab_anim[mlx->weapon.anim]->header.width_px *
-		zoom / 2;
-	coord.y = H - mlx->tab_anim[mlx->weapon.anim]->header.height_px * zoom;
-	draw_image(coord, zoom, mlx->tab_anim[mlx->weapon.anim], mlx);
-}
-
 void			draw_ammo(t_mlx *mlx)
 {
 	int		i;

@@ -24,7 +24,7 @@
 # define K5_LN 40
 
 # define NB_OBJ 1
-# define DIFF_BMP 28
+# define DIFF_BMP 48
 # define FILTER_COLOR 0x980088
 # define W 1200
 # define H 800
@@ -38,6 +38,7 @@
 # define HFOV (0.73f * H / W)  // Affects the horizontal field of vision
 # define VFOV (0.2f)    // Affects the vertical field of vision
 # define SLICE ((HFOV * 2) / W)
+# define M_PI 3.14159265359
 //# include "/Users/user42/sdl/SDL2-2.0.8/include/SDL.h"
 // # include "../minilibx_linux/mlx.h"
 # include "../minilibx_macos/mlx.h"
@@ -178,12 +179,19 @@ typedef struct  s_weapon
   // t_point         dir_shoot;
 }             t_weapon;
 
+typedef struct        s_sleep
+{
+  int           walk;
+  int           shoot;
+  int           death;
+}             t_sleep;
+
 typedef struct        s_anim
 {
   int           started;
-  // int           curr_anim_walk;
+  int           curr_anim_walk;
   int           curr_anim;
-  // int           shoot;
+  int           shoot;
 }             t_anim;
 
 
@@ -207,6 +215,8 @@ typedef struct s_player
     unsigned sector;                        // Which sector the player is currently in
     int           life;
     int           is_dead;
+    t_pos         dir;
+    t_pos         old_dir;
 } t_player;
 
 typedef struct s_sector
@@ -332,6 +342,7 @@ typedef	struct s_mlx
   t_weapon weapon;
   t_inventory inventory;
   t_anim anim;
+  t_sleep sleep;
   t_tex   tex[6];
   t_bmp *tab_anim[ANIM_NB];
   t_bmp   *tab_bmp[DIFF_BMP];
@@ -399,6 +410,7 @@ int       valid_pixel(int x, int y);
 int expose(t_mlx *mlx);
 // INIT.C
 void init(t_mlx *mlx);
+void    sprite_var(int sprite, t_mlx *mlx);
 int Scaler_Next(struct Scaler *i);
 void vline2(int x, int y1, int y2, struct Scaler ty, unsigned txtx, t_mlx *mlx);
 struct Scaler Scaler_Init(int a, int b, int c, int d, int f);
@@ -422,12 +434,17 @@ void      draw_rect(t_point size, int x, int y, t_mlx *mlx);
 void      line(int x0, int y0, int x1, int y1, t_mlx *mlx);
 void      draw_pixel(int x, int y, t_mlx *mlx);
 void      draw_hud(t_mlx *mlx);
-void        shoot_anim(t_mlx *mlx);
 void      shoot_key(int key, int x, int y, t_mlx *mlx);
-//SPRITES.c
+//SPRITES.C
 void draw_sprites(int x, t_mlx *mlx);
 void                vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig,
     t_pos sp_end, int draw_start, int draw_end, t_pos inter, t_bmp *curr_bmp);
+// BOTS.C
+void        bot(int sprite, t_mlx *mlx);
+// ANIM.C
+void        shoot_anim(t_mlx *mlx);
+void        sprite_anim_death(int sprite, t_mlx *mlx);
+void        sprite_anim_walk(int sprite, t_mlx *mlx);
 
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);

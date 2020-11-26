@@ -19,6 +19,8 @@
 
 int		mouse_hook(int x, int y, t_mlx *mlx)
 {
+
+	mlx->player.old_dir.x = mlx->mouse.x;
 	mlx->mouse.x = x;
 	mlx->mouse.y = y;
 	return (0);
@@ -49,6 +51,8 @@ int		ft_key_hook(int key, t_mlx *mlx)
 		mlx->ducking = 1;
 		mlx->moving = 1;
 	}
+	if (key == M_KEY) // || key == M_KEY_LN)
+		mlx->menu.on = !mlx->menu.on;
 	// shoot_key(key, mlx);
 	menu_key_hook(key, mlx);
 	return (0);
@@ -56,8 +60,8 @@ int		ft_key_hook(int key, t_mlx *mlx)
 
 void			shoot_key(int key, int x, int y, t_mlx *mlx)
 {
-	x++;
-	y++;
+	x += 0;
+	y += 0;
 	if (key == BUT1_KEY)
 	{
 		if (mlx->inventory.ammo || mlx->weapon.anim == 15)

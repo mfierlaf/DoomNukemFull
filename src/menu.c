@@ -42,16 +42,16 @@ void		choose_level(t_mlx *mlx)
 {
 	mlx_string_put(mlx->mlx, mlx->win, W / 50, H
 		/ 2.35, 0xfa2d2d, "Bot:");
-	if (mlx->menu.bot_level == 20000)
+	if (mlx->menu.bot_level == 40000)
 		mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.35, 0xD67B1F, "1");
-	else if (mlx->menu.bot_level == 14000)
+	else if (mlx->menu.bot_level == 20000)
 		mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.35, 0xD67B1F, "2");
-	else if (mlx->menu.bot_level == 8000)
+	else if (mlx->menu.bot_level == 14000)
 		mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.35, 0xD67B1F, "3");
-	else if (mlx->menu.bot_level == 2000)
+	else if (mlx->menu.bot_level == 8000)
 		mlx_string_put(mlx->mlx, mlx->win, W / 50 + 65,
 		H / 2.35, 0xD67B1F, "4");
 }
@@ -128,17 +128,17 @@ void		menu_gun2(t_mlx *mlx)
 	if (mlx->menu.gun_pointer == 3)
 	{
 		coord.y = H / 4;
-		draw_image(coord, 2, mlx->tab_bmp[2], mlx);
+		draw_image(coord, 2, mlx->tab_bmp[HAND_GUN], mlx);
 	}
 	else if (mlx->menu.gun_pointer == 4)
 	{
 		coord.y = H / 3.2;
-		draw_image(coord, 2, mlx->tab_bmp[2], mlx);
+		draw_image(coord, 2, mlx->tab_bmp[HAND_GUN], mlx);
 	}
 	else if (mlx->menu.gun_pointer == 5)
 	{
 		coord.y = H / 2.6;
-		draw_image(coord, 2, mlx->tab_bmp[2], mlx);
+		draw_image(coord, 2, mlx->tab_bmp[HAND_GUN], mlx);
 	}
 }
 
@@ -150,17 +150,17 @@ void		menu_gun(t_mlx *mlx)
 	if (mlx->menu.gun_pointer <= 0)
 	{
 		coord.y = H / 11;
-		draw_image(coord, 2, mlx->tab_bmp[2], mlx);
+		draw_image(coord, 2, mlx->tab_bmp[HAND_GUN], mlx);
 	}
 	else if (mlx->menu.gun_pointer == 1)
 	{
 		coord.y = H / 6.5;
-		draw_image(coord, 2, mlx->tab_bmp[2], mlx);
+		draw_image(coord, 2, mlx->tab_bmp[HAND_GUN], mlx);
 	}
 	else if (mlx->menu.gun_pointer == 2)
 	{
 		coord.y = H / 5;
-		draw_image(coord, 2, mlx->tab_bmp[2], mlx);
+		draw_image(coord, 2, mlx->tab_bmp[HAND_GUN], mlx);
 	}
 	menu_gun2(mlx);
 }
@@ -177,6 +177,6 @@ void		menu(t_mlx *mlx)
 	{
 		coord.x = W / 25.6;
 		coord.y = H / 1.2;
-		draw_image(coord, 0.5, mlx->tab_bmp[3], mlx);
+		draw_image(coord, 0.5, mlx->tab_bmp[MUTE], mlx);
 	}
 }

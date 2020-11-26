@@ -143,6 +143,16 @@ int		expose(t_mlx *mlx)
 	
 		mlx->player.velocity.x = mlx->player.velocity.x * (1 - acceleration) + move_vec[0] * acceleration;
 		mlx->player.velocity.y = mlx->player.velocity.y * (1 - acceleration) + move_vec[1] * acceleration;
+
+		float rot_speed = ((2 * M_PI) * (mlx->mouse.x - mlx->player.old_dir.x)) / W;
+		printf("rot_speed %f\n", rot_speed);
+		float old_dir_x = mlx->player.dir.x;
+		mlx->player.dir.x = mlx->player.dir.x * cos(rot_speed) -
+			mlx->player.dir.y * sin(rot_speed);
+		mlx->player.dir.y = old_dir_x * sin(rot_speed) +
+			mlx->player.dir.y * cos(rot_speed);
+
+
 		if (pushing)
 			mlx->moving = 1;
 		draw_screen(mlx);
