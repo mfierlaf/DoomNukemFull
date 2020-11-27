@@ -15,6 +15,7 @@
 # define S_LN 115
 # define D_LN 100
 # define E_LN 101
+# define M_LN 109
 # define Q_LN 113
 # define ENTR_LN 65293
 # define K1_LN 38
@@ -23,8 +24,8 @@
 # define K4_LN 39
 # define K5_LN 40
 
-# define NB_OBJ 1
-# define DIFF_BMP 53
+# define NB_OBJ 2
+# define DIFF_BMP 54
 # define FILTER_COLOR 0x980088
 # define W 1200
 # define H 800
@@ -176,7 +177,7 @@ typedef struct  s_weapon
 {
   int           anim;
   int           damage;
-  // t_point         dir_shoot;
+  t_point       dir_shoot;
 }             t_weapon;
 
 typedef struct        s_sleep
@@ -453,6 +454,8 @@ void        pick_up_loot(t_mlx *mlx);
 // WEAPON.C
 void        weapon_choice(t_mlx *mlx);
 void        shoot(t_mlx *mlx);
+void        send_bullet(t_mlx *mlx);
+void        shoot_direction(t_mlx *mlx);
 
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);

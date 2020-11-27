@@ -51,11 +51,10 @@ int		ft_key_hook(int key, t_mlx *mlx)
 		mlx->ducking = 1;
 		mlx->moving = 1;
 	}
-	if (key == M_KEY) // || key == M_KEY_LN)
+	if (key == M_KEY || key == M_LN)
 		mlx->menu.on = !mlx->menu.on;
-	if (key == E_KEY)
+	if (key == E_KEY || key == E_LN)
 		pick_up_loot(mlx);
-	// shoot_key(key, mlx);
 	menu_key_hook(key, mlx);
 	return (0);
 }
@@ -72,7 +71,7 @@ int			shoot_key(int key, int x, int y, t_mlx *mlx)
 			{
 				mlx->anim.shoot = 1;
 				mlx->inventory.ammo--;
-				// shoot_direction(mlx);
+				shoot_direction(mlx);
 			}
 			shoot(mlx);
 			mlx->anim.started = 1;

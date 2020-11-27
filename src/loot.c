@@ -29,7 +29,7 @@ static void			loot_power2(int sprite, t_mlx *mlx)
 		mlx->inventory.weapon_type[2] = 1;
 		mlx->weapon.anim = 10;
 	}
-	else if (mlx->objects[sprite].tex == 1)
+	else if (mlx->objects[sprite].tex == AMMO)
 		mlx->inventory.ammo += 10;
 	else if (mlx->objects[sprite].tex == SHIELD)
 		mlx->inventory.shield += 10;

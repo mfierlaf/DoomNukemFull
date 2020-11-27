@@ -89,11 +89,7 @@
 # define AMMO 50
 # define GOLDEN_KEY 51
 # define CHALICE 52
-
-
-
-
-
+# define BULLET 53
 
 # define NOEVENTMASK 0L
 # define KPMASK (1L<<0)
