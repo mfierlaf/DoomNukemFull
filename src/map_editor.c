@@ -142,14 +142,60 @@ static void	draw_grid(t_mlx *mlx)
 	}
 }
 
-static void	draw_buttons(t_mlx *mlx)
+static t_button	new_button(t_point orig, t_point end)
 {
+	t_button	b;
+
+	b.orig = orig;
+	b.end = end;
+	return (b);
+}
+
+void	init_buttons(t_mlx *mlx)
+{
+	int	y;
+	int	height_button;
 	int	i;
 
-	i = -1;
-	while (++i < (W / 4) * H)
+	y = 10;
+	height_button = 50;
+	i = 0;
+	while (i < 5)
 	{
-		
+		mlx->editor.buttons[i] = 
+			new_button(new_point(10, y), new_point(W / 4 - 20, y + height_button));
+		y += height_button + 20;
+		i += 1;
+	}
+}
+
+int		check_point_in_button(t_point p, t_mlx *mlx)
+{
+	int	button;
+
+	button = -1;
+	while (++button < 5)
+	{
+		if (is_inside(p, mlx->editor.buttons[button]))
+			return (1);
+	}
+	return (0);
+}
+
+static void	draw_buttons(t_mlx *mlx)
+{
+	int	x;
+	int	y;
+
+	y = -1;
+	while (++y < H)
+	{
+		x = -1;
+		while (++x < (W / 4))
+		{
+			if (check_point_in_button(new_point(x, y), mlx))
+				mlx->editor.data_buttons[x + y * W / 4] = RED;
+		}
 	}
 }
 

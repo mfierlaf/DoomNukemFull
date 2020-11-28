@@ -1,5 +1,21 @@
 #include "../include/doom_nukem.h"
 
+t_point		new_point(int x, int y)
+{
+	t_point	p;
+
+	p.x = x;
+	p.y = y;
+	return (p);
+}
+
+int	is_inside(t_point p, t_button b)
+{
+	if (p.x > b.orig.x && p.x < b.end.x && p.y > b.orig.y && p.y < b.end.y)
+		return (1);
+	return (0);
+}
+
 float    get_dist(t_fpoint p1, t_fpoint p2)
 {
     return ((float)sqrtf((p2.x - p1.x) * (p2.x - p1.x) +

@@ -230,6 +230,12 @@ typedef	struct			s_bham
 	int					e2;
 }						t_bham;
 
+typedef struct			s_button
+{
+	t_point					orig;
+	t_point					end;
+}				t_button;
+
 typedef struct			s_editor
 {
 	int					map_img_width;
@@ -253,6 +259,7 @@ typedef struct			s_editor
 	int					closest_vertex2;
 	t_fpoint			start;
 	t_fpoint			end;
+	t_button				buttons[10];
 }						t_editor;
 
 typedef	struct 			s_event
@@ -347,6 +354,21 @@ int						expose(t_mlx *mlx);
 //RIP in pieces
 
 /*
+** GEOMETRY.C
+*/
+
+int			is_inside(t_point p, t_button b);
+t_fpoint                get_intersection(t_line line1, t_line line2, float slope1,
+                            float slope2);
+char                	check_valid_inter(t_fpoint inter, t_line line1, t_line line2);
+float                	get_slope(t_line line);
+float                	get_angle(t_fpoint p1, t_fpoint rel_dir);
+float   			 	get_dist(t_fpoint p1, t_fpoint p2);
+float    		get_dist_mouse_to_map(t_fpoint p1, struct xy p2);
+float    		get_dist_map_to_map(struct xy p1, struct xy p2);
+t_point					new_point(int x, int y);
+
+/*
 ** HUD.C
 */
 
@@ -378,6 +400,7 @@ void					unload_data(t_mlx *mlx);
 */
 
 void					map_editor(t_mlx *mlx);
+void					init_buttons(t_mlx *mlx);
 
 /*
 ** MENU.C
@@ -463,17 +486,6 @@ int         check_tab_sprite(t_mlx *mlx);
 void	bresenham(t_mlx *mlx, int color);
 void	dashed_bresenham(t_mlx *mlx, int color);
 
-/*
-** GEOMETRY.C
-*/
-t_fpoint                get_intersection(t_line line1, t_line line2, float slope1,
-                            float slope2);
-char                	check_valid_inter(t_fpoint inter, t_line line1, t_line line2);
-float                	get_slope(t_line line);
-float                	get_angle(t_fpoint p1, t_fpoint rel_dir);
-float   			 	get_dist(t_fpoint p1, t_fpoint p2);
-float    get_dist_mouse_to_map(t_fpoint p1, struct xy p2);
-float    get_dist_map_to_map(struct xy p1, struct xy p2);
 
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);

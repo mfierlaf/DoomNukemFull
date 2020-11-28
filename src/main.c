@@ -33,6 +33,7 @@ int	main(void)
 
 	if (!(mlx = (t_mlx *)malloc(sizeof(t_mlx))))
 		return (0);
+	//TODO MEMORY LEAK
 	if (!(mlx->mlx = mlx_init()))
 		return (0);
 	init_mlx(mlx);
