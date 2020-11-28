@@ -18,8 +18,9 @@ void				shoot_direction(t_mlx *mlx)
 	float		angle;
 	float		off_angle;
 
-	slice = M_PI / (3.0 * ((HFOV * 2) / W));
-	angle = atan2(mlx->player.dir.y, mlx->player.dir.x);
+	// slice = M_PI / (3.0 * ((HFOV * 2) / W));
+	slice = M_PI / (3.0 * (float)W);
+	angle = atan2(mlx->player.anglesin, mlx->player.anglecos);
 	off_angle = (W / 2 - ((float)W * 0.5)) * slice;
 	angle += off_angle;
 	mlx->weapon.dir_shoot.x = mlx->player.where.x + cos(angle) * 50;
@@ -42,23 +43,23 @@ void				send_bullet(t_mlx *mlx)
 	{
 		// sector = find_sector(mlx, mlx->player.where);
 		mlx->objects[0].tex = BULLET;
-		// mlx->objects[0].pos.x += (mlx->weapon.dir_shoot.x - mlx->objects
-		// 	[0].pos.x) * 0.02;
-		// mlx->objects[0].pos.y += (mlx->weapon.dir_shoot.y - mlx->objects
-		// 	[0].pos.y) * 0.02;
-		// mlx->objects[0].sector = mlx->player.sector;
+		mlx->objects[0].pos.x += (mlx->weapon.dir_shoot.x - mlx->objects
+			[0].pos.x) * 0.02;
+		mlx->objects[0].pos.y += (mlx->weapon.dir_shoot.y - mlx->objects
+			[0].pos.y) * 0.02;
+		mlx->objects[0].sector = mlx->player.sector;
 		// mlx->objects[0].sector = find_sector(mlx, mlx->objects[0].pos);
-		mlx->objects[0].pos.x = 5;
-		mlx->objects[0].pos.y = 5;
-		mlx->objects[0].sector = 21;
-		// dist = get_dist(mlx->objects[0].pos, pl_pos);
-		// if (dist > 5)
-		// {
-		// 	mlx->objects[0].pos.x = mlx->player.where.x;
-		// 	mlx->objects[0].pos.y = mlx->player.where.y;
-		// 	mlx->anim.shoot = 0;
-		// 	mlx->objects[0].tex = -1;
-		// }
+		// mlx->objects[0].pos.x = 5;
+		// mlx->objects[0].pos.y = 5;
+		// mlx->objects[0].sector = 21;
+		dist = get_dist(mlx->objects[0].pos, pl_pos);
+		if (dist > 5)
+		{
+			mlx->objects[0].pos.x = mlx->player.where.x;
+			mlx->objects[0].pos.y = mlx->player.where.y;
+			mlx->anim.shoot = 0;
+			mlx->objects[0].tex = -1;
+		}
 	}
 }
 
@@ -90,10 +91,10 @@ void				shoot(t_mlx *mlx)
 	pl_pos.y = mlx->player.where.y;
 
 	slice = M_PI / (3.0 * (float)W);
-	angle = atan2(mlx->player.dir.y, mlx->player.dir.x);
+	angle = atan2(mlx->player.anglesin, mlx->player.anglecos);
 	off_angle = ((W * 0.5)) * slice;
-	dir.x = pl_pos.x + cos(off_angle + angle) * 500;
-	dir.y = pl_pos.y + sin(off_angle + angle) * 500;
+	dir.x = pl_pos.x + cos(off_angle + angle) * 50;
+	dir.y = pl_pos.y + sin(off_angle + angle) * 50;
 	straight_ray = new_line(pl_pos, dir);
 	printf("dirx: %f\n", dir.x);
 	printf("diry: %f\n", dir.y);

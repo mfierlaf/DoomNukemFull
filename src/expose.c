@@ -165,7 +165,7 @@ int		expose(t_mlx *mlx)
 		}
 		draw_screen(mlx);
 		draw_hud(mlx);
-		// send_bullet(mlx);
+		send_bullet(mlx);
 		weapon_choice(mlx);
 		shoot_anim(mlx);
 		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
