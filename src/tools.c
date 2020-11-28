@@ -59,13 +59,13 @@ double	point_side(double px, double py, double x0, double y0, double x1, double 
 	return (vxs((x1)-(x0), (y1)-(y0), (px)-(x0), (py)-(y0)));
 }
 
-void 	clear_img(t_mlx *mlx)
+void 	clear_img(int *data, int w, int h)
 {
 	int i;
 
 	i = -1;
-	while(++i < W * H - 1)
-		mlx->data[i] = 0x000000;
+	while(++i < w * h - 1)
+		data[i] = 0x000000;
 }
 
 int kill_mlx(char *message, t_mlx *mlx)

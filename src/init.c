@@ -45,4 +45,16 @@ void	init(t_mlx *mlx)
 	mlx->anim.curr_anim = 0;
 	mlx->editor.on = 0;
 	mlx->editor.map_img_width = ((3 * W) / 4);
+	mlx->editor.buttons_img_width = (W / 4);
+	mlx->editor.start.x = -1;
+	mlx->editor.start.y = -1;
+	mlx->editor.end.x = -1;
+	mlx->editor.end.x = -1;
+	mlx->editor.off_x = mlx->editor.map_img_width - 10;
+	mlx->editor.off_y = H - 10;
+	mlx->editor.old_x = 0;
+	mlx->editor.old_y = 0;
+	mlx->editor.sqr_size = 60;
+	mlx->events.but1 = 0;
+	mlx->events.new_sector = 0;
 }

@@ -41,15 +41,18 @@ int		expose(t_mlx *mlx)
 	else if (mlx->editor.on)
 	{
 		mlx_clear_window(mlx->mlx, mlx->win);
+		clear_img(mlx->editor.data_map, mlx->editor.map_img_width, H);
+		clear_img(mlx->editor.data_buttons, mlx->editor.buttons_img_width, H);
 		map_editor(mlx);
-		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->editor.img, 0, 0);
+		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->editor.img_map, 0, 0);
+		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->editor.img_buttons, mlx->editor.map_img_width, 0);
 	}
 	else
 	{
 		s = -1;
 		yaw = 0;
 		mlx->player.angle = 0;
-		clear_img(mlx);
+		clear_img(mlx->data, W, H);
 		/* Vertical collision detection */
 		eyeheight = mlx->ducking ? DuckHeight : EyeHeight;
 		mlx->ground = !mlx->falling;

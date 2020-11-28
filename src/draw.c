@@ -16,17 +16,6 @@
 		vxs(vxs(x1,y1, x2,y2), (x1)-(x2), vxs(x3,y3, x4,y4), (x3)-(x4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)), \
 		vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)) })
 
-unsigned OMP_SCALER_LOOP_BEGIN(a, b, c, d, f)
-{
-	float e;
-	struct Scaler s = Scaler_Init(a, a, (c)-1, (d) * 32768, (f) * 32768);
-	for (int b = (a); b < (c); ++b)
-	{ 
-    	e = Scaler_Next(&s) / 32768.f;
-	}
-	return ((unsigned)e);
-}
-
 void draw_screen(t_mlx *mlx)
 {
 	unsigned x;
