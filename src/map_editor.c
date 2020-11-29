@@ -142,13 +142,29 @@ static void	draw_grid(t_mlx *mlx)
 	}
 }
 
-static t_button	new_button(t_point orig, t_point end)
+static t_button	new_button(t_point orig, t_point end, int color)
 {
 	t_button	b;
 
 	b.orig = orig;
 	b.end = end;
+	b.color = DEFAULT_BUTTON_COLOUR;
+	b.pressed = 0;
 	return (b);
+}
+
+int	check_button_pressed(t_mlx *mlx)
+{
+	int	button;
+
+	button = -1;
+	while (++button < NB_BUTTON)
+	{
+		if (is_inside(new_point(mlx->mouse.x - (3 * W) / 4, mlx->mouse.y), 
+				mlx->editor.buttons[button]))
+			return (button);
+	}
+	return (0);
 }
 
 void	init_buttons(t_mlx *mlx)
@@ -160,10 +176,10 @@ void	init_buttons(t_mlx *mlx)
 	y = 10;
 	height_button = 50;
 	i = 0;
-	while (i < 5)
+	while (i < NB_BUTTON)
 	{
 		mlx->editor.buttons[i] = 
-			new_button(new_point(10, y), new_point(W / 4 - 20, y + height_button));
+			new_button(new_point(10, y), new_point(W / 4 - 20, y + height_button), RED);
 		y += height_button + 20;
 		i += 1;
 	}
@@ -174,10 +190,10 @@ int		check_point_in_button(t_point p, t_mlx *mlx)
 	int	button;
 
 	button = -1;
-	while (++button < 5)
+	while (++button < NB_BUTTON)
 	{
 		if (is_inside(p, mlx->editor.buttons[button]))
-			return (1);
+			return (button);
 	}
 	return (0);
 }
@@ -186,6 +202,7 @@ static void	draw_buttons(t_mlx *mlx)
 {
 	int	x;
 	int	y;
+	int	button;
 
 	y = -1;
 	while (++y < H)
@@ -193,8 +210,8 @@ static void	draw_buttons(t_mlx *mlx)
 		x = -1;
 		while (++x < (W / 4))
 		{
-			if (check_point_in_button(new_point(x, y), mlx))
-				mlx->editor.data_buttons[x + y * W / 4] = RED;
+			if ((button = check_point_in_button(new_point(x, y), mlx)))
+				mlx->editor.data_buttons[x + y * W / 4] = mlx->editor.buttons[button].color;
 		}
 	}
 }

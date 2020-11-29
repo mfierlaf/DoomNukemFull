@@ -71,16 +71,31 @@ int		ft_key_hook(int key, t_mlx *mlx)
 	menu_key_hook(key, mlx);
 	return (0);
 }
-int                mouse_release(int key, int x, int y, t_mlx *mlx)
+int			mouse_release(int key, int x, int y, t_mlx *mlx)
 {
+	int		button;
+
+	button = -1;
 	if (key == BUT1_KEY)
 	{
-		mlx->events.but1 = 0;;
+		mlx->events.but1 = 0;
+		if (mlx->editor.on)
+		{
+			while (++button < NB_BUTTON)
+			{
+				mlx->editor.buttons[button].color = DEFAULT_BUTTON_COLOUR;
+			}
+		}
+		
 	}
 	return (0);
 }
 void			shoot_key(int key, int x, int y, t_mlx *mlx)
 {
+	int		button;
+
+	button = 0;
+	//TODO Feufeul : "WHAT THE ACTUAL FUCK !?"
 	x++;
 	y++;
 	if (key == BUT1_KEY)
@@ -90,25 +105,10 @@ void			shoot_key(int key, int x, int y, t_mlx *mlx)
 			mlx->events.but1 = 1;
 			mlx->editor.old_x = x;
 			mlx->editor.old_y = y;
-			// if (x < mlx->editor.map_img_width && mlx->events.draw_line)
-			// {
-			// 	if (mlx->editor.start.x == -1)
-			// 	{
-			// 		mlx->editor.start.x = (x % mlx->editor.sqr_size > (mlx->editor.sqr_size - 1) /2) ? x + (mlx->editor.sqr_size - 1 - (x % mlx->editor.sqr_size)) : x - (x % mlx->editor.sqr_size);
-			// 		mlx->editor.start.y = (y % mlx->editor.sqr_size > (mlx->editor.sqr_size - 1) /2) ? y + (mlx->editor.sqr_size - 1 - (y % mlx->editor.sqr_size)) : y - (y % mlx->editor.sqr_size);
-			// 		ft_printf("start. x = %d, start.y = %d\n------------------------------\n", mlx->editor.start.x / mlx->editor.sqr_size, mlx->editor.start.y / mlx->editor.sqr_size);
-			// 	}
-			// 	else
-			// 	{
-			// 		mlx->editor.end.x = (x % mlx->editor.sqr_size > (mlx->editor.sqr_size - 1) /2) ? x + (mlx->editor.sqr_size - 1 - (x % mlx->editor.sqr_size)): x - (x % mlx->editor.sqr_size);
-			// 		mlx->editor.end.y = (y % mlx->editor.sqr_size > (mlx->editor.sqr_size - 1) /2) ? y + (mlx->editor.sqr_size - 1 - (y % mlx->editor.sqr_size)): y - (y % mlx->editor.sqr_size);
-			// 		ft_printf("end. x = %d, end.y = %d\n------------------------------\n", (mlx->editor.end.x + (mlx->editor.sqr_size / 2)) / mlx->editor.sqr_size, (mlx->editor.end.y + (mlx->editor.sqr_size / 2)) / mlx->editor.sqr_size);
-			// 		bresenham(mlx, 0xFF0000);
-			// 		//ft_printf("start. x = %d, start.y = %d\n end.x = %d, end.y = %d\n------------------------------\n", mlx->editor.start.x / mlx->editor.sqr_size, mlx->editor.start.y / mlx->editor.sqr_size, mlx->editor.end.x / mlx->editor.sqr_size, mlx->editor.end.y / mlx->editor.sqr_size);
-			// 		mlx->editor.start.x = mlx->editor.end.x;
-			// 		mlx->editor.start.y = mlx->editor.end.y;
-			// 	}
-			//}
+			if (button = check_button_pressed(mlx))
+			{
+				mlx->editor.buttons[button].color = PRESSED_BUTTON_COLOUR;
+			}
 		}
 		else
 		{

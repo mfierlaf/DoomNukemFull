@@ -59,6 +59,10 @@
 # define KneeHeight 2    // How tall obstacles the player can simply walk over without jumping
 # define HFOV (0.73f * H / W)  // Affects the horizontal field of vision
 # define VFOV (0.2f)    // Affects the vertical field of vision
+
+# define NB_BUTTON 5
+# define DEFAULT_BUTTON_COLOUR RED
+# define PRESSED_BUTTON_COLOUR ORANGE
 //# include "/Users/user42/sdl/SDL2-2.0.8/include/SDL.h"
 
 typedef struct			s_bmp_header
@@ -234,6 +238,8 @@ typedef struct			s_button
 {
 	t_point					orig;
 	t_point					end;
+	int					color;
+	int					pressed;
 }				t_button;
 
 typedef struct			s_editor
@@ -259,7 +265,7 @@ typedef struct			s_editor
 	int					closest_vertex2;
 	t_fpoint			start;
 	t_fpoint			end;
-	t_button				buttons[10];
+	t_button				buttons[NB_BUTTON];
 }						t_editor;
 
 typedef	struct 			s_event
@@ -357,6 +363,7 @@ int						expose(t_mlx *mlx);
 ** GEOMETRY.C
 */
 
+int			check_button_pressed(t_mlx *mlx);
 int			is_inside(t_point p, t_button b);
 t_fpoint                get_intersection(t_line line1, t_line line2, float slope1,
                             float slope2);
