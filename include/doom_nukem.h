@@ -63,6 +63,8 @@
 # define NB_BUTTON 5
 # define DEFAULT_BUTTON_COLOUR RED
 # define PRESSED_BUTTON_COLOUR ORANGE
+# define BUTTON_ADD_SECTOR 2
+
 //# include "/Users/user42/sdl/SDL2-2.0.8/include/SDL.h"
 
 typedef struct			s_bmp_header
@@ -240,6 +242,7 @@ typedef struct			s_button
 	t_point					end;
 	int					color;
 	int					pressed;
+	int					toggled;
 }				t_button;
 
 typedef struct			s_editor
@@ -408,6 +411,7 @@ void					unload_data(t_mlx *mlx);
 
 void					map_editor(t_mlx *mlx);
 void					init_buttons(t_mlx *mlx);
+void					toggle_button(t_mlx *mlx, int button);
 
 /*
 ** MENU.C

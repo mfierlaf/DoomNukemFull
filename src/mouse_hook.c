@@ -83,7 +83,8 @@ int			mouse_release(int key, int x, int y, t_mlx *mlx)
 		{
 			while (++button < NB_BUTTON)
 			{
-				mlx->editor.buttons[button].color = DEFAULT_BUTTON_COLOUR;
+				if (!mlx->editor.buttons[button].toggled)
+					mlx->editor.buttons[button].color = DEFAULT_BUTTON_COLOUR;
 			}
 		}
 		
@@ -107,6 +108,8 @@ void			shoot_key(int key, int x, int y, t_mlx *mlx)
 			mlx->editor.old_y = y;
 			if (button = check_button_pressed(mlx))
 			{
+				if (button == 2)
+					toggle_button(mlx, button);
 				mlx->editor.buttons[button].color = PRESSED_BUTTON_COLOUR;
 			}
 		}

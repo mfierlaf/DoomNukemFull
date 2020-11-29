@@ -150,6 +150,7 @@ static t_button	new_button(t_point orig, t_point end, int color)
 	b.end = end;
 	b.color = DEFAULT_BUTTON_COLOUR;
 	b.pressed = 0;
+	b.toggled = 0;
 	return (b);
 }
 
@@ -182,6 +183,20 @@ void	init_buttons(t_mlx *mlx)
 			new_button(new_point(10, y), new_point(W / 4 - 20, y + height_button), RED);
 		y += height_button + 20;
 		i += 1;
+	}
+}
+
+void		toggle_button(t_mlx *mlx, int button)
+{
+	if (mlx->editor.buttons[button].toggled)
+	{
+		mlx->editor.buttons[button].toggled = 0;	
+		mlx->editor.buttons[button].color = DEFAULT_BUTTON_COLOUR;
+	}
+	else
+	{
+		mlx->editor.buttons[button].toggled = 1;
+		mlx->editor.buttons[button].color = PRESSED_BUTTON_COLOUR;
 	}
 }
 
@@ -234,6 +249,6 @@ void		map_editor(t_mlx *mlx)
 		}
 		sector++;
 	}
-	if (mlx->events.new_sector)
+	if (mlx->editor.buttons[BUTTON_ADD_SECTOR].toggled)
 		draw_dashed_line_sector(mlx);
 }
