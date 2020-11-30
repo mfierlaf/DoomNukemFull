@@ -31,7 +31,7 @@ void	map_coord(int screenx, int screeny, t_mlx *mlx, t_draw *draw)
 	absolut_coord(mlx, draw);
 }
 
-int	draw_vline(t_mlx *mlx, int *wall, t_draw *draw, int x)
+void	draw_vline(t_mlx *mlx, t_draw *draw, int x)
 {
 	int cnyb;
 
@@ -58,7 +58,6 @@ int	draw_vline(t_mlx *mlx, int *wall, t_draw *draw, int x)
 			draw->ya, draw->cya, draw->yb, 0, TEXTURE_SIZE - 1),\
 				draw->txtx, mlx);
 	}
-	return (++*wall);
 }
 
 void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
@@ -66,7 +65,7 @@ void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
 	unsigned	txtx;
 	unsigned	txtz;
 	int			y;
-	int			wall;
+	int wall;
 
 	y = draw->ytop[x] - 1;
 	while (++y <= draw->ybottom[x])
@@ -85,8 +84,9 @@ void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
 		mlx->data[y * W + x] = mlx->tex->tex_ternary[(txtx % TEXTURE_SIZE)\
 			* TEXTURE_SIZE + (txtz % TEXTURE_SIZE)];
 	}
-	wall = draw_vline(mlx, &wall, draw, x);
-	// draw_decos(draw, wall, x, mlx);
+	draw_vline(mlx, draw, x);
+	// printf("wall1: %d\n", mlx->wall);
+	draw_decos(draw, mlx->wall, x, mlx);
 	draw_sprites(x, mlx);
 }
 
@@ -249,8 +249,11 @@ void	render(t_mlx *mlx, t_draw *draw)
 	unsigned s;
 
 	s = -1;
+	mlx->wall = 0;
 	while (++s < draw->sect->npoints)
 	{
+		mlx->wall = s;
+		// printf("wall1: %d\n", mlx->wall);
 		render_declaration(mlx, draw, s);
 		if (draw->tz1 <= 0 && draw->tz2 <= 0)
 			continue;

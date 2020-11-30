@@ -45,7 +45,7 @@ void                vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig,
             if (valid_pixel(x, y))
             {
                 color = get_color(curr_bmp, (int)rel_x, (int)rel_y);
-                if (color != FILTER_COLOR)
+                // if (color != FILTER_COLOR)
                     mlx->data[x + y * W] = color;
             }
         }

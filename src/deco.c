@@ -15,7 +15,7 @@
 void				draw_decos(t_draw *draw, int wall, int x, t_mlx *mlx) //DON"T KNOW WHAT SECT IS BEING DRAWN
 {
 	int					deco;
-	int					sector;
+	unsigned int					sector;
 	// t_wall_and_sector	ws;
 	// float				dist;
 
@@ -43,13 +43,21 @@ void				draw_decos(t_draw *draw, int wall, int x, t_mlx *mlx) //DON"T KNOW WHAT 
 			// 	else
 			// 		mlx->open_door = 0;
 			// }
-			// if (mlx->sectors[sect].decos[deco].wall_num == wall)
-				// draw_deco(draw, deco, wall, mlx, x);
+			// printf("wall_num: %d\n", draw->sect->decos[deco].wall_num);
+			// printf("wall: %d\n", wall);
+
+			// printf("deco: %d\n", deco);
+			// printf("tex: %d\n", mlx->sectors[draw->now.sectorno].decos[deco].tex);
+			// printf("deco.orig: %f\n", mlx->sectors[draw->now.sectorno].decos[deco].origin_offset);
+			// printf("deco.end: %f\n", mlx->sectors[draw->now.sectorno].decos[deco].end_offset);
+
+			if (mlx->sectors[draw->now.sectorno].decos[deco].wall_num == wall)
+				draw_deco(draw, deco, wall, mlx, x);
 		}
 	}
 }
 
-void				draw_deco(t_draw *draw, int deco, int wall,
+void				draw_deco(t_draw *draw, int deco, int i,
 										t_mlx *mlx, int x)
 {
 	t_line		decos_pos;
@@ -62,13 +70,23 @@ void				draw_deco(t_draw *draw, int deco, int wall,
 	float draw_end;
 	t_pos pl_pos;
 
-	walls_pos.orig = draw->sect->wall[wall].orig;
-	walls_pos.end = draw->sect->wall[wall].end;
+	printf("wall: %d\n", i);
+	walls_pos.orig = mlx->sectors[draw->now.sectorno].wall[i].orig;
+	walls_pos.end = mlx->sectors[draw->now.sectorno].wall[i].end;
+	// printf("tex: %d\n", draw->sect->decos[deco].tex);
+	// printf("deco.orig: %f\n", draw->sect->decos[deco].origin_offset);
+	// printf("deco.end: %f\n", draw->sect->decos[deco].end_offset);
+
+	// printf("orig.x: %f\n", walls_pos.orig.x);
+	// printf("orig.y: %f\n", walls_pos.orig.y);
+	// printf("end.x: %f\n", walls_pos.end.x);
+	// printf("end.y: %f\n", walls_pos.end.y);
 
 	decos_pos.orig.x = walls_pos.orig.x += (walls_pos.orig.x - walls_pos.end.x) * 0 + 0.0001;
 	decos_pos.orig.y = walls_pos.orig.y += (walls_pos.orig.y - walls_pos.end.y) * 0;
 	decos_pos.end.x = walls_pos.end.x += (walls_pos.end.x - walls_pos.orig.x) * 0;
 	decos_pos.end.y = walls_pos.end.y += (walls_pos.end.y - walls_pos.orig.y) * 0;
+	// printf("testing\n");
 
 	// gate opening
 	// if (MAP->sectors[sect].decos[deco].tex == 91 && MAP->sectors[sect].decos[deco].origin_offset < 1 && MAP->sectors[sect].decos[deco].moving_offset == 1)
@@ -93,9 +111,9 @@ void				draw_deco(t_draw *draw, int deco, int wall,
 		line_height = (float)H / dist;
 		draw_start = H * 0.5 - line_height * 0.5;
 		draw_end = draw_start + line_height;
-		// vertical_sprite_lines(mlx, x, decos_pos.orig, decos_pos.end,
-		// draw_start, draw_end, inter,
-		// 	mlx->tab_bmp[mlx->sectors[sect].decos[deco].tex]);
+		vertical_sprite_lines(mlx, x, decos_pos.orig, decos_pos.end,
+		draw_start, draw_end, inter,
+			mlx->tab_bmp[0]);
 	}
 }
 

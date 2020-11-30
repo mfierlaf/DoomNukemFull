@@ -349,6 +349,7 @@ typedef	struct s_mlx
   int     ducking;
   int     moving;
   unsigned txty;
+  int wall;
   t_line ray;
   t_menu  menu;
   t_music music;
@@ -360,7 +361,6 @@ typedef	struct s_mlx
   t_bmp *tab_anim[ANIM_NB];
   t_bmp   *tab_bmp[DIFF_BMP];
   t_obj   objects[NB_OBJ];
-
   t_editor editor;
   t_point mouse;
 	t_player  player;
@@ -390,7 +390,7 @@ void vline(int x, int y1,int y2, int top, int middle, int bottom, t_mlx *mlx);
 void draw_screen(t_mlx *mlx);
 void  drawing(t_mlx *mlx, t_draw *draw);
 void  boucle_drawing(t_mlx *mlx, t_draw *draw, int x);
-int draw_vline(t_mlx *mlx, int *wall, t_draw *draw, int x);
+void draw_vline(t_mlx *mlx, t_draw *draw, int x);
 void  check_edge(t_mlx *mlx, t_draw *draw);
 int perspective(t_mlx *mlx, t_draw *draw, int s);
 void  players_view_tz2(t_draw *draw);
@@ -469,7 +469,7 @@ void        send_bullet(t_mlx *mlx);
 void        shoot_direction(t_mlx *mlx);
 // DECO.C
 void        draw_decos(t_draw *draw, int wall, int x, t_mlx *mlx);
-void        draw_deco(t_draw *draw, int deco, int wall,
+void        draw_deco(t_draw *draw, int deco, int i,
                     t_mlx *mlx, int x);
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
