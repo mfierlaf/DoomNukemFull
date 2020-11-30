@@ -1,5 +1,25 @@
 #include "../include/doom_nukem.h"
 
+t_line		new_line(t_fpoint pos1, t_fpoint pos2)
+{
+	t_line	line;
+
+	line.orig.x = pos1.x;
+	line.orig.y = pos1.y;
+	line.end.x = pos2.x;
+	line.end.y = pos2.y;
+	return (line);
+}
+
+t_fpoint		new_fpoint(float x, float y)
+{
+	t_fpoint	p;
+
+	p.x = x;
+	p.y = y;
+	return (p);
+}
+
 t_point		new_point(int x, int y)
 {
 	t_point	p;

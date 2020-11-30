@@ -65,6 +65,8 @@
 # define PRESSED_BUTTON_COLOUR ORANGE
 # define BUTTON_ADD_SECTOR 2
 
+# define NB_SECT_MAX 50
+
 //# include "/Users/user42/sdl/SDL2-2.0.8/include/SDL.h"
 
 typedef struct			s_bmp_header
@@ -376,7 +378,10 @@ float                	get_angle(t_fpoint p1, t_fpoint rel_dir);
 float   			 	get_dist(t_fpoint p1, t_fpoint p2);
 float    		get_dist_mouse_to_map(t_fpoint p1, struct xy p2);
 float    		get_dist_map_to_map(struct xy p1, struct xy p2);
-t_point					new_point(int x, int y);
+t_line			new_line(t_fpoint pos1, t_fpoint pos2);
+t_fpoint		new_fpoint(float x, float y);
+t_point			new_point(int x, int y);
+
 
 /*
 ** HUD.C
