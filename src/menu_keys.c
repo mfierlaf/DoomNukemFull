@@ -82,7 +82,6 @@ void		menu_key_hook(int key, t_mlx *mlx)
 				mlx->menu.bot_level += 10000;
 			else if ((key == RIGHT_KEY || key == RIGHT_ARROW) && mlx->menu.bot_level >= 18000)
 				mlx->menu.bot_level -= 10000;
-			printf("botlvl: %d\n", mlx->menu.bot_level);
 		}
 		if (key == RTN_KEY || key == ENTR_LN)
 			enter_menu(mlx);

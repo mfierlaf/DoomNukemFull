@@ -17,7 +17,6 @@ void                vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig,
 {
     int             y;
     int             y_max;
-    float           line_h;
     float           dx;
     float           dy;
     float           rel_x;
@@ -28,7 +27,7 @@ void                vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig,
     draw_end = clamp(draw_end, 0, H - 1) - mlx->mouse.y;
     y = draw_start;
     y_max = draw_end;
-    line_h = draw_end - draw_start;
+    // line_h = draw_end - draw_start;
     while (y < y_max)
     {
         if (dx != 0)

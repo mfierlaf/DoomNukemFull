@@ -338,6 +338,7 @@ typedef	struct s_mlx
   int     wasd[4];
   int     ground;
   int     falling;
+  int     flying;
   int     ducking;
   int     moving;
   unsigned txty;
