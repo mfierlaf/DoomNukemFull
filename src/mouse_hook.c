@@ -45,11 +45,23 @@ int		ft_key_hook(int key, t_mlx *mlx)
 			mlx->player.velocity.z += 0.5;
 			mlx->falling = 1;
 		}
+		if (mlx->flying)
+		{
+			mlx->player.velocity.z += 0.5;
+			mlx->falling = 1;
+		}
 	}
+	if (key == F_KEY) // || key == F_LN)
+		mlx->flying = !mlx->flying;
 	if (key == LCTRL_KEY || key == LCTRL)
 	{
-		mlx->ducking = 1;
-		mlx->moving = 1;
+		if (mlx->flying)
+			mlx->player.velocity.z -= 0.5;
+		else
+		{
+			mlx->ducking = 1;
+			mlx->moving = 1;
+		}
 	}
 	if (key == M_KEY || key == M_LN)
 		mlx->menu.on = !mlx->menu.on;
@@ -96,8 +108,16 @@ int		stop_movement(int key, t_mlx *mlx)
 		mlx->wasd[3] = 0;
 	if (key == LCTRL_KEY || key == LCTRL)
 	{
-		mlx->ducking = 0;
-		mlx->moving = 0;
+		if (mlx->flying)
+			mlx->player.velocity.z = 0;
+		else
+		{
+			mlx->ducking = 0;
+			mlx->moving = 0;
+		}
 	}
+	if (key == SP_KEY || key == SP)
+		if (mlx->flying)
+			mlx->player.velocity.z = 0;
 	return (0);
 }

@@ -99,4 +99,5 @@ void	init(t_mlx *mlx)
 	mlx->sleep.shoot = 0;
 	mlx->anim.curr_anim_walk = 0;
 	mlx->anim.curr_anim = 0;
+	mlx->flying = 0;
 }

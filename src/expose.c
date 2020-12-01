@@ -55,7 +55,10 @@ int		expose(t_mlx *mlx)
 		mlx->ground = !mlx->falling;
 		if (mlx->falling)
 		{
-			mlx->player.velocity.z -= JUMP_SPEED; /* Add gravity */
+			if (!mlx->flying)
+				mlx->player.velocity.z -= JUMP_SPEED; /* Add gravity */
+			// else
+			// 	mlx->player.velocity.z = 0;
 			nextz = mlx->player.where.z + mlx->player.velocity.z;
 			if (mlx->player.velocity.z < 0 && nextz < mlx->sectors[mlx->player.sector].floor + eyeheight)// When going down
 			{
