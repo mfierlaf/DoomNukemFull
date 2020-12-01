@@ -26,7 +26,7 @@
 # define K5_LN 40
 
 # define NB_OBJ 2
-# define DIFF_BMP 54
+# define DIFF_BMP 58
 # define FILTER_COLOR 0x980088
 # define W 1200
 # define H 800
@@ -224,6 +224,7 @@ typedef struct s_player
 typedef struct s_sector
 {
     int brightness;
+    int sky;
     float floor, ceil;
     struct xy { float x,y, tex; } *vertex; // Each vertex has an x and y coordinate
     signed char *neighbors;           // Each edge may have a corresponding neighboring sector
@@ -342,6 +343,7 @@ typedef	struct s_mlx
   int     ducking;
   int     moving;
   unsigned txty;
+  int         *tex_ternary;
   t_line ray;
   t_menu  menu;
   t_music music;
@@ -349,7 +351,6 @@ typedef	struct s_mlx
   t_inventory inventory;
   t_anim anim;
   t_sleep sleep;
-  t_tex   tex[6];
   t_bmp *tab_anim[ANIM_NB];
   t_bmp   *tab_bmp[DIFF_BMP];
   t_obj   objects[NB_OBJ];
@@ -458,7 +459,8 @@ void        weapon_choice(t_mlx *mlx);
 void        shoot(t_mlx *mlx);
 void        send_bullet(t_mlx *mlx);
 void        shoot_direction(t_mlx *mlx);
-
+//SKYBOX.C
+void        draw_skybox(t_mlx *mlx, int x);
 
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 #endif //DOOM_NUKEM_H

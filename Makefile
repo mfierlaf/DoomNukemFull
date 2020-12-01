@@ -36,7 +36,7 @@ LIBFT_DIR = ./libft/
 SRCS_DIR = ./src/
 SRCS =	main.c mouse_hook.c draw.c tools.c load.c move.c vline.c bmp.c bmp_2.c \
 		bmp_3.c expose.c init.c menu.c menu_keys.c shape.c hud.c sprites.c \
-		bots.c anim.c loot.c weapon.c
+		bots.c anim.c loot.c weapon.c skybox.c
 
 FILES = $(addprefix $(SRCS_DIR),$(SRCS))
 OBJS_DIR = ./obj/

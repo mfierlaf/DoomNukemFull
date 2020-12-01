@@ -90,6 +90,10 @@
 # define GOLDEN_KEY 51
 # define CHALICE 52
 # define BULLET 53
+# define SKY 54
+# define GATE 55
+# define MOSSY 56
+# define TCASTRON 57
 
 # define NOEVENTMASK 0L
 # define KPMASK (1L<<0)

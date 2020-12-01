@@ -79,13 +79,21 @@ void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
 		map_coord(x, y, mlx, draw);
 		txtx = (draw->mapx * 16);
 		txtz = (draw->mapz * 16);
-		mlx->tex->tex_ternary = y < draw->cya ? \
-			mlx->tex[2].data : mlx->tex[1].data;
-		color =  mlx->tex->tex_ternary[(txtx % TEXTURE_SIZE)\
+		mlx->tex_ternary = y < draw->cya ? \
+			mlx->tab_bmp[MOSSY]->data : mlx->tab_bmp[TCASTRON]->data;
+		color =  mlx->tex_ternary[(txtx % TEXTURE_SIZE)\
 			* TEXTURE_SIZE + (txtz % TEXTURE_SIZE)];
 		if (mlx->sectors[draw->now.sectorno].brightness == 0)
 			color = (color >> 1) & 8355711;
-		mlx->data[y * W + x] = color;
+		if (!mlx->sectors[draw->now.sectorno].sky || mlx->tex_ternary == mlx->tab_bmp[TCASTRON]->data)
+			mlx->data[y * W + x] = color;
+		else
+		{
+			color =  mlx->tab_bmp[GATE]->data[(txtx % TEXTURE_SIZE)\
+			* TEXTURE_SIZE + (txtz % TEXTURE_SIZE)];
+			if (color != FILTER_COLOR)
+        		mlx->data[y * W + x] = color;
+		}
 	}
 	draw_vline(mlx, draw, x);
 	draw_sprites(x, mlx);
@@ -102,6 +110,8 @@ void	drawing(t_mlx *mlx, t_draw *draw)
 			draw->y1b, draw->y2b);
 	while (++x <= draw->endx)
 	{
+		if (mlx->sectors[draw->now.sectorno].sky && draw->now.sectorno == (int)mlx->player.sector)
+			draw_skybox(mlx, x);
 		draw->txtx = (draw->u0 * ((draw->x2 - x) * draw->tz2) + draw->u1 *\
 			((x - draw->x1) * draw->tz1)) / ((draw->x2 - x) * draw->tz2 +\
 				(x - draw->x1) * draw->tz1);
