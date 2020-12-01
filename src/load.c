@@ -66,9 +66,10 @@ int			read_sector(int *k, struct xy *vert, char **split_line, t_mlx *mlx)
 	++*k;
 	mlx->sectors[*k].floor = atof(split_line[1]);
 	mlx->sectors[*k].ceil = atof(split_line[2]);
+	mlx->sectors[*k].brightness = ft_atoi(split_line[3]);
 	while (split_line[vertex_len] != NULL)
 		vertex_len++;
-	vertex_len -= 3;
+	vertex_len -= 4;
 	mlx->sectors[*k].npoints = vertex_len / 2;
 	vertex_len /= 2;
 	mlx->sectors[*k].neighbors = malloc((vertex_len) * \
@@ -77,10 +78,10 @@ int			read_sector(int *k, struct xy *vert, char **split_line, t_mlx *mlx)
 		sizeof(*mlx->sectors[*k].vertex));
 	n = -1;
 	while (++n < vertex_len)
-		mlx->sectors[*k].neighbors[n] = ft_atoi(split_line[vertex_len + n + 3]);
+		mlx->sectors[*k].neighbors[n] = ft_atoi(split_line[vertex_len + n + 4]);
 	n = -1;
 	while (++n < vertex_len)
-		mlx->sectors[*k].vertex[n + 1] = vert[ft_atoi(split_line[n + 3])];
+		mlx->sectors[*k].vertex[n + 1] = vert[ft_atoi(split_line[n + 4])];
 	mlx->sectors[*k].vertex[0] = mlx->sectors[*k].vertex[vertex_len];
 	return (n);
 }

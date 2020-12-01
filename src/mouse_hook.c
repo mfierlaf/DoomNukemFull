@@ -55,6 +55,8 @@ int		ft_key_hook(int key, t_mlx *mlx)
 		mlx->menu.on = !mlx->menu.on;
 	if (key == E_KEY || key == E_LN)
 		pick_up_loot(mlx);
+	if (key == L_KEY || key == L_LN)
+		mlx->sectors[mlx->player.sector].brightness = !mlx->sectors[mlx->player.sector].brightness;
 	menu_key_hook(key, mlx);
 	return (0);
 }

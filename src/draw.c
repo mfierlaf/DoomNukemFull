@@ -43,18 +43,18 @@ void	draw_vline(t_mlx *mlx, t_draw *draw, int x)
 			(draw->x2 - draw->x1) + draw->ny1b;
 		draw->cnya = clamp(draw->nya, draw->ytop[x], draw->ybottom[x]);
 		cnyb = clamp(draw->nyb, draw->ytop[x], draw->ybottom[x]);
-		vertical_line(x, draw->cya, draw->cnya - 1, (struct Scaler)Scaler_Init(\
+		vertical_line(draw, x, draw->cya, draw->cnya - 1, (struct Scaler)Scaler_Init(\
 			draw->ya, draw->cya, draw->yb, 0, TEXTURE_SIZE - 1),\
 				draw->txtx, mlx);
 		draw->ytop[x] = clamp(max(draw->cya, draw->cnya), draw->ytop[x], H - 1);
-		vertical_line(x, cnyb + 1, draw->cyb, (struct Scaler)Scaler_Init(\
+		vertical_line(draw, x, cnyb + 1, draw->cyb, (struct Scaler)Scaler_Init(\
 			draw->ya, cnyb + 1, draw->yb, 0, TEXTURE_SIZE - 1),\
 				draw->txtx, mlx);
 		draw->ybottom[x] = clamp(min(draw->cyb, cnyb), 0, draw->ybottom[x]);
 	}
 	else
 	{
-		vertical_line(x, draw->cya, draw->cyb, (struct Scaler)Scaler_Init(\
+		vertical_line(draw, x, draw->cya, draw->cyb, (struct Scaler)Scaler_Init(\
 			draw->ya, draw->cya, draw->yb, 0, TEXTURE_SIZE - 1),\
 				draw->txtx, mlx);
 	}
@@ -65,6 +65,7 @@ void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
 	unsigned	txtx;
 	unsigned	txtz;
 	int			y;
+	int			color;
 
 	y = draw->ytop[x] - 1;
 	while (++y <= draw->ybottom[x])
@@ -80,11 +81,13 @@ void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
 		txtz = (draw->mapz * 16);
 		mlx->tex->tex_ternary = y < draw->cya ? \
 			mlx->tex[2].data : mlx->tex[1].data;
-		mlx->data[y * W + x] = mlx->tex->tex_ternary[(txtx % TEXTURE_SIZE)\
+		color =  mlx->tex->tex_ternary[(txtx % TEXTURE_SIZE)\
 			* TEXTURE_SIZE + (txtz % TEXTURE_SIZE)];
+		if (mlx->sectors[draw->now.sectorno].brightness == 0)
+			color = (color >> 1) & 8355711;
+		mlx->data[y * W + x] = color;
 	}
 	draw_vline(mlx, draw, x);
-	draw_sprites(x, mlx);
 }
 
 void	drawing(t_mlx *mlx, t_draw *draw)

@@ -17,6 +17,7 @@
 # define E_LN 101
 # define M_LN 109
 # define Q_LN 113
+# define L_LN 108
 # define ENTR_LN 65293
 # define K1_LN 38
 # define K2_LN 233
@@ -222,6 +223,7 @@ typedef struct s_player
 
 typedef struct s_sector
 {
+    int brightness;
     float floor, ceil;
     struct xy { float x,y; } *vertex; // Each vertex has an x and y coordinate
     signed char *neighbors;           // Each edge may have a corresponding neighboring sector
@@ -375,6 +377,7 @@ int ft_key_hook(int key, t_mlx *mlx);
 int stop_movement(int key, t_mlx *mlx);
 // VLINE.C
 void vline(int x, int y1,int y2, int top, int middle, int bottom, t_mlx *mlx);
+void vertical_line(t_draw *draw, int x, int y1, int y2, struct Scaler ty, unsigned txtx, t_mlx *mlx);
 // DRAW.C
 void draw_screen(t_mlx *mlx);
 void  drawing(t_mlx *mlx, t_draw *draw);
@@ -415,7 +418,6 @@ void init(t_mlx *mlx);
 void    sprite_var(int sprite, t_mlx *mlx);
 int Scaler_Next(struct Scaler *i);
 void vline2(int x, int y1, int y2, struct Scaler ty, unsigned txtx, t_mlx *mlx);
-void        vertical_line(int x, int y1, int y2, struct Scaler ty, unsigned txtx, t_mlx *mlx);
 struct Scaler Scaler_Init(int a, int b, int c, int d, int f);
 int         get_color(t_bmp *bmp, int x, int y);
 t_bmp       *new_bmp(char *str);
@@ -441,8 +443,6 @@ void      draw_hud(t_mlx *mlx);
 int      shoot_key(int key, int x, int y, t_mlx *mlx);
 //SPRITES.C
 void draw_sprites(int x, t_mlx *mlx);
-void                vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig,
-    t_pos sp_end, int draw_start, int draw_end, t_pos inter, t_bmp *curr_bmp);
 // BOTS.C
 void        bot(int sprite, t_mlx *mlx);
 // ANIM.C

@@ -66,7 +66,7 @@ int Scaler_Next(struct Scaler *i)
 //     }
 // }
 
-void        vertical_line(int x, int y1, int y2, struct Scaler ty, unsigned txtx, t_mlx *mlx)
+void        vertical_line(t_draw *draw, int x, int y1, int y2, struct Scaler ty /*scaler_init*/, unsigned txtx, t_mlx *mlx)
 {
     int color;
 
@@ -76,6 +76,8 @@ void        vertical_line(int x, int y1, int y2, struct Scaler ty, unsigned txtx
     {
       mlx->txty = Scaler_Next(&ty);
       color = get_color(mlx->tab_bmp[BRICK], (txtx % mlx->tab_bmp[BRICK]->header.width_px), (mlx->txty % mlx->tab_bmp[BRICK]->header.height_px));
+      if (mlx->sectors[draw->now.sectorno].brightness == 0)
+        color = (color >> 1) & 8355711;
       if (color != FILTER_COLOR)
         mlx->data[y * W + x] = color;
     }
