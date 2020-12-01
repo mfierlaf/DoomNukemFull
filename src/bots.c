@@ -39,7 +39,7 @@ void				bot_shooting(int sprite, t_mlx *mlx)
 			pl_pos.y), new_pos(pl_pos.x, pl_pos.y)),
 		get_slope(shot), get_slope(new_line(new_pos(pl_pos.x,
 			pl_pos.y), new_pos(pl_pos.x, pl_pos.y))));
-		if (!isnan(in.x && !isnan(in.y)))
+		if (!isnan(in.x) && !isnan(in.y))
 		{
 			if (!mlx->inventory.shield)
 				mlx->player.life--;
