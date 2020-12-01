@@ -19,6 +19,8 @@
 
 int		mouse_hook(int x, int y, t_mlx *mlx)
 {
+
+	mlx->player.old_dir.x = mlx->mouse.x;
 	mlx->mouse.x = x;
 	mlx->mouse.y = y;
 	return (0);
@@ -49,35 +51,35 @@ int		ft_key_hook(int key, t_mlx *mlx)
 		mlx->ducking = 1;
 		mlx->moving = 1;
 	}
-	// shoot_key(key, mlx);
+	if (key == M_KEY || key == M_LN)
+		mlx->menu.on = !mlx->menu.on;
+	if (key == E_KEY || key == E_LN)
+		pick_up_loot(mlx);
 	menu_key_hook(key, mlx);
 	return (0);
 }
 
-void			shoot_key(int key, int x, int y, t_mlx *mlx)
+int			shoot_key(int key, int x, int y, t_mlx *mlx)
 {
-	x++;
-	y++;
+	x += 0;
+	y += 0;
 	if (key == BUT1_KEY)
 	{
 		if (mlx->inventory.ammo || mlx->weapon.anim == 15)
 		{
 			if (mlx->weapon.anim < 15)
 			{
-				if (!mlx->music.mute)
-					system("afplay ./music/gun.mp3 &");
-				// mlx->anim.shoot = 1;
+				mlx->anim.shoot = 1;
 				mlx->inventory.ammo--;
-			// 	shoot_direction(mlx);
+				shoot_direction(mlx);
 			}
-			// shoot(mlx);
-			else if (mlx->weapon.anim <= 15 && !mlx->music.mute)
-				system("afplay ./music/stab.mp3 &");
+			shoot(mlx);
 			mlx->anim.started = 1;
 		}
 		else if (mlx->weapon.anim < 15 && !mlx->music.mute)
 			system("afplay ./music/click.mp3 &");
 	}
+	return (0);
 }
 
 int		stop_movement(int key, t_mlx *mlx)

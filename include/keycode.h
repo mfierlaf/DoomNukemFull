@@ -14,15 +14,43 @@
 
 # define KEYCODE_H
 
-
-# define BACKGROUND 1
-# define HAND_GUN 2
-# define MUTE 3
-# define KNIFE 4
-# define GUN 5
-# define BIG_GUN 6
-# define BLUE_KEY 7
-# define SHIELD 8
+# define PRIEST_1 0
+# define PRIEST_2 1
+# define PRIEST_3 2
+# define PRIEST_4 3
+# define PRIEST_DEAD_1 4
+# define PRIEST_DEAD_2 5
+# define PRIEST_DEAD_3 6
+# define PRIEST_DEAD_4 7
+# define PRIEST_DEAD_5 8
+# define PRIEST_DEAD_6 9
+# define PRIEST_DEAD_7 10
+# define MECH_1 11
+# define MECH_2 12
+# define MECH_3 13
+# define MECH_4 14
+# define MECH_5 15
+# define MECH_6 16
+# define MECH_7 17
+# define MECH_DEAD_1 18
+# define MECH_DEAD_2 19
+# define MECH_DEAD_3 20
+# define MECH_DEAD_4 21
+# define NORMAL_1 22
+# define NORMAL_2 23
+# define NORMAL_3 24
+# define NORMAL_4 25
+# define NORMAL_5 26
+# define NORMAL_6 27
+# define NORMAL_7 28
+# define NORMAL_DEAD_1 29
+# define NORMAL_DEAD_2 30
+# define NORMAL_DEAD_3 31
+# define NORMAL_DEAD_4 32
+# define NORMAL_DEAD_5 33
+# define NORMAL_DEAD_6 34
+# define NORMAL_DEAD_7 35
+# define NORMAL_DEAD_8 36
 
 # define ANIM_NB 20
 # define CARABIN_ANIM_0 0
@@ -46,8 +74,22 @@
 # define KNIFE_ANIM_3 18
 # define KNIFE_ANIM_4 19
 
-
-
+# define BRICK 37
+# define BACKGROUND 38
+# define HAND_GUN 39
+# define MUTE 40
+# define KNIFE 41
+# define GUN 42
+# define BIG_GUN 43
+# define BLUE_KEY 45
+# define SHIELD 46
+# define ARMOR 47
+# define CHICKEN_LEG 48
+# define MED_KIT 49
+# define AMMO 50
+# define GOLDEN_KEY 51
+# define CHALICE 52
+# define BULLET 53
 
 # define NOEVENTMASK 0L
 # define KPMASK (1L<<0)

@@ -12,6 +12,25 @@
 
 #include "../include/doom_nukem.h"
 
+static int		read_object(int i, char **split_line, t_mlx *mlx)
+{
+	printf("i: %d\n", i);
+	mlx->objects[i].pos.x = atof(split_line[1]);
+	mlx->objects[i].pos.y = atof(split_line[2]);
+	mlx->objects[i].sector = ft_atoi(split_line[3]);
+	mlx->objects[i].tex = ft_atoi(split_line[4]);
+	mlx->objects[i].life = ft_atoi(split_line[5]);
+	// mlx->objects[i].lootable = ft_atoi(split_line[6]);
+	sprite_var(i, mlx);
+	printf("life: %d\n", mlx->objects[i].life);
+	printf("obj.x: %f\n", mlx->objects[i].pos.x);
+	printf("obj.y: %f\n", mlx->objects[i].pos.y);
+	printf("isbot: %d\n", mlx->objects[i].isbot);
+	printf("tex: %d\n", mlx->objects[i].tex);
+	printf("init tex: %d\n", mlx->objects[i].initial_tex);
+	return (i++);
+}
+
 struct	xy*	read_map(char **split_line, t_mlx *mlx)
 {
 	int			num_vertices;
@@ -89,9 +108,11 @@ void		load_data(t_mlx *mlx)
 	int			n;
 	int			j;
 	int			k;
+	int			i;
 
 	j = 0;
 	k = -1;
+	i = 1;
 	if ((fd = open("./map-clear.txt", O_RDONLY)) < 0)
 		kill_mlx("ERROR IN MAP\n", mlx);
 	while (get_next_line(fd, &line) > 0)
@@ -104,6 +125,8 @@ void		load_data(t_mlx *mlx)
 			vert = read_vertices(&j, vert, split_line);
 		else if (split_line[0][0] == 's')
 			n = read_sector(&k, vert, split_line, mlx);
+		else if (split_line[0][0] == 'o')
+			i = read_object(i, split_line, mlx);
 		else if (split_line[0][0] == 'p')
 			read_player(n, split_line, mlx);
 	}
@@ -131,7 +154,48 @@ void		load_texture(t_mlx *mlx)
 	mlx->tex[4].data = (int *)mlx_get_data_addr(mlx->tex[4].img, &mlx->tex[4].bpp, &mlx->tex[4].sl, &mlx->tex[4].endian);
 	mlx->tex[5].img = mlx_xpm_file_to_image(mlx->mlx, "textures/colors_big_reversed.xpm", &width, &height);
 	mlx->tex[5].data = (int *)mlx_get_data_addr(mlx->tex[5].img, &mlx->tex[5].bpp, &mlx->tex[5].sl, &mlx->tex[5].endian);
-	mlx->tab_bmp[0] = new_bmp("textures/brick.bmp");
+	
+
+	mlx->tab_bmp[PRIEST_1] = new_bmp("textures/hitler_0_1.bmp");
+	mlx->tab_bmp[PRIEST_2] = new_bmp("textures/hitler_0_2.bmp");
+	mlx->tab_bmp[PRIEST_3] = new_bmp("textures/hitler_0_3.bmp");
+	mlx->tab_bmp[PRIEST_4] = new_bmp("textures/hitler_0_4.bmp");
+	mlx->tab_bmp[PRIEST_DEAD_1] = new_bmp("textures/hitler_1_0.bmp");
+	mlx->tab_bmp[PRIEST_DEAD_2] = new_bmp("textures/hitler_1_1.bmp");
+	mlx->tab_bmp[PRIEST_DEAD_3] = new_bmp("textures/hitler_1_2.bmp");
+	mlx->tab_bmp[PRIEST_DEAD_4] = new_bmp("textures/hitler_1_3.bmp");
+	mlx->tab_bmp[PRIEST_DEAD_5] = new_bmp("textures/hitler_1_4.bmp");
+	mlx->tab_bmp[PRIEST_DEAD_6] = new_bmp("textures/hitler_1_5.bmp");
+	mlx->tab_bmp[PRIEST_DEAD_7] = new_bmp("textures/hitler_1_6.bmp");
+
+	mlx->tab_bmp[MECH_1] = new_bmp("textures/hitler_2_0.bmp");
+	mlx->tab_bmp[MECH_2] = new_bmp("textures/hitler_2_1.bmp");
+	mlx->tab_bmp[MECH_3] = new_bmp("textures/hitler_2_2.bmp");
+	mlx->tab_bmp[MECH_4] = new_bmp("textures/hitler_2_3.bmp");
+	mlx->tab_bmp[MECH_5] = new_bmp("textures/hitler_2_4.bmp");
+	mlx->tab_bmp[MECH_6] = new_bmp("textures/hitler_2_5.bmp");
+	mlx->tab_bmp[MECH_7] = new_bmp("textures/hitler_2_6.bmp");
+	mlx->tab_bmp[MECH_DEAD_1] = new_bmp("textures/hitler_3_0.bmp");
+	mlx->tab_bmp[MECH_DEAD_2] = new_bmp("textures/hitler_3_1.bmp");
+	mlx->tab_bmp[MECH_DEAD_3] = new_bmp("textures/hitler_3_2.bmp");
+	mlx->tab_bmp[MECH_DEAD_4] = new_bmp("textures/hitler_3_3.bmp");
+
+	mlx->tab_bmp[NORMAL_1] = new_bmp("textures/hitler_4_0.bmp");
+	mlx->tab_bmp[NORMAL_2] = new_bmp("textures/hitler_4_1.bmp");
+	mlx->tab_bmp[NORMAL_3] = new_bmp("textures/hitler_4_2.bmp");
+	mlx->tab_bmp[NORMAL_4] = new_bmp("textures/hitler_4_3.bmp");
+	mlx->tab_bmp[NORMAL_5] = new_bmp("textures/hitler_4_4.bmp");
+	mlx->tab_bmp[NORMAL_6] = new_bmp("textures/hitler_4_5.bmp");
+	mlx->tab_bmp[NORMAL_7] = new_bmp("textures/hitler_4_6.bmp");
+	mlx->tab_bmp[NORMAL_DEAD_1] = new_bmp("textures/hitler_5_0.bmp");
+	mlx->tab_bmp[NORMAL_DEAD_2] = new_bmp("textures/hitler_5_1.bmp");
+	mlx->tab_bmp[NORMAL_DEAD_3] = new_bmp("textures/hitler_5_2.bmp");
+	mlx->tab_bmp[NORMAL_DEAD_4] = new_bmp("textures/hitler_5_3.bmp");
+	mlx->tab_bmp[NORMAL_DEAD_5] = new_bmp("textures/hitler_5_4.bmp");
+	mlx->tab_bmp[NORMAL_DEAD_6] = new_bmp("textures/hitler_5_5.bmp");
+	mlx->tab_bmp[NORMAL_DEAD_7] = new_bmp("textures/hitler_5_6.bmp");
+	mlx->tab_bmp[NORMAL_DEAD_8] = new_bmp("textures/hitler_5_7.bmp");
+
 	mlx->tab_bmp[BACKGROUND] = new_bmp("textures/doom.bmp");
 	mlx->tab_bmp[HAND_GUN] = new_bmp("textures/hand_gun.bmp");
 	mlx->tab_bmp[MUTE] = new_bmp("textures/mute.bmp");
@@ -140,6 +204,16 @@ void		load_texture(t_mlx *mlx)
 	mlx->tab_bmp[BIG_GUN] = new_bmp("textures/big_gun.bmp");
 	mlx->tab_bmp[BLUE_KEY] = new_bmp("textures/blue_key.bmp");
 	mlx->tab_bmp[SHIELD] = new_bmp("textures/shield.bmp");
+	mlx->tab_bmp[ARMOR] = new_bmp("textures/armor.bmp");
+	mlx->tab_bmp[BRICK] = new_bmp("textures/brick.bmp");
+	mlx->tab_bmp[CHICKEN_LEG] = new_bmp("textures/chicken_leg.bmp");
+	mlx->tab_bmp[MED_KIT] = new_bmp("textures/med_kit.bmp");
+	mlx->tab_bmp[AMMO] = new_bmp("textures/ammo.bmp");
+	mlx->tab_bmp[GOLDEN_KEY] = new_bmp("textures/golden_key.bmp");
+	mlx->tab_bmp[CHALICE] = new_bmp("textures/chalice.bmp");
+	mlx->tab_bmp[BULLET] = new_bmp("textures/bullet.bmp");
+
+
 	mlx->tab_anim[CARABIN_ANIM_0] = new_bmp("textures/carabin_0.bmp");
 	mlx->tab_anim[CARABIN_ANIM_1] = new_bmp("textures/carabin_1.bmp");
 	mlx->tab_anim[CARABIN_ANIM_2] = new_bmp("textures/carabin_2.bmp");

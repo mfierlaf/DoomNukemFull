@@ -17,11 +17,12 @@ void		enter_menu(t_mlx *mlx)
 	if (mlx->menu.gun_pointer == 0)
 	{
 		mlx->menu.on = 0;
-		// if (mlx->player->is_dead > 0)
-		// {
-		// 	init(mlx);
-		// 	mlx->menu.on = 0;
-		// }
+		if (mlx->player.is_dead > 0)
+		{
+			init(mlx);
+			load_data(mlx);
+			mlx->menu.on = 0;
+		}
 	}
 	if (mlx->menu.gun_pointer == 1)
 	{
@@ -53,7 +54,7 @@ void		music_menu(int key, t_mlx *mlx)
 	}
 }
 
-void		switch_wepon(int key, t_mlx *mlx)
+void		switch_weapon(int key, t_mlx *mlx)
 {
 	if (key == K1_KEY || key == K1_LN)
 		mlx->weapon.anim = 15;
@@ -77,10 +78,11 @@ void		menu_key_hook(int key, t_mlx *mlx)
 			music_menu(key, mlx);
 		if (mlx->menu.gun_pointer == 4)
 		{
-			if ((key == LEFT_KEY || key == LEFT_ARROW) && mlx->menu.bot_level < 20000)
-				mlx->menu.bot_level += 6000;
-			else if ((key == RIGHT_KEY || key == RIGHT_ARROW) && mlx->menu.bot_level >= 6000)
-				mlx->menu.bot_level -= 6000;
+			if ((key == LEFT_KEY || key == LEFT_ARROW) && mlx->menu.bot_level < 38000)
+				mlx->menu.bot_level += 10000;
+			else if ((key == RIGHT_KEY || key == RIGHT_ARROW) && mlx->menu.bot_level >= 18000)
+				mlx->menu.bot_level -= 10000;
+			printf("botlvl: %d\n", mlx->menu.bot_level);
 		}
 		if (key == RTN_KEY || key == ENTR_LN)
 			enter_menu(mlx);
@@ -88,5 +90,5 @@ void		menu_key_hook(int key, t_mlx *mlx)
 			system("afplay ./music/beep.mp3 &");
 		menu(mlx);
 	}
-	switch_wepon(key, mlx);
+	switch_weapon(key, mlx);
 }

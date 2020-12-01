@@ -84,6 +84,7 @@ void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
 			* TEXTURE_SIZE + (txtz % TEXTURE_SIZE)];
 	}
 	draw_vline(mlx, draw, x);
+	draw_sprites(x, mlx);
 }
 
 void	drawing(t_mlx *mlx, t_draw *draw)
@@ -156,19 +157,19 @@ int		perspective(t_mlx *mlx, t_draw *draw, int s)
 	return (0);
 }
 
-void	players_view_tz2(t_mlx *mlx, t_draw *draw)
+void	players_view_tz2(t_draw *draw)
 {
 	draw->tx1 = draw->i1.x;
 	draw->tz1 = draw->i1.y;
 }
 
-void	players_view(t_mlx *mlx, t_draw *draw)
+void	players_view(t_draw *draw)
 {
 	if (draw->tz1 < draw->nearz)
 	{
 		if (draw->i1.y > 0)
 		{
-			players_view_tz2(mlx, draw);
+			players_view_tz2(draw);
 		}
 		else
 		{
@@ -191,7 +192,7 @@ void	players_view(t_mlx *mlx, t_draw *draw)
 	}
 }
 
-void	behind_player(t_mlx *mlx, t_draw *draw)
+void	behind_player(t_draw *draw)
 {
 	float farz;
 	float nearside;
@@ -207,7 +208,7 @@ void	behind_player(t_mlx *mlx, t_draw *draw)
 			-nearside, draw->nearz, -farside, farz);
 		draw->i2 = Intersect(draw->tx1, draw->tz1, draw->tx2, draw->tz2,\
 			nearside, draw->nearz, farside, farz);
-		players_view(mlx, draw);
+		players_view(draw);
 	}
 }
 
@@ -242,7 +243,7 @@ void	render(t_mlx *mlx, t_draw *draw)
 		render_declaration(mlx, draw, s);
 		if (draw->tz1 <= 0 && draw->tz2 <= 0)
 			continue;
-		behind_player(mlx, draw);
+		behind_player(draw);
 		draw->check = perspective(mlx, draw, s);
 		if (draw->check == 0)
 		{
@@ -293,9 +294,10 @@ void	draw_screen(t_mlx *mlx)
 		draw.ytop[x] = 0;
 	}
 	x = -1;
-	if ((draw.renderedsectors = malloc(sizeof(int) * mlx->num_sectors))\
-		== NULL)
-		return (NULL);
+	draw.renderedsectors = malloc(sizeof(int) * mlx->num_sectors);
+	// if ((draw.renderedsectors = malloc(sizeof(int) * mlx->num_sectors))\
+	// 	== NULL)
+	// 	return (NULL);
 	while (++x < W)
 	{
 		draw.ybottom[x] = H - 1;
