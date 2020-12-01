@@ -13,7 +13,7 @@
 #include "../include/doom_nukem.h"
 
 void                vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig,
-    t_pos sp_end, int draw_start, int draw_end, t_pos inter, t_bmp *curr_bmp)
+    t_pos sp_end, int draw_start, int draw_end, t_pos inter, t_bmp *curr_bmp, int i)
 {
     int             y;
     int             y_max;
@@ -44,7 +44,11 @@ void                vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig,
             {
                 color = get_color(curr_bmp, (int)rel_x, (int)rel_y);
                 if (color != FILTER_COLOR)
+                {
+                    if (mlx->sectors[mlx->objects[i].sector].brightness == 0)
+                        color = (color >> 1) & 8355711;
                     mlx->data[x + y * W] = color;
+                }
             }
         }
         y++;
@@ -103,7 +107,7 @@ void draw_sprites(int x, t_mlx *mlx)
             draw_end = draw_start + line_height;
             bot(i, mlx);
             vertical_sprite_lines(mlx, x, a, b, draw_start, draw_end,
-                                inter, mlx->tab_bmp[mlx->objects[i].tex]);
+                                inter, mlx->tab_bmp[mlx->objects[i].tex], i);
         }
     }
 }

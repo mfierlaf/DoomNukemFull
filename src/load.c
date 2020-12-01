@@ -47,12 +47,14 @@ struct	xy*	read_vertices(int *j, struct xy *vert, char **split_line)
 {
 	int			i;
 
-	i = 1;
-	while (split_line[++i])
+	i = 2;
+	while (split_line[i])
 	{
+		vert[*j].tex = ft_atoi(split_line[i + 1]);
 		vert[*j].y = atof(split_line[1]);
 		vert[*j].x = atof(split_line[i]);
 		++*j;
+		i += 2;
 	}
 	return (vert);
 }

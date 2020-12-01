@@ -225,7 +225,7 @@ typedef struct s_sector
 {
     int brightness;
     float floor, ceil;
-    struct xy { float x,y; } *vertex; // Each vertex has an x and y coordinate
+    struct xy { float x,y, tex; } *vertex; // Each vertex has an x and y coordinate
     signed char *neighbors;           // Each edge may have a corresponding neighboring sector
     unsigned npoints;                 // How many vertexes there are
 } t_sector;
@@ -321,6 +321,7 @@ typedef struct s_draw
   int nya;
   int nyb;
   int cnya;
+  int tex;
 }               t_draw;
 
 typedef	struct s_mlx

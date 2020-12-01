@@ -75,7 +75,7 @@ void        vertical_line(t_draw *draw, int x, int y1, int y2, struct Scaler ty 
     for (int y = y1; y <= y2; ++y)
     {
       mlx->txty = Scaler_Next(&ty);
-      color = get_color(mlx->tab_bmp[BRICK], (txtx % mlx->tab_bmp[BRICK]->header.width_px), (mlx->txty % mlx->tab_bmp[BRICK]->header.height_px));
+      color = get_color(mlx->tab_bmp[draw->tex], (txtx % mlx->tab_bmp[draw->tex]->header.width_px), (mlx->txty % mlx->tab_bmp[draw->tex]->header.height_px));
       if (mlx->sectors[draw->now.sectorno].brightness == 0)
         color = (color >> 1) & 8355711;
       if (color != FILTER_COLOR)
