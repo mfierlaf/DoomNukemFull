@@ -69,7 +69,6 @@ void			draw_dashed_line_sector(t_mlx *mlx)
 		}
 		sector++;
 	}
-	printf("BONJOUR mouseX : %f mouseY : %f\n", mlx->mouse_map.x, mlx->mouse_map.y);
 	draw_dashed_wall(mlx, mlx->editor.closest_sector, mlx->editor.closest_vertex, APPLE);
 	draw_dashed_wall(mlx, mlx->editor.closest_sector2, mlx->editor.closest_vertex2, RED);
 }
@@ -253,4 +252,6 @@ void		map_editor(t_mlx *mlx)
 	}
 	if (mlx->editor.buttons[BUTTON_ADD_SECTOR].toggled)
 		draw_dashed_line_sector(mlx);
+	else if (mlx->editor.buttons[BUTTON_MOD_VERTEX].toggled)
+		ed_mod_vertex(mlx);
 }

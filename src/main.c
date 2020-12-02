@@ -46,7 +46,7 @@ int	main(void)
 	mlx_hook(mlx->win, KP, KPMASK, ft_key_hook, mlx);
 	mlx_hook(mlx->win, KEYRELEASE, KEYRELEASEMASK, stop_movement, mlx);
 	mlx_hook(mlx->win, DESTROYNOTIFY, STRUCTURENOTIFYMASK, kill_mlx, mlx);
-	// menu(mlx);
+	 menu(mlx);
 	music(mlx);
 	mlx_loop_hook(mlx->mlx, expose, mlx);
 	mlx_loop(mlx->mlx);

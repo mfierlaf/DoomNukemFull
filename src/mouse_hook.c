@@ -93,6 +93,12 @@ int			mouse_release(int key, int x, int y, t_mlx *mlx)
 		mlx->events.but1 = 0;
 		if (mlx->editor.on)
 		{
+			if (mlx->editor.buttons[BUTTON_MOD_VERTEX].toggled &&
+					 mlx->editor.moving_vertex)
+			{
+				mlx->editor.moving_vertex = 0;
+				ed_reset_to_be_moved(mlx);
+			}
 			while (++button < NB_BUTTON)
 			{
 				if (!mlx->editor.buttons[button].toggled)
@@ -120,9 +126,15 @@ void			shoot_key(int key, int x, int y, t_mlx *mlx)
 			mlx->editor.old_y = y;
 			if (button = check_button_pressed(mlx))
 			{
-				if (button == 2)
+				if (button == BUTTON_ADD_SECTOR || 
+					button == BUTTON_MOD_VERTEX)
 					toggle_button(mlx, button);
 				mlx->editor.buttons[button].color = PRESSED_BUTTON_COLOUR;
+			}
+			else if (mlx->editor.buttons[BUTTON_MOD_VERTEX].toggled &&
+					 !mlx->editor.moving_vertex)
+			{
+				mlx->editor.moving_vertex = ed_auth_move_vertex(mlx);
 			}
 		}
 		else

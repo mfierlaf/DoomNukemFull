@@ -64,6 +64,7 @@
 # define DEFAULT_BUTTON_COLOUR RED
 # define PRESSED_BUTTON_COLOUR ORANGE
 # define BUTTON_ADD_SECTOR 2
+# define BUTTON_MOD_VERTEX 3
 
 # define NB_SECT_MAX 50
 
@@ -213,7 +214,7 @@ typedef struct			s_player
 typedef struct			s_sector
 {
 	float floor, ceil;
-	struct xy { float x,y; } *vertex; // Each vertex has an x and y coordinate
+	struct xy { float x,y; int to_be_moved; } *vertex; // Each vertex has an x and y coordinate
 	signed char			*neighbors;           // Each edge may have a corresponding neighboring sector
 	unsigned			npoints;                 // How many vertexes there are
 }						t_sector;
@@ -272,6 +273,7 @@ typedef struct			s_editor
 	t_fpoint			end;
 	t_button				buttons[NB_BUTTON];
 	int					button_toggled;
+	int					moving_vertex;
 }						t_editor;
 
 typedef	struct 			s_event
@@ -352,6 +354,14 @@ t_bmp					*read_header_bmp(char *file);
 */
 
 void					draw_screen(t_mlx *mlx);
+
+/*
+** ED_MOD_MAP.C
+*/
+
+int					ed_auth_move_vertex(t_mlx *mlx);
+void					ed_mod_vertex(t_mlx *mlx);
+void					ed_reset_to_be_moved(t_mlx *mlx);
 
 /*
 ** EXPOSE.C
