@@ -102,12 +102,23 @@ void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
 void	drawing(t_mlx *mlx, t_draw *draw)
 {
 	int x;
+	int i;
+	t_pos pl_pos;
 
 	x = draw->beginx - 1;
 	draw->ya_int = Scaler_Init(draw->x1, draw->beginx, draw->x2,\
 		draw->y1a, draw->y2a);
 	draw->yb_int = Scaler_Init(draw->x1, draw->beginx, draw->x2,\
 			draw->y1b, draw->y2b);
+	pl_pos.x = mlx->player.where.x;
+	pl_pos.y = mlx->player.where.y;
+	i = -1;
+	while (++i < NB_OBJ)
+	{
+		mlx->objects[i].order = i;
+		mlx->objects[i].distance = get_dist(pl_pos, mlx->objects[i].pos);
+	}
+	sort_sprites(mlx);
 	while (++x <= draw->endx)
 	{
 		if (mlx->sectors[draw->now.sectorno].sky && draw->now.sectorno == (int)mlx->player.sector)

@@ -94,6 +94,14 @@
 # define GATE 55
 # define MOSSY 56
 # define TCASTRON 57
+# define MULTI_1 58
+# define MULTI_2 59
+# define MULTI_3 60
+# define MULTI_4 61
+# define MULTI_5 62
+# define MULTI_6 63
+# define MULTI_7 64
+# define MULTI_8 65
 
 # define NOEVENTMASK 0L
 # define KPMASK (1L<<0)
