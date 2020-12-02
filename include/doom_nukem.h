@@ -25,8 +25,8 @@
 # define K4_LN 39
 # define K5_LN 40
 
-# define NB_OBJ 2
-# define DIFF_BMP 58
+# define NB_OBJ 4
+# define DIFF_BMP 66
 # define FILTER_COLOR 0x980088
 # define W 1200
 # define H 800
@@ -446,6 +446,8 @@ void      draw_hud(t_mlx *mlx);
 int      shoot_key(int key, int x, int y, t_mlx *mlx);
 //SPRITES.C
 void draw_sprites(int x, t_mlx *mlx);
+void sort_sprites(t_mlx *mlx);
+int  double_swap(t_mlx *mlx, int i, int j);
 // BOTS.C
 void        bot(int sprite, t_mlx *mlx);
 // ANIM.C

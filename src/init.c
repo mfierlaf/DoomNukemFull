@@ -14,48 +14,48 @@
 
 void		enemy_anim_num(int sprite, t_mlx *mlx)
 {
-	if (mlx->objects[sprite].tex == PRIEST_1)
+	if (mlx->objects[mlx->objects[sprite].order].tex == PRIEST_1)
 	{
-		mlx->objects[sprite].nb_anim = 7;
-		mlx->objects[sprite].nb_anim_walk = 4;
+		mlx->objects[mlx->objects[sprite].order].nb_anim = 7;
+		mlx->objects[mlx->objects[sprite].order].nb_anim_walk = 4;
 	}
-	else if (mlx->objects[sprite].tex == MECH_1)
+	else if (mlx->objects[mlx->objects[sprite].order].tex == MECH_1)
 	{
-		mlx->objects[sprite].nb_anim = 4;
-		mlx->objects[sprite].nb_anim_walk = 7;
+		mlx->objects[mlx->objects[sprite].order].nb_anim = 4;
+		mlx->objects[mlx->objects[sprite].order].nb_anim_walk = 7;
 	}
-	else if (mlx->objects[sprite].tex == NORMAL_1)
+	else if (mlx->objects[mlx->objects[sprite].order].tex == NORMAL_1)
 	{
-		mlx->objects[sprite].nb_anim = 8;
-		mlx->objects[sprite].nb_anim_walk = 7;
+		mlx->objects[mlx->objects[sprite].order].nb_anim = 8;
+		mlx->objects[mlx->objects[sprite].order].nb_anim_walk = 7;
 	}
 	else
 	{
-		mlx->objects[sprite].nb_anim = 1;
-		mlx->objects[sprite].nb_anim_walk = 1;
+		mlx->objects[mlx->objects[sprite].order].nb_anim = 1;
+		mlx->objects[mlx->objects[sprite].order].nb_anim_walk = 1;
 	}
 }
 
 void		sprite_var(int sprite, t_mlx *mlx)
 {
-	if (mlx->objects[sprite].tex == CHICKEN_LEG ||
-			mlx->objects[sprite].tex == MED_KIT ||
-			mlx->objects[sprite].tex == BIG_GUN ||
-			mlx->objects[sprite].tex == GUN ||
-			mlx->objects[sprite].tex == HAND_GUN ||
-			mlx->objects[sprite].tex == AMMO ||
-			mlx->objects[sprite].tex == SHIELD ||
-			mlx->objects[sprite].tex == BLUE_KEY ||
-			mlx->objects[sprite].tex == GOLDEN_KEY ||
-			mlx->objects[sprite].tex == CHALICE)
-		mlx->objects[sprite].lootable = 1;
+	if (mlx->objects[mlx->objects[sprite].order].tex == CHICKEN_LEG ||
+			mlx->objects[mlx->objects[sprite].order].tex == MED_KIT ||
+			mlx->objects[mlx->objects[sprite].order].tex == BIG_GUN ||
+			mlx->objects[mlx->objects[sprite].order].tex == GUN ||
+			mlx->objects[mlx->objects[sprite].order].tex == HAND_GUN ||
+			mlx->objects[mlx->objects[sprite].order].tex == AMMO ||
+			mlx->objects[mlx->objects[sprite].order].tex == SHIELD ||
+			mlx->objects[mlx->objects[sprite].order].tex == BLUE_KEY ||
+			mlx->objects[mlx->objects[sprite].order].tex == GOLDEN_KEY ||
+			mlx->objects[mlx->objects[sprite].order].tex == CHALICE)
+		mlx->objects[mlx->objects[sprite].order].lootable = 1;
 	else
-		mlx->objects[sprite].lootable = 0;
-	if (mlx->objects[sprite].life > 0)
-		mlx->objects[sprite].isbot = 1;
+		mlx->objects[mlx->objects[sprite].order].lootable = 0;
+	if (mlx->objects[mlx->objects[sprite].order].life > 0)
+		mlx->objects[mlx->objects[sprite].order].isbot = 1;
 	else
-		mlx->objects[sprite].isbot = 0;
-	mlx->objects[sprite].initial_tex = mlx->objects[sprite].tex;
+		mlx->objects[mlx->objects[sprite].order].isbot = 0;
+	mlx->objects[mlx->objects[sprite].order].initial_tex = mlx->objects[mlx->objects[sprite].order].tex;
 	enemy_anim_num(sprite, mlx);
 }
 

@@ -93,4 +93,6 @@ char			*ft_strjoin_free(char const *s1, char const *s2, int n);
 int				get_next_line(const int fd, char **line);
 void			ft_printf(const char *s, ...);
 size_t			ft_strlcpy(char *dst, const char*src, size_t size);
+void			ft_swap_int(int *a, int *b);
+void			ft_swap_float(float *a, float *b);
 #endif

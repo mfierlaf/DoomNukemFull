@@ -28,6 +28,7 @@ void				shoot_direction(t_mlx *mlx)
 	mlx->objects[0].pos.y = mlx->player.where.y;
 	mlx->objects[0].tex = -1;
 	mlx->objects[0].sector = 0;
+	// mlx->objects[0].order = 0;
 }
 
 void				send_bullet(t_mlx *mlx)
@@ -108,16 +109,16 @@ void				shoot(t_mlx *mlx)
 		while (sprite < NB_OBJ)
 		{
 			if (mlx->weapon.anim >= 15)
-				inter = get_intersection(straight_ray, mlx->objects[sprite].sprite_line, get_slope(straight_ray), get_slope(mlx->objects[sprite].sprite_line));
+				inter = get_intersection(straight_ray, mlx->objects[mlx->objects[sprite].order].sprite_line, get_slope(straight_ray), get_slope(mlx->objects[mlx->objects[sprite].order].sprite_line));
 			else
-				inter = get_intersection(small_ray, mlx->objects[sprite].sprite_line, get_slope(small_ray), get_slope(mlx->objects[sprite].sprite_line));
-			if (!isnan(inter.x) && mlx->objects[sprite].life > 0) //isinf?
+				inter = get_intersection(small_ray, mlx->objects[mlx->objects[sprite].order].sprite_line, get_slope(small_ray), get_slope(mlx->objects[mlx->objects[sprite].order].sprite_line));
+			if (!isnan(inter.x) && mlx->objects[mlx->objects[sprite].order].life > 0) //isinf?
 			{
-				mlx->objects[sprite].life -= mlx->weapon.damage;
-				if (mlx->objects[sprite].life <= 0)
+				mlx->objects[mlx->objects[sprite].order].life -= mlx->weapon.damage;
+				if (mlx->objects[mlx->objects[sprite].order].life <= 0)
 				{
-					mlx->objects[sprite].initial_tex = mlx->objects[sprite].initial_tex + mlx->objects[sprite].nb_anim_walk;
-					mlx->objects[sprite].isbot = 2;
+					mlx->objects[mlx->objects[sprite].order].initial_tex = mlx->objects[mlx->objects[sprite].order].initial_tex + mlx->objects[mlx->objects[sprite].order].nb_anim_walk;
+					mlx->objects[mlx->objects[sprite].order].isbot = 2;
 				}
 				if (!mlx->music.mute)
 					system("afplay ./music/death.mp3 &");

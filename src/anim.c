@@ -37,14 +37,14 @@ void				sprite_anim_death(int sprite, t_mlx *mlx)
 {
 	if (mlx->sleep.death >= 30000)
 	{
-		mlx->objects[sprite].tex = mlx->objects[sprite].initial_tex + mlx->anim.curr_anim;
-		printf("tex: %d\n", mlx->objects[sprite].tex);
+		mlx->objects[mlx->objects[sprite].order].tex = mlx->objects[mlx->objects[sprite].order].initial_tex + mlx->anim.curr_anim;
+		printf("tex: %d\n", mlx->objects[mlx->objects[sprite].order].tex);
 		if (mlx->anim.curr_anim <
-			mlx->objects[sprite].nb_anim - 1)
+			mlx->objects[mlx->objects[sprite].order].nb_anim - 1)
 			mlx->anim.curr_anim++;
 		else
 		{
-			mlx->objects[sprite].isbot = 0;
+			mlx->objects[mlx->objects[sprite].order].isbot = 0;
 			mlx->anim.curr_anim = 0;
 		}
 		mlx->sleep.death = 0;
@@ -55,8 +55,8 @@ void				sprite_anim_walk(int sprite, t_mlx *mlx)
 {
 	if (mlx->sleep.walk >= 30000)
 	{
-		mlx->objects[sprite].tex = mlx->objects[sprite].initial_tex + mlx->anim.curr_anim_walk;
-		if (mlx->anim.curr_anim_walk < mlx->objects[sprite].nb_anim_walk - 1)
+		mlx->objects[mlx->objects[sprite].order].tex = mlx->objects[mlx->objects[sprite].order].initial_tex + mlx->anim.curr_anim_walk;
+		if (mlx->anim.curr_anim_walk < mlx->objects[mlx->objects[sprite].order].nb_anim_walk - 1)
 			mlx->anim.curr_anim_walk++;
 		else
 			mlx->anim.curr_anim_walk = 0;

@@ -12,23 +12,29 @@
 
 #include "../include/doom_nukem.h"
 
-static int		read_object(int i, char **split_line, t_mlx *mlx)
+static void		read_object(int *i, char **split_line, t_mlx *mlx)
 {
-	printf("i: %d\n", i);
-	mlx->objects[i].pos.x = atof(split_line[1]);
-	mlx->objects[i].pos.y = atof(split_line[2]);
-	mlx->objects[i].sector = ft_atoi(split_line[3]);
-	mlx->objects[i].tex = ft_atoi(split_line[4]);
-	mlx->objects[i].life = ft_atoi(split_line[5]);
-	// mlx->objects[i].lootable = ft_atoi(split_line[6]);
-	sprite_var(i, mlx);
-	printf("life: %d\n", mlx->objects[i].life);
-	printf("obj.x: %f\n", mlx->objects[i].pos.x);
-	printf("obj.y: %f\n", mlx->objects[i].pos.y);
-	printf("isbot: %d\n", mlx->objects[i].isbot);
-	printf("tex: %d\n", mlx->objects[i].tex);
-	printf("init tex: %d\n", mlx->objects[i].initial_tex);
-	return (i++);
+	t_pos pl_pos;
+
+	pl_pos.x = mlx->player.where.x;
+	pl_pos.y = mlx->player.where.y;
+	printf("i: %d\n", *i);
+	mlx->objects[*i].pos.x = atof(split_line[1]);
+	mlx->objects[*i].pos.y = atof(split_line[2]);
+	mlx->objects[*i].sector = ft_atoi(split_line[3]);
+	mlx->objects[*i].tex = ft_atoi(split_line[4]);
+	mlx->objects[*i].life = ft_atoi(split_line[5]);
+	mlx->objects[*i].order = *i;
+	mlx->objects[*i].distance = get_dist(pl_pos, mlx->objects[*i].pos);
+	sprite_var(*i, mlx);
+	printf("obj.x: %f\n", mlx->objects[*i].pos.x);
+	printf("obj.y: %f\n", mlx->objects[*i].pos.y);
+	printf("sector: %d\n", mlx->objects[*i].sector);
+	printf("tex: %d\n", mlx->objects[*i].tex);
+	printf("life: %d\n", mlx->objects[*i].life);
+	printf("order: %d\n", mlx->objects[*i].order);
+	// printf("init tex: %d\n", mlx->objects[*i].initial_tex);
+	++*i;
 }
 
 struct	xy*	read_map(char **split_line, t_mlx *mlx)
@@ -136,7 +142,7 @@ void		load_data(t_mlx *mlx)
 		else if (split_line[0][0] == 's')
 			n = read_sector(&k, vert, split_line, mlx);
 		else if (split_line[0][0] == 'o')
-			i = read_object(i, split_line, mlx);
+			read_object(&i, split_line, mlx);
 		else if (split_line[0][0] == 'p')
 			read_player(n, split_line, mlx);
 	}
@@ -207,6 +213,15 @@ void		load_texture(t_mlx *mlx)
 	mlx->tab_bmp[GATE] = new_bmp("textures/gate.bmp");
 	mlx->tab_bmp[MOSSY] = new_bmp("textures/mossy.bmp");
 	mlx->tab_bmp[TCASTRON] = new_bmp("textures/tcastron.bmp");
+
+	mlx->tab_bmp[MULTI_1] = new_bmp("textures/multi1.bmp");
+	mlx->tab_bmp[MULTI_2] = new_bmp("textures/multi2.bmp");
+	mlx->tab_bmp[MULTI_3] = new_bmp("textures/multi3.bmp");
+	mlx->tab_bmp[MULTI_4] = new_bmp("textures/multi4.bmp");
+	mlx->tab_bmp[MULTI_5] = new_bmp("textures/multi5.bmp");
+	mlx->tab_bmp[MULTI_6] = new_bmp("textures/multi6.bmp");
+	mlx->tab_bmp[MULTI_7] = new_bmp("textures/multi7.bmp");
+	mlx->tab_bmp[MULTI_8] = new_bmp("textures/multi8.bmp");
 
 
 	mlx->tab_anim[CARABIN_ANIM_0] = new_bmp("textures/carabin_0.bmp");
