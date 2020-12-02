@@ -28,7 +28,6 @@ void				shoot_direction(t_mlx *mlx)
 	mlx->objects[0].pos.y = mlx->player.where.y;
 	mlx->objects[0].tex = -1;
 	mlx->objects[0].sector = 0;
-	// mlx->objects[0].order = 0;
 }
 
 void				send_bullet(t_mlx *mlx)
@@ -89,8 +88,6 @@ void				shoot(t_mlx *mlx)
 	dir.x = pl_pos.x + cos(off_angle + angle) * 50;
 	dir.y = pl_pos.y + sin(off_angle + angle) * 50;
 	straight_ray = new_line(pl_pos, dir);
-	printf("dirx: %f\n", dir.x);
-	printf("diry: %f\n", dir.y);
 
 	dir.x = pl_pos.x + cos(off_angle + angle) * 10;
 	dir.y = pl_pos.y + sin(off_angle + angle) * 10;

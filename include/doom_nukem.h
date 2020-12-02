@@ -42,8 +42,8 @@
 # define SLICE ((HFOV * 2) / W)
 # define M_PI 3.14159265359
 //# include "/Users/user42/sdl/SDL2-2.0.8/include/SDL.h"
-// # include "../minilibx_linux/mlx.h"
-# include "../minilibx_macos/mlx.h"
+# include "../minilibx_linux/mlx.h"
+//# include "../minilibx_macos/mlx.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
@@ -226,7 +226,8 @@ typedef struct s_sector
     int brightness;
     int sky;
     float floor, ceil;
-    struct xy { float x,y, tex; } *vertex; // Each vertex has an x and y coordinate
+    struct xy { float x,y; } *vertex; // Each vertex has an x and y coordinate
+    int     *vert_id;
     signed char *neighbors;           // Each edge may have a corresponding neighboring sector
     unsigned npoints;                 // How many vertexes there are
 } t_sector;
@@ -342,6 +343,7 @@ typedef	struct s_mlx
   int     flying;
   int     ducking;
   int     moving;
+  int     *vert_tex;
   unsigned txty;
   int         *tex_ternary;
   t_line ray;

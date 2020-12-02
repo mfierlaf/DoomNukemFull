@@ -250,7 +250,7 @@ void	render_declaration(t_mlx *mlx, t_draw *draw, int s)
 	vy1 = draw->sect->vertex[s + 0].y - mlx->player.where.y;
 	vx2 = draw->sect->vertex[s + 1].x - mlx->player.where.x;
 	vy2 = draw->sect->vertex[s + 1].y - mlx->player.where.y;
-	draw->tex = draw->sect->vertex[s + 0].tex;
+	draw->tex = mlx->vert_tex[draw->sect->vert_id[s]];
 	draw->pcos = mlx->player.anglecos;
 	draw->psin = mlx->player.anglesin;
 	draw->tx1 = vx1 * draw->psin - vy1 * draw->pcos;
@@ -321,9 +321,6 @@ void	draw_screen(t_mlx *mlx)
 	}
 	x = -1;
 	draw.renderedsectors = malloc(sizeof(int) * mlx->num_sectors);
-	// if ((draw.renderedsectors = malloc(sizeof(int) * mlx->num_sectors))\
-	// 	== NULL)
-	// 	return (NULL);
 	while (++x < W)
 	{
 		draw.ybottom[x] = H - 1;

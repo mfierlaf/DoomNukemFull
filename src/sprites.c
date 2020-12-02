@@ -158,7 +158,8 @@ void draw_sprites(int x, t_mlx *mlx)
         mlx->ray = new_line(pl_pos, rel_dir);
         inter = get_intersection(mlx->ray, new_line(a, b),
             get_slope(mlx->ray), get_slope(new_line(a, b)));
-        if (!isinf(inter.x) && !isinf(inter.y) && mlx->objects[mlx->objects[i].order].tex >= 0 && mlx->player.sector == mlx->objects[mlx->objects[i].order].sector)
+        if (!isinf(inter.x) && !isinf(inter.y) && mlx->objects[mlx->objects[i].order].tex >= 0 \
+            && mlx->player.sector == mlx->objects[mlx->objects[i].order].sector)
         {
             mlx->objects[mlx->objects[i].order].sprite_line = new_line(a, b);
             dist = get_dist(pl_pos, inter);

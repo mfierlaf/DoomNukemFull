@@ -94,9 +94,6 @@ void		music(t_mlx *mlx)
 
 void		menu_strings(t_mlx *mlx)
 {
-	char	*song;
-
-	song = ft_itoa(mlx->music.music);
 	mlx_string_put(mlx->mlx, mlx->win, W / 50, H
 		/ 15.36, 0xfa2d2d, "DOOM-NUKEM");
 	mlx_string_put(mlx->mlx, mlx->win, W / 50, H

@@ -18,7 +18,6 @@ static void		read_object(int *i, char **split_line, t_mlx *mlx)
 
 	pl_pos.x = mlx->player.where.x;
 	pl_pos.y = mlx->player.where.y;
-	printf("i: %d\n", *i);
 	mlx->objects[*i].pos.x = atof(split_line[1]);
 	mlx->objects[*i].pos.y = atof(split_line[2]);
 	mlx->objects[*i].sector = ft_atoi(split_line[3]);
@@ -27,13 +26,6 @@ static void		read_object(int *i, char **split_line, t_mlx *mlx)
 	mlx->objects[*i].order = *i;
 	mlx->objects[*i].distance = get_dist(pl_pos, mlx->objects[*i].pos);
 	sprite_var(*i, mlx);
-	printf("obj.x: %f\n", mlx->objects[*i].pos.x);
-	printf("obj.y: %f\n", mlx->objects[*i].pos.y);
-	printf("sector: %d\n", mlx->objects[*i].sector);
-	printf("tex: %d\n", mlx->objects[*i].tex);
-	printf("life: %d\n", mlx->objects[*i].life);
-	printf("order: %d\n", mlx->objects[*i].order);
-	// printf("init tex: %d\n", mlx->objects[*i].initial_tex);
 	++*i;
 }
 
@@ -44,19 +36,20 @@ struct	xy*	read_map(char **split_line, t_mlx *mlx)
 
 	num_vertices = ft_atoi(split_line[1]);
 	vert = malloc(num_vertices * sizeof(vert));
+	mlx->vert_tex = malloc(num_vertices * sizeof(mlx->vert_tex));
 	mlx->num_sectors = ft_atoi(split_line[2]);
 	mlx->sectors = malloc(mlx->num_sectors * sizeof(*mlx->sectors));
 	return (vert);
 }
 
-struct	xy*	read_vertices(int *j, struct xy *vert, char **split_line)
+struct	xy*	read_vertices(int *j, struct xy *vert, char **split_line, t_mlx *mlx)
 {
 	int			i;
 
 	i = 2;
 	while (split_line[i])
 	{
-		vert[*j].tex = ft_atoi(split_line[i + 1]);
+		mlx->vert_tex[*j] = ft_atoi(split_line[i + 1]);
 		vert[*j].y = atof(split_line[1]);
 		vert[*j].x = atof(split_line[i]);
 		++*j;
@@ -91,13 +84,19 @@ int			read_sector(int *k, struct xy *vert, char **split_line, t_mlx *mlx)
 		sizeof(*mlx->sectors[*k].neighbors));
 	mlx->sectors[*k].vertex = malloc((vertex_len + 1) * \
 		sizeof(*mlx->sectors[*k].vertex));
+	mlx->sectors[*k].vert_id = malloc((vertex_len + 1) * \
+		sizeof(*mlx->sectors[*k].vert_id));
 	n = -1;
 	while (++n < vertex_len)
 		mlx->sectors[*k].neighbors[n] = ft_atoi(split_line[vertex_len + n + 4]);
 	n = -1;
 	while (++n < vertex_len)
-		mlx->sectors[*k].vertex[n + 1] = vert[ft_atoi(split_line[n + 4])];
+		{
+			mlx->sectors[*k].vertex[n + 1] = vert[ft_atoi(split_line[n + 4])];
+			mlx->sectors[*k].vert_id[n + 1] = ft_atoi(split_line[n + 4]);
+		}
 	mlx->sectors[*k].vertex[0] = mlx->sectors[*k].vertex[vertex_len];
+	mlx->sectors[*k].vert_id[0] = mlx->sectors[*k].vert_id[vertex_len];
 	return (n);
 }
 
@@ -111,7 +110,7 @@ void		read_player(int n, char **split_line, t_mlx *mlx)
 	angle = ft_atoi(split_line[3]);
 	n = ft_atoi(split_line[4]);
 	mlx->player = (struct s_player) { 
-		{v.x, v.y, 0}, {0, 0, 0}, angle, 0, 0, 0, n, 100, 0};
+		{v.x, v.y, 0}, {0, 0, 0}, angle, 0, 0, 0, n, 100, 0, {0, 0, 0}, {0, 0, 0}};
 	mlx->player.where.z = mlx->sectors[mlx->player.sector].floor + EyeHeight;
 }
 
@@ -138,7 +137,7 @@ void		load_data(t_mlx *mlx)
 		if (split_line[0][0] == 'm')
 			vert = read_map(split_line, mlx);
 		else if (split_line[0][0] == 'v')
-			vert = read_vertices(&j, vert, split_line);
+			vert = read_vertices(&j, vert, split_line, mlx);
 		else if (split_line[0][0] == 's')
 			n = read_sector(&k, vert, split_line, mlx);
 		else if (split_line[0][0] == 'o')
