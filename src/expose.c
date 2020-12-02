@@ -91,6 +91,7 @@ int		expose(t_mlx *mlx)
 			vert = sect->vertex;
 			/* Check if the player is about to cross one of the sector's edges */
 			while (++s < sect->npoints)
+			{
 				if (intersect_box(px, py, px + dx, py + dy, vert[s + 0].x, vert[s + 0].y, vert[s + 1].x, vert[s + 1].y)
 						&& point_side(px + dx, py + dy, vert[s + 0].x, vert[s + 0].y, vert[s + 1].x, vert[s + 1].y) < 0)
 				{
@@ -110,10 +111,11 @@ int		expose(t_mlx *mlx)
 						mlx->moving = 0;
 					}
 				}
-				move_player(mlx, dx, dy);
-				mlx->falling = 1;
 			}
-		
+			move_player(mlx, dx, dy);
+			mlx->falling = 1;
+		}
+
 		/* mouse aiming */
 		mlx->player.angle += mlx->mouse.x * 0.01f;
 		yaw = clamp(yaw + mlx->mouse.y * 0.01f, -5, 5);
@@ -143,7 +145,7 @@ int		expose(t_mlx *mlx)
 		}
 		pushing = mlx->wasd[0] || mlx->wasd[1] || mlx->wasd[2] || mlx->wasd[3];
 		acceleration = pushing ? 0.4 : 0.2;
-	
+
 		mlx->player.velocity.x = mlx->player.velocity.x * (1 - acceleration) + move_vec[0] * acceleration;
 		mlx->player.velocity.y = mlx->player.velocity.y * (1 - acceleration) + move_vec[1] * acceleration;
 

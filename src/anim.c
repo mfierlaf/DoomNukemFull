@@ -38,7 +38,6 @@ void				sprite_anim_death(int sprite, t_mlx *mlx)
 	if (mlx->sleep.death >= 30000)
 	{
 		mlx->objects[mlx->objects[sprite].order].tex = mlx->objects[mlx->objects[sprite].order].initial_tex + mlx->anim.curr_anim;
-		printf("tex: %d\n", mlx->objects[mlx->objects[sprite].order].tex);
 		if (mlx->anim.curr_anim <
 			mlx->objects[mlx->objects[sprite].order].nb_anim - 1)
 			mlx->anim.curr_anim++;
