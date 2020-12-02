@@ -271,6 +271,7 @@ typedef struct			s_editor
 	t_fpoint			start;
 	t_fpoint			end;
 	t_button				buttons[NB_BUTTON];
+	int					button_toggled;
 }						t_editor;
 
 typedef	struct 			s_event

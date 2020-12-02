@@ -55,6 +55,7 @@ void	init(t_mlx *mlx)
 	mlx->editor.old_x = 0;
 	mlx->editor.old_y = 0;
 	mlx->editor.sqr_size = 60;
+	mlx->editor.button_toggled = 0;
 	mlx->events.but1 = 0;
 	mlx->events.new_sector = 0;
 	init_buttons(mlx);

@@ -69,7 +69,7 @@ void			draw_dashed_line_sector(t_mlx *mlx)
 		}
 		sector++;
 	}
-
+	printf("BONJOUR mouseX : %f mouseY : %f\n", mlx->mouse_map.x, mlx->mouse_map.y);
 	draw_dashed_wall(mlx, mlx->editor.closest_sector, mlx->editor.closest_vertex, APPLE);
 	draw_dashed_wall(mlx, mlx->editor.closest_sector2, mlx->editor.closest_vertex2, RED);
 }
@@ -192,11 +192,13 @@ void		toggle_button(t_mlx *mlx, int button)
 	{
 		mlx->editor.buttons[button].toggled = 0;	
 		mlx->editor.buttons[button].color = DEFAULT_BUTTON_COLOUR;
+		mlx->editor.button_toggled = 0;
 	}
-	else
+	else if (!mlx->editor.button_toggled)
 	{
 		mlx->editor.buttons[button].toggled = 1;
 		mlx->editor.buttons[button].color = PRESSED_BUTTON_COLOUR;
+		mlx->editor.button_toggled = button;
 	}
 }
 

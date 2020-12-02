@@ -21,12 +21,24 @@ int		mouse_hook(int x, int y, t_mlx *mlx)
 {
 	mlx->mouse.x = x;
 	mlx->mouse.y = y;
-	//mlx->mouse_map.x = (float)((float)x - (float)mlx->editor.off_x - ((float)mlx->editor.sqr_size / 2.0)) / (float)mlx->editor.sqr_size;
-	//mlx->mouse_map.y = (float)((float)y - (float)mlx->editor.off_y - ((float)mlx->editor.sqr_size / 2.0)) / (float)mlx->editor.sqr_size;
-	mlx->mouse_map.x = (x - mlx->editor.off_x - (mlx->editor.sqr_size / 2)) / mlx->editor.sqr_size;
-	mlx->mouse_map.y = (y - mlx->editor.off_y - (mlx->editor.sqr_size / 2)) / mlx->editor.sqr_size;
+	mlx->mouse_map.x = 
+		(x - mlx->editor.off_x - (mlx->editor.sqr_size / 2)) / mlx->editor.sqr_size;
 	mlx->mouse_map.x *= -1.0;
+	if (mlx->mouse_map.x <= 0)
+	{
+		mlx->mouse_map.x = 
+			(x - mlx->editor.off_x + (mlx->editor.sqr_size / 2)) / mlx->editor.sqr_size;
+		mlx->mouse_map.x *= -1.0;
+	}
+	mlx->mouse_map.y = 
+		(y - mlx->editor.off_y - (mlx->editor.sqr_size / 2)) / mlx->editor.sqr_size;	
 	mlx->mouse_map.y *= -1.0;
+	if (mlx->mouse_map.y <= 0)
+	{
+		mlx->mouse_map.y = 
+			(y - mlx->editor.off_y + (mlx->editor.sqr_size / 2)) / mlx->editor.sqr_size;
+		mlx->mouse_map.y *= -1.0;
+	}
 	if (mlx->editor.on == 1 && mlx->events.but1 == 1)
 	{
 		mlx->editor.off_x += (x - mlx->editor.old_x);
