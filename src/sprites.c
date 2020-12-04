@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   sprites.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfierlaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,172 +12,115 @@
 
 #include "../include/doom_nukem.h"
 
-void		multi_sprites(int sprite, t_mlx *mlx)
+static void	vsl_draw(t_mlx *mlx, int x, t_sprites sprite, t_vsl vsl)
 {
-	float	angle;
-	t_pos	pl_pos;
-
-	pl_pos.x = mlx->player.where.x;
-	pl_pos.y = mlx->player.where.y;
-	angle = get_angle(mlx->objects[mlx->objects[sprite].order].pos,
-			pl_pos);
-	if (angle >= -M_PI / 8 && angle < M_PI / 8)
-		mlx->objects[mlx->objects[sprite].order].tex = MULTI_1;
-	if (angle >= M_PI / 8 && angle < 3 * M_PI / 8)
-		mlx->objects[mlx->objects[sprite].order].tex = MULTI_2;
-	if (angle >= 3 * M_PI / 8 && angle < 5 * M_PI / 8)
-		mlx->objects[mlx->objects[sprite].order].tex = MULTI_3;
-	if (angle >= 5 * M_PI / 8 && angle < 7 * M_PI / 8)
-		mlx->objects[mlx->objects[sprite].order].tex = MULTI_4;
-	if (angle >= 7 * M_PI / 8 && angle < -7 * M_PI / 8)
-		mlx->objects[mlx->objects[sprite].order].tex = MULTI_5;
-	if (angle >= -7 * M_PI / 8 && angle < -5 * M_PI / 8)
-		mlx->objects[mlx->objects[sprite].order].tex = MULTI_6;
-	if (angle >= -5 * M_PI / 8 && angle < -3 * M_PI / 8)
-		mlx->objects[mlx->objects[sprite].order].tex = MULTI_7;
-	if (angle >= -3 * M_PI / 8 && angle < -M_PI / 8)
-		mlx->objects[mlx->objects[sprite].order].tex = MULTI_8;
-}
-
-int			double_swap(t_mlx *mlx, int i, int j)
-{
-	ft_swap_float(&(mlx->objects[i].distance), &(mlx->objects[j].distance));
-	ft_swap_int(&(mlx->objects[i].order), &(mlx->objects[j].order));
-	return (1);
-}
-
-void		sort_sprites(t_mlx *mlx)
-{
-	int	gap;
-	int	swapped;
-	int	i;
-	int	j;
-
-	swapped = 0;
-	gap = NB_OBJ;
-	while (gap > 1 || swapped)
+	if (vsl.dx != 0)
+		vsl.dx = (sprite.inter.x - sprite.a.x) / (sprite.b.x - sprite.a.x);
+	else
+		vsl.dx = (sprite.inter.y - sprite.a.y) / (sprite.b.y - sprite.a.y);
+	if (!isnan(vsl.dx) && !isnan(vsl.dy))
 	{
-		swapped = 0;
-		gap = (gap * 10) / 13;
-		if (gap == 9 || gap == 10)
-			gap = 11;
-		else if (gap < 1)
-			gap = 1;
-		i = 1;
-		while (i < NB_OBJ - gap)
+		vsl.rel_x = vsl.dx * sprite.curr_bmp->header.width_px;
+		vsl.dy = (float)(vsl.y - sprite.draw_start) /
+			(float)(sprite.draw_end - sprite.draw_start);
+		vsl.rel_y = vsl.dy * sprite.curr_bmp->header.height_px;
+		if (valid_pixel(x, vsl.y))
 		{
-			j = i + gap;
-			if (mlx->objects[i].distance < mlx->objects[j].distance)
-				swapped = double_swap(mlx, i, j);
-			i++;
-		}
-	}
-}
-
-void		vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig,
-		t_pos sp_end, int draw_start, int draw_end, t_pos inter, t_bmp *curr_bmp, int i)
-{
-	int		y;
-	int		y_max;
-	float	dx;
-	float	dy;
-	float	rel_x;
-	float	rel_y;
-	int		color;
-
-	draw_start = clamp(draw_start, 0, H - 1) - mlx->mouse.y;
-	draw_end = clamp(draw_end, 0, H - 1) - mlx->mouse.y;
-	y = draw_start;
-	y_max = draw_end;
-	while (y < y_max)
-	{
-		if (dx != 0)
-			dx = (inter.x - sp_orig.x) / (sp_end.x - sp_orig.x);
-		else
-			dx = (inter.y - sp_orig.y) / (sp_end.y - sp_orig.y);
-		if (!isnan(dx) && !isnan(dy))
-		{
-			rel_x = dx * curr_bmp->header.width_px;
-			dy = (float)(y - draw_start) / (float)(draw_end - draw_start);
-			rel_y = dy * curr_bmp->header.height_px;
-			if (valid_pixel(x, y))
+			vsl.color = get_color(sprite.curr_bmp,
+					(int)vsl.rel_x, (int)vsl.rel_y);
+			if (vsl.color != FILTER_COLOR)
 			{
-				color = get_color(curr_bmp, (int)rel_x, (int)rel_y);
-				if (color != FILTER_COLOR)
-				{
-					if (mlx->sectors[mlx->objects[
-						mlx->objects[i].order].sector].brightness == 0)
-						color = (color >> 1) & 8355711;
-					mlx->data[x + y * W] = color;
-				}
+				if (mlx->sectors[mlx->objects[
+						mlx->objects[vsl.i].order].sector].brightness == 0)
+					vsl.color = (vsl.color >> 1) & 8355711;
+				mlx->data[x + vsl.y * W] = vsl.color;
 			}
 		}
-		y++;
 	}
+}
+
+void		vertical_sprite_lines(t_mlx *mlx, int x, t_sprites sprite, int i)
+{
+	t_vsl	vsl;
+
+	vsl.i = i;
+	sprite.draw_start = clamp(sprite.draw_start, 0, H - 1) - mlx->mouse.y;
+	sprite.draw_end = clamp(sprite.draw_end, 0, H - 1) - mlx->mouse.y;
+	vsl.y = sprite.draw_start;
+	vsl.y_max = sprite.draw_end;
+	while (vsl.y < vsl.y_max)
+	{
+		vsl_draw(mlx, x, sprite, vsl);
+		vsl.y++;
+	}
+}
+
+static void	draw_sprites_precalc(int x, t_mlx *mlx, int i, t_sprites *sprite)
+{
+	if (mlx->objects[mlx->objects[i].order].tex >= MULTI_1 &&
+			mlx->objects[mlx->objects[i].order].tex <= MULTI_8)
+		multi_sprites(i, mlx);
+	sprite->sp_pos = new_pos(mlx->objects[mlx->objects[i].order].pos.x,
+			mlx->objects[mlx->objects[i].order].pos.y);
+	sprite->pl_pos = new_pos(mlx->player.where.x, mlx->player.where.y);
+	sprite->dist_ps = get_dist(sprite->pl_pos, sprite->sp_pos);
+	sprite->angle = get_angle(sprite->pl_pos, sprite->sp_pos);
+	if (sprite->dist_ps < 1.0)
+		sprite->dist_ps = 1.0;
+	sprite->dist_pa = sqrtf(sprite->dist_ps * sprite->dist_ps + 0.5 * 0.5);
+	sprite->off_angle = atanf(0.5 / sprite->dist_ps);
+	sprite->a = new_pos(sprite->dist_pa * cosf(sprite->angle +
+				sprite->off_angle) + sprite->pl_pos.x,
+			sprite->dist_pa * -sinf(sprite->angle +
+				sprite->off_angle) + sprite->pl_pos.y);
+	sprite->b = new_pos(sprite->dist_pa * cosf(sprite->angle
+				- sprite->off_angle) + sprite->pl_pos.x,
+			sprite->dist_pa * -sinf(sprite->angle
+				- sprite->off_angle) + sprite->pl_pos.y);
+	sprite->slice = ((HFOV * 2) / (float)W);
+	sprite->off_angle = (x - (W * 0.5)) * sprite->slice;
+	sprite->angle = atan2(mlx->player.anglesin, mlx->player.anglecos);
+}
+
+static void	draw_sprites_calc(t_mlx *mlx, int i, t_sprites *sprite)
+{
+	mlx->objects[mlx->objects[i].order].sprite_line =
+		new_line(sprite->a, sprite->b);
+	sprite->dist = get_dist(sprite->pl_pos, sprite->inter);
+	if (sprite->dist == 0.0)
+		sprite->dist = 0.01;
+	sprite->line_height = (float)H / sprite->dist;
+	sprite->draw_start = H * 0.5 - sprite->line_height * 0.5 +
+		mlx->sectors[mlx->objects[mlx->objects[i].order].sector].floor;
+	sprite->draw_end = sprite->draw_start + sprite->line_height;
+	bot(i, mlx);
+	sprite->curr_bmp = mlx->tab_bmp[
+		mlx->objects[mlx->objects[i].order].tex];
 }
 
 void		draw_sprites(int x, t_mlx *mlx)
 {
-	int		i;
-	t_pos	pl_pos;
-	t_pos	a;
-	t_pos	sp_pos;
-	t_pos	b;
-	t_pos	rel_dir;
-	float	dist_ps;
-	float	dist_pa;
-	t_pos	inter;
-	int		draw_start;
-	int		draw_end;
-	int		line_height;
-	float	dist;
-	float	angle;
-	float	off_angle;
-	float	slice;
+	int			i;
+	t_sprites	sprite;
 
 	i = -1;
 	while (++i < NB_OBJ)
 	{
-		if (mlx->objects[mlx->objects[i].order].tex >= MULTI_1 &&
-			mlx->objects[mlx->objects[i].order].tex <= MULTI_8)
-			multi_sprites(i, mlx);
-		sp_pos = new_pos(mlx->objects[mlx->objects[i].order].pos.x,
-			mlx->objects[mlx->objects[i].order].pos.y);
-		pl_pos = new_pos(mlx->player.where.x, mlx->player.where.y);
-		dist_ps = get_dist(pl_pos, sp_pos);
-		angle = get_angle(pl_pos, sp_pos);
-		if (dist_ps < 1.0)
-			dist_ps = 1.0;
-		dist_pa = sqrtf(dist_ps * dist_ps + 0.5 * 0.5);
-		off_angle = atanf(0.5 / dist_ps);
-		a = new_pos(dist_pa * cosf(angle + off_angle) + pl_pos.x,
-				dist_pa * -sinf(angle + off_angle) + pl_pos.y);
-		b = new_pos(dist_pa * cosf(angle - off_angle) + pl_pos.x,
-				dist_pa * -sinf(angle - off_angle) + pl_pos.y);
-		slice = ((HFOV * 2) / (float)W);
-		off_angle = (x - (W * 0.5)) * slice;
-		angle = atan2(mlx->player.anglesin, mlx->player.anglecos);
-		rel_dir.x = pl_pos.x + cos(angle + off_angle) * 50;
-		rel_dir.y = pl_pos.y + sin(angle + off_angle) * 50;
-		mlx->ray = new_line(pl_pos, rel_dir);
-		inter = get_intersection(mlx->ray, new_line(a, b),
-				get_slope(mlx->ray), get_slope(new_line(a, b)));
-		if (!isinf(inter.x) && !isinf(inter.y) &&
-			mlx->objects[mlx->objects[i].order].tex >= 0 \
+		draw_sprites_precalc(x, mlx, i, &sprite);
+		sprite.rel_dir.x = sprite.pl_pos.x +
+			cos(sprite.angle + sprite.off_angle) * 50;
+		sprite.rel_dir.y = sprite.pl_pos.y +
+			sin(sprite.angle + sprite.off_angle) * 50;
+		mlx->ray = new_line(sprite.pl_pos, sprite.rel_dir);
+		sprite.inter = get_intersection(mlx->ray, new_line(sprite.a, sprite.b),
+				get_slope(mlx->ray), get_slope(new_line(sprite.a, sprite.b)));
+		if (!isinf(sprite.inter.x) && !isinf(sprite.inter.y) &&
+				mlx->objects[mlx->objects[i].order].tex >= 0 \
 				&& mlx->player.sector ==
 				mlx->objects[mlx->objects[i].order].sector)
 		{
-			mlx->objects[mlx->objects[i].order].sprite_line = new_line(a, b);
-			dist = get_dist(pl_pos, inter);
-			if (dist == 0.0)
-				dist = 0.01;
-			line_height = (float)H / dist;
-			draw_start = H * 0.5 - line_height * 0.5 +
-				mlx->sectors[mlx->objects[mlx->objects[i].order].sector].floor;
-			draw_end = draw_start + line_height;
-			bot(i, mlx);
-			vertical_sprite_lines(mlx, x, a, b, draw_start, draw_end, inter,
-				mlx->tab_bmp[mlx->objects[mlx->objects[i].order].tex], i);
+			draw_sprites_calc(mlx, i, &sprite);
+			vertical_sprite_lines(mlx, x, sprite, i);
 		}
 	}
 }

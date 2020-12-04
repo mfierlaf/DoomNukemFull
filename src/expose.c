@@ -92,10 +92,12 @@ int		expose(t_mlx *mlx)
 			vert = sect->vertex;
 			while (++s < sect->npoints)
 			{
-				if (intersect_box(px, py, px + dx, py + dy, vert[s + 0].x,
-					vert[s + 0].y, vert[s + 1].x, vert[s + 1].y)
-						&& point_side(px + dx, py + dy, vert[s + 0].x,
-							vert[s + 0].y, vert[s + 1].x, vert[s + 1].y) < 0)
+				if (intersect_box(new_pos(px, py), new_pos(px + dx, py + dy),
+				new_pos(vert[s + 0].x, vert[s + 0].y),
+				new_pos(vert[s + 1].x, vert[s + 1].y))
+						&& point_side(new_pos(px + dx, py + dy),
+							new_pos(vert[s + 0].x, vert[s + 0].y),
+							new_pos(vert[s + 1].x, vert[s + 1].y)) < 0)
 				{
 					hole_low = sect->neighbors[s] < 0 ? 9e9 :
 					max(sect->floor, mlx->sectors[sect->neighbors[s]].floor);

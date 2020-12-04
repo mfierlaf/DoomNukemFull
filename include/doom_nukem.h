@@ -119,6 +119,48 @@ typedef struct			s_menu
 	int					bot_level;
 }						t_menu;
 
+typedef struct			s_sprites
+{
+	int					line_height;
+	int					draw_start;
+	int					draw_end;
+	float				dist;
+	float				dist_ps;
+	float				dist_pa;
+	float				angle;
+	float				off_angle;
+	float				slice;
+	t_pos				inter;
+	t_pos				pl_pos;
+	t_pos				a;
+	t_pos				b;
+	t_pos				sp_pos;
+	t_pos				rel_dir;
+	t_line				deco_line;
+	t_bmp				*curr_bmp;
+}						t_sprites;
+
+typedef struct			s_vsl
+{
+	int					y;
+	int					y_max;
+	int					color;
+	int					i;
+	float				dx;
+	float				dy;
+	float				rel_x;
+	float				rel_y;
+}						t_vsl;
+
+typedef struct			s_inter
+{
+	float			c1;
+	float			c2;
+	float			slope1;
+	float			slope2;
+	t_line			line1;
+	t_line			line2;
+}						t_inter;
 typedef struct			s_obj
 {
 	unsigned int		sector;
@@ -393,34 +435,6 @@ void					render(t_mlx *mlx, t_draw *draw);
 void					render_declaration(t_mlx *mlx, t_draw *draw, int s);
 void					draw_start(t_mlx *mlx, t_draw *draw);
 /*
-** TOOLS.C
-*/
-double					clamp(double a, double b, double c);
-double					point_side(double px, double py, double x0, double y0, \
-							double x1, double y1);
-int						intersect_box(double x0, double y0, double x1, \
-							double y1, double x2, double y2, double x3, \
-								double y3);
-int						overlap(double a, double b, double c, double d);
-float					vxs(float a, float b, float c, float d);
-double					max(double a, double b);
-double					min(double a, double b);
-void					clear_img(t_mlx *mlx);
-int						kill_mlx(char *message, t_mlx *mlx);
-float					yaw(float y, float z, t_mlx *mlx);
-t_xy					intersect(float x1, float y1, float x2, float y2, \
-							float x3, float y3, float x4, float y4);
-t_pos					new_pos(float x, float y);
-t_line					new_line(t_pos orig, t_pos end);
-t_pos					get_intersection(t_line line1, t_line line2, \
-							float slope1, float slope2);
-char					check_valid_inter(t_pos inter, t_line line1, \
-							t_line line2);
-float					get_slope(t_line line);
-float					get_dist(t_pos p1, t_pos p2);
-float					get_angle(t_pos p1, t_pos rel_dir);
-int						valid_pixel(int x, int y);
-/*
 ** EXPOSE.C
 */
 int						expose(t_mlx *mlx);
@@ -461,11 +475,14 @@ int						shoot_key(int key, int x, int y, t_mlx *mlx);
 ** SPRITES.C
 */
 void					draw_sprites(int x, t_mlx *mlx);
+void					vertical_sprite_lines(t_mlx *mlx, int x,
+							t_sprites sprite, int i);
+/*
+** MULTI_SPRITES.C
+*/
 void					sort_sprites(t_mlx *mlx);
-void					vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig,\
-							t_pos sp_end, int draw_start, int draw_end, \
-							t_pos inter, t_bmp *curr_bmp, int i);
 int						double_swap(t_mlx *mlx, int i, int j);
+void					multi_sprites(int sprite, t_mlx *mlx);
 /*
 ** BOTS.C
 */
@@ -495,5 +512,42 @@ void					draw_skybox(t_mlx *mlx, int x);
 ** DECO.C
 */
 void					draw_deco(int x, t_mlx *mlx);
+/*
+** FREE.C
+*/
+void					free_draw(t_draw *draw);
+/*
+** TOOLS.C
+*/
+float					point_side(t_pos p, t_pos start, t_pos end);
+int						intersect_box(t_pos p0, t_pos p1, t_pos p2, t_pos p3);
+t_xy					intersect(t_pos p0, t_pos p1, t_pos p2, t_pos p3);
+char					check_valid_inter(t_pos inter, t_line line1, \
+							t_line line2);
+float					get_slope(t_line line);
+/*
+** TOOLS2.C
+*/
+t_pos					get_intersection(t_line line1, t_line line2, \
+							float slope1, float slope2);
+float					get_dist(t_pos p1, t_pos p2);
+float					get_angle(t_pos p1, t_pos rel_dir);
+int						valid_pixel(int x, int y);
+/*
+** TOOLS3.C
+*/
+double					clamp(double a, double b, double c);
+int						overlap(double a, double b, double c, double d);
+float					vxs(float a, float b, float c, float d);
+double					max(double a, double b);
+double					min(double a, double b);
+/*
+** TOOLS4.C
+*/
+void					clear_img(t_mlx *mlx);
+int						kill_mlx(char *message, t_mlx *mlx);
+float					yaw(float y, float z, t_mlx *mlx);
+t_pos					new_pos(float x, float y);
+t_line					new_line(t_pos orig, t_pos end);
 
 #endif

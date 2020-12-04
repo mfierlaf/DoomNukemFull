@@ -12,38 +12,42 @@
 
 #include "../include/doom_nukem.h"
 
-void	draw_deco(int x, t_mlx *mlx)
+static t_line	get_deco_line(int i, t_mlx *mlx)
 {
-	int		i;
-	float	dist;
-	float	line_height;
-	float	draw_start;
-	float	draw_end;
-	t_pos	inter;
-	t_pos	pl_pos;
-	t_line	deco_line;
+	t_line deco_line;
+
+	deco_line.orig.x = mlx->decos[i].origin.x + 0.0001;
+	deco_line.orig.y = mlx->decos[i].origin.y;
+	deco_line.end.x = mlx->decos[i].end.x;
+	deco_line.end.y = mlx->decos[i].end.y;
+	return (deco_line);
+}
+
+void			draw_deco(int x, t_mlx *mlx)
+{
+	int			i;
+	t_sprites	deco;
 
 	i = -1;
 	while (++i < NB_DECO)
 	{
-		deco_line.orig.x = mlx->decos[i].origin.x + 0.0001;
-		deco_line.orig.y = mlx->decos[i].origin.y;
-		deco_line.end.x = mlx->decos[i].end.x;
-		deco_line.end.y = mlx->decos[i].end.y;
-		inter = get_intersection(mlx->ray, deco_line,
-		get_slope(mlx->ray), get_slope(deco_line));
-		if (!isinf(inter.x) && mlx->player.sector == mlx->objects[i].sector)
+		deco.deco_line = get_deco_line(i, mlx);
+		deco.inter = get_intersection(mlx->ray, deco.deco_line,
+		get_slope(mlx->ray), get_slope(deco.deco_line));
+		if (!isinf(deco.inter.x) && (int)mlx->player.sector ==
+			mlx->decos[i].sector)
 		{
-			pl_pos.x = mlx->player.where.x;
-			pl_pos.y = mlx->player.where.y;
-			dist = get_dist(pl_pos, inter);
-			dist == 0.0 ? dist = 0.01 : 0;
-			line_height = (float)H / dist;
-			draw_start = H * 0.5 - line_height * 0.5;
-			draw_end = draw_start + line_height;
-			vertical_sprite_lines(mlx, x, deco_line.orig, deco_line.end,
-				draw_start, draw_end, inter,
-				mlx->tab_bmp[mlx->decos[i].tex], i);
+			deco.pl_pos.x = mlx->player.where.x;
+			deco.pl_pos.y = mlx->player.where.y;
+			deco.dist = get_dist(deco.pl_pos, deco.inter);
+			deco.dist == 0.0 ? deco.dist = 0.01 : 0;
+			deco.line_height = (float)H / deco.dist;
+			deco.draw_start = H * 0.5 - deco.line_height * 0.5;
+			deco.draw_end = deco.draw_start + deco.line_height;
+			deco.curr_bmp = mlx->tab_bmp[mlx->decos[i].tex];
+			deco.a = deco.deco_line.orig;
+			deco.b = deco.deco_line.end;
+			vertical_sprite_lines(mlx, x, deco, i);
 		}
 	}
 }

@@ -35,10 +35,12 @@ void	move_player(t_mlx *mlx, float dx, float dy)
 	vert = sect->vertex;
 	while (++s < sect->npoints)
 		if (sect->neighbors[s] >= 0
-				&& intersect_box(px, py, px + dx, py + dy, vert[s + 0].x,
-					vert[s + 0].y, vert[s + 1].x, vert[s + 1].y)
-				&& point_side(px + dx, py + dy, vert[s + 0].x, vert[s + 0].y,
-					vert[s + 1].x, vert[s + 1].y) < 0)
+				&& intersect_box(new_pos(px, py), new_pos(px + dx, py + dy),
+				new_pos(vert[s + 0].x, vert[s + 0].y),
+				new_pos(vert[s + 1].x, vert[s + 1].y))
+				&& point_side(new_pos(px + dx, py + dy),
+					new_pos(vert[s + 0].x, vert[s + 0].y),
+					new_pos(vert[s + 1].x, vert[s + 1].y)) < 0)
 		{
 			mlx->player.sector = sect->neighbors[s];
 			break ;

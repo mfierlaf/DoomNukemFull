@@ -232,10 +232,10 @@ void	behind_player(t_draw *draw)
 		nearside = 1e-5f;
 		farside = 20.f;
 		draw->nearz = 1e-4f;
-		draw->i1 = intersect(draw->tx1, draw->tz1, draw->tx2, draw->tz2,\
-			-nearside, draw->nearz, -farside, farz);
-		draw->i2 = intersect(draw->tx1, draw->tz1, draw->tx2, draw->tz2,\
-			nearside, draw->nearz, farside, farz);
+		draw->i1 = intersect(new_pos(draw->tx1, draw->tz1), new_pos(draw->tx2, draw->tz2),\
+			new_pos(-nearside, draw->nearz), new_pos(-farside, farz));
+		draw->i2 = intersect(new_pos(draw->tx1, draw->tz1), new_pos(draw->tx2, draw->tz2),\
+			new_pos(nearside, draw->nearz), new_pos(farside, farz));
 		players_view(draw);
 	}
 }
@@ -348,4 +348,5 @@ void	draw_screen(t_mlx *mlx)
 	while (++n < mlx->num_sectors)
 		draw.renderedsectors[n] = 0;
 	draw_start(mlx, &draw);
+	free_draw(&draw);
 }

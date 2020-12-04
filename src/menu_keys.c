@@ -25,10 +25,7 @@ void		enter_menu(t_mlx *mlx)
 		}
 	}
 	if (mlx->menu.gun_pointer == 1)
-	{
 		mlx->editor.on = 1;
-		mlx->menu.on = 0;
-	}
 	if (mlx->menu.gun_pointer == 2)
 	{
 		mlx->music.mute = !mlx->music.mute;
