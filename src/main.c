@@ -35,11 +35,11 @@ int			main(void)
 	load_data(mlx);
 	init_mlx(mlx);
 	load_texture(mlx);
-	mlx_hook(mlx->win, BUTTONPRESS, BUTTONPRESSMASK, shoot_key, mlx);
-	mlx_hook(mlx->win, MOTIONNOTIFY, POINTERMOTIONMASK, mouse_hook, mlx);
-	mlx_hook(mlx->win, KP, KPMASK, ft_key_hook, mlx);
-	mlx_hook(mlx->win, KEYRELEASE, KEYRELEASEMASK, stop_movement, mlx);
-	mlx_hook(mlx->win, DESTROYNOTIFY, STRUCTURENOTIFYMASK, kill_mlx, mlx);
+	mlx_hook(mlx->win, BUTTONPRESS, (1L<<2), shoot_key, mlx);
+	mlx_hook(mlx->win, MOTIONNOTIFY, (1L<<6), mouse_hook, mlx);
+	mlx_hook(mlx->win, KP, (1L<<0), ft_key_hook, mlx);
+	mlx_hook(mlx->win, KEYRELEASE, (1L<<1), stop_movement, mlx);
+	mlx_hook(mlx->win, DESTROYNOTIFY, (1L<<17), kill_mlx, mlx);
 	music(mlx);
 	mlx_loop_hook(mlx->mlx, expose, mlx);
 	mlx_loop(mlx->mlx);

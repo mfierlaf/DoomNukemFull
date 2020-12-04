@@ -12,9 +12,9 @@
 
 #include "../include/doom_nukem.h"
 
-struct scaler	scaler_init(int a, int b, int c, int d, int f)
+t_scaler	scaler_init(int a, int b, int c, int d, int f)
 {
-	struct scaler scaler;
+	t_scaler scaler;
 
 	scaler.result = d + (b - 1 - a) * (f - d) / (c - a);
 	scaler.bop = ((f < d) ^ (c < a)) ? -1 : 1;
@@ -24,14 +24,14 @@ struct scaler	scaler_init(int a, int b, int c, int d, int f)
 	return (scaler);
 }
 
-int				scaler_next(struct scaler *i)
+int				scaler_next(t_scaler *i)
 {
 	for (i->cache += i->fd; i->cache >= i->ca; i->cache -= i->ca)
 		i->result += i->bop;
 	return (i->result);
 }
 
-void			vertical_line(t_draw *draw, int x, int y1, int y2, struct scaler ty, unsigned txtx, t_mlx *mlx)
+void			vertical_line(t_draw *draw, int x, int y1, int y2, t_scaler ty, unsigned txtx, t_mlx *mlx)
 {
 	int color;
 

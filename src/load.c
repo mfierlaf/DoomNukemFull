@@ -29,10 +29,10 @@ static void		read_object(int *i, char **split_line, t_mlx *mlx)
 	++*i;
 }
 
-struct	xy		*read_map(char **split_line, t_mlx *mlx)
+t_xy		*read_map(char **split_line, t_mlx *mlx)
 {
 	int			num_vertices;
-	struct xy	*vert;
+	t_xy	*vert;
 
 	num_vertices = ft_atoi(split_line[1]);
 	vert = malloc(num_vertices * sizeof(vert));
@@ -42,7 +42,7 @@ struct	xy		*read_map(char **split_line, t_mlx *mlx)
 	return (vert);
 }
 
-struct	xy		*read_vertices(int *j, struct xy *vert,
+t_xy		*read_vertices(int *j, t_xy *vert,
 	char **split_line, t_mlx *mlx)
 {
 	int			i;
@@ -67,7 +67,7 @@ static int		read_decos(int i, char **split_line, t_mlx *mlx)
 	return (i++);
 }
 
-int				read_sector(int *k, struct xy *vert,
+int				read_sector(int *k, t_xy *vert,
 	char **split_line, t_mlx *mlx)
 {
 	int			vertex_len;
@@ -113,7 +113,7 @@ int				read_sector(int *k, struct xy *vert,
 void			read_player(int n, char **split_line, t_mlx *mlx)
 {
 	float		angle;
-	struct xy	v;
+	t_xy	v;
 
 	v.x = ft_atoi(split_line[1]);
 	v.y = ft_atoi(split_line[2]);
@@ -122,7 +122,7 @@ void			read_player(int n, char **split_line, t_mlx *mlx)
 	mlx->player = (struct s_player) {
 		{v.x, v.y, 0}, {0, 0, 0}, angle, 0, 0, 0, n,
 		100, 0, {0, 0, 0}, {0, 0, 0}};
-	mlx->player.where.z = mlx->sectors[mlx->player.sector].floor + EyeHeight;
+	mlx->player.where.z = mlx->sectors[mlx->player.sector].floor + EYEHEIGHT;
 }
 
 void			load_data(t_mlx *mlx)
@@ -130,7 +130,7 @@ void			load_data(t_mlx *mlx)
 	int			fd;
 	char		*line;
 	char		**split_line;
-	struct xy	*vert;
+	t_xy	*vert;
 	int			n;
 	int			j;
 	int			k;

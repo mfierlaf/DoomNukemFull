@@ -44,10 +44,10 @@ void	draw_vline(t_mlx *mlx, t_draw *draw, int x)
 		draw->cnya = clamp(draw->nya, draw->ytop[x], draw->ybottom[x]);
 		cnyb = clamp(draw->nyb, draw->ytop[x], draw->ybottom[x]);
 		vertical_line(draw, x, draw->cya, draw->cnya - 1,
-			(struct scaler)scaler_init(draw->ya, draw->cya,
+			(t_scaler)scaler_init(draw->ya, draw->cya,
 				draw->yb, 0, TEXTURE_SIZE - 1), draw->txtx, mlx);
 		draw->ytop[x] = clamp(max(draw->cya, draw->cnya), draw->ytop[x], H - 1);
-		vertical_line(draw, x, cnyb + 1, draw->cyb, (struct scaler)scaler_init(\
+		vertical_line(draw, x, cnyb + 1, draw->cyb, (t_scaler)scaler_init(\
 			draw->ya, cnyb + 1, draw->yb, 0, TEXTURE_SIZE - 1),\
 				draw->txtx, mlx);
 		draw->ybottom[x] = clamp(min(draw->cyb, cnyb), 0, draw->ybottom[x]);
@@ -55,7 +55,7 @@ void	draw_vline(t_mlx *mlx, t_draw *draw, int x)
 	else
 	{
 		vertical_line(draw, x, draw->cya, draw->cyb,
-			(struct scaler)scaler_init(draw->ya, draw->cya, draw->yb, 0,
+			(t_scaler)scaler_init(draw->ya, draw->cya, draw->yb, 0,
 				TEXTURE_SIZE - 1), draw->txtx, mlx);
 	}
 }
@@ -294,11 +294,11 @@ void	render(t_mlx *mlx, t_draw *draw)
 		if (draw->check == 0)
 		{
 			if (draw->neighbor >= 0 && draw->endx >= draw->beginx &&\
-				(draw->head + draw->MaxQueue + 1 - draw->tail) % draw->MaxQueue)
+				(draw->head + draw->maxqueue + 1 - draw->tail) % draw->maxqueue)
 			{
-				*draw->head = (struct item) { draw->neighbor,\
+				*draw->head = (t_item) { draw->neighbor,\
 					draw->beginx, draw->endx };
-				if (++draw->head == draw->queue + draw->MaxQueue)
+				if (++draw->head == draw->queue + draw->maxqueue)
 					draw->head = draw->queue;
 			}
 		}
@@ -307,13 +307,13 @@ void	render(t_mlx *mlx, t_draw *draw)
 
 void	draw_start(t_mlx *mlx, t_draw *draw)
 {
-	*draw->head = (struct item) { mlx->player.sector, 0, W - 1 };
-	if (++draw->head == draw->queue + draw->MaxQueue)
+	*draw->head = (t_item) { mlx->player.sector, 0, W - 1 };
+	if (++draw->head == draw->queue + draw->maxqueue)
 		draw->head = draw->queue;
 	while (draw->head != draw->tail)
 	{
 		draw->now = *draw->tail;
-		if (++draw->tail == draw->queue + draw->MaxQueue)
+		if (++draw->tail == draw->queue + draw->maxqueue)
 			draw->tail = draw->queue;
 		if (draw->renderedsectors[draw->now.sectorno] & 0x21)
 			continue;
@@ -332,7 +332,7 @@ void	draw_screen(t_mlx *mlx)
 
 	x = -1;
 	n = -1;
-	draw.MaxQueue = 32;
+	draw.maxqueue = 32;
 	draw.head = draw.queue;
 	draw.tail = draw.queue;
 	while (++x < W)

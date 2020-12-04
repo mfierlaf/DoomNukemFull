@@ -86,10 +86,10 @@ float	yaw(float y, float z, t_mlx *mlx)
 	return (y + z * mlx->player.yaw);
 }
 
-struct xy	intersect(float x1, float y1, float x2, float y2,
+t_xy	intersect(float x1, float y1, float x2, float y2,
 	float x3, float y3, float x4, float y4)
 {
-	struct xy result;
+	t_xy result;
 
 	result.x = vxs(vxs(x1, y1, x2, y2), (x1) - (x2),
 		vxs(x3, y3, x4, y4), (x3) - (x4)) /

@@ -19,7 +19,7 @@ FLAGS = -Wall -Wextra
 
  MLX_DIR = ./minilibx_macos
 
- MLX = -L$(MLX_DIR) -lmlx -framework OpenGL -framework Appkit -fsanitize=address
+ MLX = -L$(MLX_DIR) -lmlx -framework OpenGL -framework Appkit
 
 
 #****************#

@@ -25,7 +25,7 @@ void	move_player(t_mlx *mlx, float dx, float dy)
 	float		px;
 	float		py;
 	unsigned	s;
-	struct xy	*vert;
+	t_xy		*vert;
 	t_sector	*sect;
 
 	s = -1;

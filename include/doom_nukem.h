@@ -14,8 +14,8 @@
 
 # define DOOM_NUKEM_H
 
-
 # include "../minilibx_linux/mlx.h"
+
 /*
 ** # include "../minilibx_macos/mlx.h"
 */
@@ -188,18 +188,18 @@ typedef struct			s_xyz
 	float				x;
 	float				y;
 	float				z;
-}						xyz;
+}						t_xyz;
 
-struct					xy
+typedef struct			s_xy
 {
 	float				x;
 	float				y;
-};
+}						t_xy;
 
 typedef struct			s_player
 {
-	xyz					where;
-	xyz					velocity;
+	t_xyz				where;
+	t_xyz				velocity;
 	float				angle;
 	float				anglesin;
 	float				anglecos;
@@ -217,7 +217,7 @@ typedef struct			s_sector
 	int					sky;
 	float				floor;
 	float				ceil;
-	struct xy			*vertex;
+	t_xy				*vertex;
 	int					*vert_id;
 	signed char			*neighbors;
 	unsigned			npoints;
@@ -244,21 +244,21 @@ typedef struct			s_editor
 	int					bpp;
 }						t_editor;
 
-struct					item
+typedef struct			s_item
 {
 	int					sectorno;
 	int					sx1;
 	int					sx2;
-};
+}						t_item;
 
-struct					scaler
+typedef struct			s_scaler
 {
 	int					result;
 	int					bop;
 	int					fd;
 	int					ca;
 	int					cache;
-};
+}						t_scaler;
 
 typedef struct			s_draw
 {
@@ -279,8 +279,8 @@ typedef struct			s_draw
 	float				yfloor;
 	int					ytop[W];
 	int					ybottom[W];
-	struct scaler		ya_int;
-	struct scaler		yb_int;
+	t_scaler			ya_int;
+	t_scaler			yb_int;
 	int					x1;
 	int					x2;
 	float				tz1;
@@ -297,16 +297,16 @@ typedef struct			s_draw
 	int					cyb;
 	float				tx1;
 	float				tx2;
-	struct item			now;
+	t_item				now;
 	t_sector			*sect;
 	int					check;
-	int					MaxQueue;
-	struct item			queue[32];
-	struct item			*head;
-	struct item			*tail;
+	int					maxqueue;
+	t_item				queue[32];
+	t_item				*head;
+	t_item				*tail;
 	int					*renderedsectors;
-	struct xy			i1;
-	struct xy			i2;
+	t_xy				i1;
+	t_xy				i2;
 	float				nearz;
 	float				yscale1;
 	float				yscale2;
@@ -376,7 +376,7 @@ int						stop_movement(int key, t_mlx *mlx);
 void					vline(int x, int y1, int y2, int top, int middle,\
 							int bottom, t_mlx *mlx);
 void					vertical_line(t_draw *draw, int x, int y1, int y2,\
-							struct scaler ty, unsigned txtx, t_mlx *mlx);
+							t_scaler ty, unsigned txtx, t_mlx *mlx);
 /*
 ** DRAW.C
 */
@@ -408,7 +408,7 @@ double					min(double a, double b);
 void					clear_img(t_mlx *mlx);
 int						kill_mlx(char *message, t_mlx *mlx);
 float					yaw(float y, float z, t_mlx *mlx);
-struct xy				intersect(float x1, float y1, float x2, float y2, \
+t_xy					intersect(float x1, float y1, float x2, float y2, \
 							float x3, float y3, float x4, float y4);
 t_pos					new_pos(float x, float y);
 t_line					new_line(t_pos orig, t_pos end);
@@ -429,10 +429,10 @@ int						expose(t_mlx *mlx);
 */
 void					init(t_mlx *mlx);
 void					sprite_var(int sprite, t_mlx *mlx);
-int						scaler_next(struct scaler *i);
-void					vline2(int x, int y1, int y2, struct scaler ty, \
+int						scaler_next(t_scaler *i);
+void					vline2(int x, int y1, int y2, t_scaler ty, \
 							unsigned txtx, t_mlx *mlx);
-struct scaler			scaler_init(int a, int b, int c, int d, int f);
+t_scaler				scaler_init(int a, int b, int c, int d, int f);
 int						get_color(t_bmp *bmp, int x, int y);
 t_bmp					*new_bmp(char *str);
 t_bmp					*read_header_bmp(char *file);

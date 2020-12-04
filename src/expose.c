@@ -20,7 +20,7 @@ int		expose(t_mlx *mlx)
 	float		py;
 	float		dx;
 	float		dy;
-	struct xy	*vert;
+	t_xy	*vert;
 	float		yaw;
 	unsigned	s;
 	float		hole_low;
@@ -54,7 +54,7 @@ int		expose(t_mlx *mlx)
 		yaw = 0;
 		mlx->player.angle = 0;
 		clear_img(mlx);
-		eyeheight = mlx->ducking ? DuckHeight : EyeHeight;
+		eyeheight = mlx->ducking ? DUCKHEIGHT : EYEHEIGHT;
 		mlx->ground = !mlx->falling;
 		if (mlx->falling)
 		{
@@ -101,9 +101,9 @@ int		expose(t_mlx *mlx)
 					max(sect->floor, mlx->sectors[sect->neighbors[s]].floor);
 					hole_high = sect->neighbors[s] < 0 ? -9e9 :
 					min(sect->ceil, mlx->sectors[sect->neighbors[s]].ceil);
-					if (hole_high < mlx->player.where.z + HeadMargin
+					if (hole_high < mlx->player.where.z + HEADMARGIN
 						|| hole_low > mlx->player.where.z -
-						eyeheight + KneeHeight)
+						eyeheight + KNEEHEIGHT)
 					{
 						xd = vert[s + 1].x - vert[s + 0].x;
 						yd = vert[s + 1].y - vert[s + 0].y;
