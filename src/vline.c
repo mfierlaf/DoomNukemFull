@@ -12,74 +12,40 @@
 
 #include "../include/doom_nukem.h"
 
-/* vline: Draw a vertical line on screen, with a different color pixel in top & bottom */
-void vline(int x, int y1, int y2, int top, int middle, int bottom, t_mlx *mlx)
+struct scaler	scaler_init(int a, int b, int c, int d, int f)
 {
-  int y;
+	struct scaler scaler;
 
-  y = y1;
-  y1 = clamp(y1, 0, H - 1);
-  y2 = clamp(y2, 0, H - 1);
-  if (y2 == y1)
-		mlx->data[y1 * W + x] = middle;
-  else if (y2 > y1)
-  {
-    mlx->data[y1 * W + x] = top;
-    while (++y < y2)
-    {
-      mlx->data[y * W + x] = middle;
-    }
-    mlx->data[y2 * W + x] = bottom;
-  }
+	scaler.result = d + (b - 1 - a) * (f - d) / (c - a);
+	scaler.bop = ((f < d) ^ (c < a)) ? -1 : 1;
+	scaler.fd = abs(f - d);
+	scaler.ca = abs(c - a);
+	scaler.cache = (int)((b - 1 - a) * abs(f - d)) % abs(c - a);
+	return (scaler);
 }
 
-
-struct Scaler Scaler_Init(int a, int b, int c, int d, int f)
+int				scaler_next(struct scaler *i)
 {
-  struct Scaler scaler;
-
-  scaler.result = d + (b-1 - a) * (f-d) / (c-a);
-  scaler.bop = ((f<d) ^ (c<a)) ? -1 : 1;
-  scaler.fd = abs(f-d);
-  scaler.ca = abs(c-a); 
-  scaler.cache = (int)((b-1-a) * abs(f-d)) % abs(c-a);
-  return (scaler);
+	for (i->cache += i->fd; i->cache >= i->ca; i->cache -= i->ca)
+		i->result += i->bop;
+	return (i->result);
 }
 
-// Scaler_Next: Return (b++ - a) * (f-d) / (c-a) + d using the initial values passed to Scaler_Init().
-int Scaler_Next(struct Scaler *i)
+void			vertical_line(t_draw *draw, int x, int y1, int y2, struct scaler ty, unsigned txtx, t_mlx *mlx)
 {
-    for (i->cache += i->fd; i->cache >= i->ca; i->cache -= i->ca)
-      i->result += i->bop;
-    return i->result;
+	int color;
+
+	y1 = clamp(y1, 0, H - 1);
+	y2 = clamp(y2, 0, H - 1);
+	for (int y = y1; y <= y2; ++y)
+	{
+		mlx->txty = scaler_next(&ty);
+		color = get_color(mlx->tab_bmp[draw->tex],
+			(txtx % mlx->tab_bmp[draw->tex]->header.width_px),
+			(mlx->txty % mlx->tab_bmp[draw->tex]->header.height_px));
+		if (mlx->sectors[draw->now.sectorno].brightness == 0)
+			color = (color >> 1) & 8355711;
+		if (color != FILTER_COLOR)
+			mlx->data[y * W + x] = color;
+	}
 }
-
-
-// void vline2(int x, int y1, int y2, struct Scaler ty /*scaler_init*/, unsigned txtx, t_mlx *mlx)
-// {
-//     y1 = clamp(y1, 0, H - 1);
-//     y2 = clamp(y2, 0, H - 1);
-//     for (int y = y1; y <= y2; ++y)
-//     {
-//         mlx->txty = Scaler_Next(&ty);
-//         mlx->data[y * W + x] = mlx->tex[1].data[(mlx->txty % TEXTURE_SIZE) * TEXTURE_SIZE + (txtx % TEXTURE_SIZE)];
-//     }
-// }
-
-void        vertical_line(t_draw *draw, int x, int y1, int y2, struct Scaler ty /*scaler_init*/, unsigned txtx, t_mlx *mlx)
-{
-    int color;
-
-    y1 = clamp(y1, 0, H - 1);
-    y2 = clamp(y2, 0, H - 1);
-    for (int y = y1; y <= y2; ++y)
-    {
-      mlx->txty = Scaler_Next(&ty);
-      color = get_color(mlx->tab_bmp[draw->tex], (txtx % mlx->tab_bmp[draw->tex]->header.width_px), (mlx->txty % mlx->tab_bmp[draw->tex]->header.height_px));
-      if (mlx->sectors[draw->now.sectorno].brightness == 0)
-        color = (color >> 1) & 8355711;
-      if (color != FILTER_COLOR)
-        mlx->data[y * W + x] = color;
-    }
-}
-

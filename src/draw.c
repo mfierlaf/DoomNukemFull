@@ -43,20 +43,20 @@ void	draw_vline(t_mlx *mlx, t_draw *draw, int x)
 			(draw->x2 - draw->x1) + draw->ny1b;
 		draw->cnya = clamp(draw->nya, draw->ytop[x], draw->ybottom[x]);
 		cnyb = clamp(draw->nyb, draw->ytop[x], draw->ybottom[x]);
-		vertical_line(draw, x, draw->cya, draw->cnya - 1, (struct Scaler)Scaler_Init(\
-			draw->ya, draw->cya, draw->yb, 0, TEXTURE_SIZE - 1),\
-				draw->txtx, mlx);
+		vertical_line(draw, x, draw->cya, draw->cnya - 1,
+			(struct scaler)scaler_init(draw->ya, draw->cya,
+				draw->yb, 0, TEXTURE_SIZE - 1), draw->txtx, mlx);
 		draw->ytop[x] = clamp(max(draw->cya, draw->cnya), draw->ytop[x], H - 1);
-		vertical_line(draw, x, cnyb + 1, draw->cyb, (struct Scaler)Scaler_Init(\
+		vertical_line(draw, x, cnyb + 1, draw->cyb, (struct scaler)scaler_init(\
 			draw->ya, cnyb + 1, draw->yb, 0, TEXTURE_SIZE - 1),\
 				draw->txtx, mlx);
 		draw->ybottom[x] = clamp(min(draw->cyb, cnyb), 0, draw->ybottom[x]);
 	}
 	else
 	{
-		vertical_line(draw, x, draw->cya, draw->cyb, (struct Scaler)Scaler_Init(\
-			draw->ya, draw->cya, draw->yb, 0, TEXTURE_SIZE - 1),\
-				draw->txtx, mlx);
+		vertical_line(draw, x, draw->cya, draw->cyb,
+			(struct scaler)scaler_init(draw->ya, draw->cya, draw->yb, 0,
+				TEXTURE_SIZE - 1), draw->txtx, mlx);
 	}
 }
 
@@ -80,19 +80,20 @@ void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
 		txtx = (draw->mapx * 16);
 		txtz = (draw->mapz * 16);
 		mlx->tex_ternary = y < draw->cya ? \
-			mlx->tab_bmp[MOSSY]->data : mlx->tab_bmp[TCASTRON]->data;
-		color =  mlx->tex_ternary[(txtx % TEXTURE_SIZE)\
+			mlx->tab_bmp[MOSSY]->data : mlx->tab_bmp[MINECRAFT]->data;
+		color = mlx->tex_ternary[(txtx % TEXTURE_SIZE)\
 			* TEXTURE_SIZE + (txtz % TEXTURE_SIZE)];
 		if (mlx->sectors[draw->now.sectorno].brightness == 0)
 			color = (color >> 1) & 8355711;
-		if (!mlx->sectors[draw->now.sectorno].sky || mlx->tex_ternary == mlx->tab_bmp[TCASTRON]->data)
+		if (!mlx->sectors[draw->now.sectorno].sky ||
+			mlx->tex_ternary == mlx->tab_bmp[MINECRAFT]->data)
 			mlx->data[y * W + x] = color;
 		else
 		{
-			color =  mlx->tab_bmp[GATE]->data[(txtx % TEXTURE_SIZE)\
+			color = mlx->tab_bmp[GATE]->data[(txtx % TEXTURE_SIZE)\
 			* TEXTURE_SIZE + (txtz % TEXTURE_SIZE)];
 			if (color != FILTER_COLOR)
-        		mlx->data[y * W + x] = color;
+				mlx->data[y * W + x] = color;
 		}
 	}
 	draw_vline(mlx, draw, x);
@@ -102,14 +103,14 @@ void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
 
 void	drawing(t_mlx *mlx, t_draw *draw)
 {
-	int x;
-	int i;
-	t_pos pl_pos;
+	int		x;
+	int		i;
+	t_pos	pl_pos;
 
 	x = draw->beginx - 1;
-	draw->ya_int = Scaler_Init(draw->x1, draw->beginx, draw->x2,\
+	draw->ya_int = scaler_init(draw->x1, draw->beginx, draw->x2,\
 		draw->y1a, draw->y2a);
-	draw->yb_int = Scaler_Init(draw->x1, draw->beginx, draw->x2,\
+	draw->yb_int = scaler_init(draw->x1, draw->beginx, draw->x2,\
 			draw->y1b, draw->y2b);
 	pl_pos.x = mlx->player.where.x;
 	pl_pos.y = mlx->player.where.y;
@@ -122,13 +123,14 @@ void	drawing(t_mlx *mlx, t_draw *draw)
 	sort_sprites(mlx);
 	while (++x <= draw->endx)
 	{
-		if (mlx->sectors[draw->now.sectorno].sky && draw->now.sectorno == (int)mlx->player.sector)
+		if (mlx->sectors[draw->now.sectorno].sky &&
+			draw->now.sectorno == (int)mlx->player.sector)
 			draw_skybox(mlx, x);
 		draw->txtx = (draw->u0 * ((draw->x2 - x) * draw->tz2) + draw->u1 *\
 			((x - draw->x1) * draw->tz1)) / ((draw->x2 - x) * draw->tz2 +\
 				(x - draw->x1) * draw->tz1);
-		draw->ya = Scaler_Next(&draw->ya_int);
-		draw->yb = Scaler_Next(&draw->yb_int);
+		draw->ya = scaler_next(&draw->ya_int);
+		draw->yb = scaler_next(&draw->yb_int);
 		draw->cya = clamp(draw->ya, draw->ytop[x], draw->ybottom[x]);
 		draw->cyb = clamp(draw->yb, draw->ytop[x], draw->ybottom[x]);
 		boucle_drawing(mlx, draw, x);
@@ -147,16 +149,16 @@ void	check_edge(t_mlx *mlx, t_draw *draw)
 		nyceil = mlx->sectors[draw->neighbor].ceil - mlx->player.where.z;
 		nyfloor = mlx->sectors[draw->neighbor].floor - mlx->player.where.z;
 	}
-	draw->y1a = H / 2 - (int)(Yaw(draw->yceil, draw->tz1, mlx) * draw->yscale1);
-	draw->y1b = H / 2 - (int)(Yaw(draw->yfloor, draw->tz1, mlx)\
+	draw->y1a = H / 2 - (int)(yaw(draw->yceil, draw->tz1, mlx) * draw->yscale1);
+	draw->y1b = H / 2 - (int)(yaw(draw->yfloor, draw->tz1, mlx)\
 		* draw->yscale1);
-	draw->y2a = H / 2 - (int)(Yaw(draw->yceil, draw->tz2, mlx) * draw->yscale2);
-	draw->y2b = H / 2 - (int)(Yaw(draw->yfloor, draw->tz2, mlx)\
+	draw->y2a = H / 2 - (int)(yaw(draw->yceil, draw->tz2, mlx) * draw->yscale2);
+	draw->y2b = H / 2 - (int)(yaw(draw->yfloor, draw->tz2, mlx)\
 		* draw->yscale2);
-	draw->ny1a = H / 2 - (int)(Yaw(nyceil, draw->tz1, mlx) * draw->yscale1);
-	draw->ny1b = H / 2 - (int)(Yaw(nyfloor, draw->tz1, mlx) * draw->yscale1);
-	draw->ny2a = H / 2 - (int)(Yaw(nyceil, draw->tz2, mlx) * draw->yscale2);
-	draw->ny2b = H / 2 - (int)(Yaw(nyfloor, draw->tz2, mlx) * draw->yscale2);
+	draw->ny1a = H / 2 - (int)(yaw(nyceil, draw->tz1, mlx) * draw->yscale1);
+	draw->ny1b = H / 2 - (int)(yaw(nyfloor, draw->tz1, mlx) * draw->yscale1);
+	draw->ny2a = H / 2 - (int)(yaw(nyceil, draw->tz2, mlx) * draw->yscale2);
+	draw->ny2b = H / 2 - (int)(yaw(nyfloor, draw->tz2, mlx) * draw->yscale2);
 	draw->beginx = max(draw->x1, draw->now.sx1);
 	draw->endx = min(draw->x2, draw->now.sx2);
 	drawing(mlx, draw);
@@ -230,9 +232,9 @@ void	behind_player(t_draw *draw)
 		nearside = 1e-5f;
 		farside = 20.f;
 		draw->nearz = 1e-4f;
-		draw->i1 = Intersect(draw->tx1, draw->tz1, draw->tx2, draw->tz2,\
+		draw->i1 = intersect(draw->tx1, draw->tz1, draw->tx2, draw->tz2,\
 			-nearside, draw->nearz, -farside, farz);
-		draw->i2 = Intersect(draw->tx1, draw->tz1, draw->tx2, draw->tz2,\
+		draw->i2 = intersect(draw->tx1, draw->tz1, draw->tx2, draw->tz2,\
 			nearside, draw->nearz, farside, farz);
 		players_view(draw);
 	}
@@ -240,19 +242,27 @@ void	behind_player(t_draw *draw)
 
 void	render_declaration(t_mlx *mlx, t_draw *draw, int s)
 {
-	float vx1;
-	float vx2;
-	float vy1;
-	float vy2;
-	int i;
+	float	vx1;
+	float	vx2;
+	float	vy1;
+	float	vy2;
+	int		i;
 
 	i = -1;
 	while (++i < NB_DECO)
-    {
-        mlx->decos[i].origin.x = mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall].x - mlx->player.where.x;
-        mlx->decos[i].origin.y = mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall].y - mlx->player.where.y;
-        mlx->decos[i].end.x = mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall + 1].x - mlx->player.where.x;
-        mlx->decos[i].end.y = mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall + 1].y - mlx->player.where.y;
+	{
+		mlx->decos[i].origin.x =
+		mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall].x
+		- mlx->player.where.x;
+		mlx->decos[i].origin.y =
+		mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall].y
+		- mlx->player.where.y;
+		mlx->decos[i].end.x =
+		mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall + 1].x
+		- mlx->player.where.x;
+		mlx->decos[i].end.y =
+		mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall + 1].y
+		- mlx->player.where.y;
 	}
 	draw->u0 = 0;
 	draw->u1 = TEXTURE_SIZE - 1;

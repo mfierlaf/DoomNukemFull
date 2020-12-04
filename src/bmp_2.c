@@ -12,7 +12,7 @@
 
 #include "../include/doom_nukem.h"
 
-void	*free_bmp(t_bmp *bmp, int *data, unsigned char *tmp)
+void					*free_bmp(t_bmp *bmp, int *data, unsigned char *tmp)
 {
 	if (tmp)
 		free(tmp);

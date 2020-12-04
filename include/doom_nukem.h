@@ -15,6 +15,7 @@
 # define S_LN 115
 # define D_LN 100
 # define E_LN 101
+# define F_LN 102
 # define M_LN 109
 # define Q_LN 113
 # define L_LN 108
@@ -27,7 +28,7 @@
 
 # define NB_OBJ 4
 # define NB_DECO 1
-# define DIFF_BMP 66
+# define DIFF_BMP 67
 # define FILTER_COLOR 0x980088
 # define W 1200
 # define H 800
@@ -269,7 +270,7 @@ struct item
   int sx2;
 };
 
-struct Scaler
+struct scaler
 {
   int result;
   int bop;
@@ -297,8 +298,8 @@ typedef struct s_draw
   float yfloor;
   int ytop[W];
   int ybottom[W];
-  struct Scaler ya_int;
-  struct Scaler yb_int;
+  struct scaler ya_int;
+  struct scaler yb_int;
   int x1;
   int x2;
   float tz1;
@@ -391,8 +392,7 @@ int mouse_hook(int x, int y, t_mlx* mlx);
 int ft_key_hook(int key, t_mlx *mlx);
 int stop_movement(int key, t_mlx *mlx);
 // VLINE.C
-void vline(int x, int y1,int y2, int top, int middle, int bottom, t_mlx *mlx);
-void vertical_line(t_draw *draw, int x, int y1, int y2, struct Scaler ty, unsigned txtx, t_mlx *mlx);
+void vertical_line(t_draw *draw, int x, int y1, int y2, struct scaler ty, unsigned txtx, t_mlx *mlx);
 // DRAW.C
 void draw_screen(t_mlx *mlx);
 void  drawing(t_mlx *mlx, t_draw *draw);
@@ -416,8 +416,8 @@ double	max(double a, double b);
 double	min(double a, double b);
 void 	clear_img(t_mlx *mlx);
 int kill_mlx(char *message, t_mlx *mlx);
-float Yaw(float y, float z, t_mlx *mlx);
-struct xy Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
+float yaw(float y, float z, t_mlx *mlx);
+struct xy intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 t_pos       new_pos(float x, float y);
 t_line        new_line(t_pos orig, t_pos end);
 t_pos       get_intersection(t_line line1, t_line line2, float slope1, float slope2);
@@ -431,9 +431,9 @@ int expose(t_mlx *mlx);
 // INIT.C
 void init(t_mlx *mlx);
 void    sprite_var(int sprite, t_mlx *mlx);
-int Scaler_Next(struct Scaler *i);
-void vline2(int x, int y1, int y2, struct Scaler ty, unsigned txtx, t_mlx *mlx);
-struct Scaler Scaler_Init(int a, int b, int c, int d, int f);
+int scaler_next(struct scaler *i);
+void vline2(int x, int y1, int y2, struct scaler ty, unsigned txtx, t_mlx *mlx);
+struct scaler scaler_init(int a, int b, int c, int d, int f);
 int         get_color(t_bmp *bmp, int x, int y);
 t_bmp       *new_bmp(char *str);
 t_bmp         *read_header_bmp(char *file);
@@ -452,7 +452,7 @@ void    story(t_mlx *mlx);
 void    music(t_mlx *mlx);
 void      filled_rect(t_point size, int x, int y, t_mlx *mlx);
 void      draw_rect(t_point size, int x, int y, t_mlx *mlx);
-void      line(int x0, int y0, int x1, int y1, t_mlx *mlx);
+void      line(t_point o, t_point e, t_mlx *mlx);
 void      draw_pixel(int x, int y, t_mlx *mlx);
 void      draw_hud(t_mlx *mlx);
 int      shoot_key(int key, int x, int y, t_mlx *mlx);
@@ -478,5 +478,6 @@ void        shoot_direction(t_mlx *mlx);
 void        draw_skybox(t_mlx *mlx, int x);
 //DECO.C
 void  draw_deco(int x, t_mlx *mlx);
+t_point     new_point(int x, int y);
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 #endif //DOOM_NUKEM_H

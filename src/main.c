@@ -12,7 +12,18 @@
 
 #include "../include/doom_nukem.h"
 
-int	main(void)
+static void	init_mlx(t_mlx *mlx)
+{
+	mlx->win = mlx_new_window(mlx->mlx, W, H, "DOOM");
+	mlx->img = mlx_new_image(mlx->mlx, W, H);
+	mlx->data = (int *)mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->sl,
+		&mlx->endian);
+	mlx->editor.img = mlx_new_image(mlx->mlx, ((3 * W) / 4), H);
+	mlx->editor.data = (int *)mlx_get_data_addr(mlx->editor.img,
+		&mlx->editor.bpp, &mlx->editor.sl, &mlx->editor.endian);
+}
+
+int			main(void)
 {
 	t_mlx	*mlx;
 
@@ -20,24 +31,15 @@ int	main(void)
 		return (0);
 	if (!(mlx->mlx = mlx_init()))
 		return (0);
-	mlx->win = mlx_new_window(mlx->mlx, W, H, "DOOM");
-	mlx->img = mlx_new_image(mlx->mlx, W, H);
-	mlx->data = (int *)mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->sl,
-		&mlx->endian);
-	mlx->editor.img = mlx_new_image(mlx->mlx, ((3 * W) / 4), H);
-	mlx->editor.data = (int *)mlx_get_data_addr(mlx->editor.img, &mlx->editor.bpp, &mlx->editor.sl,
-	 	&mlx->editor.endian);
 	init(mlx);
 	load_data(mlx);
-	mlx->player.life = 100;
-	mlx->player.is_dead = 0;
+	init_mlx(mlx);
 	load_texture(mlx);
 	mlx_hook(mlx->win, BUTTONPRESS, BUTTONPRESSMASK, shoot_key, mlx);
 	mlx_hook(mlx->win, MOTIONNOTIFY, POINTERMOTIONMASK, mouse_hook, mlx);
 	mlx_hook(mlx->win, KP, KPMASK, ft_key_hook, mlx);
 	mlx_hook(mlx->win, KEYRELEASE, KEYRELEASEMASK, stop_movement, mlx);
 	mlx_hook(mlx->win, DESTROYNOTIFY, STRUCTURENOTIFYMASK, kill_mlx, mlx);
-	// menu(mlx);
 	music(mlx);
 	mlx_loop_hook(mlx->mlx, expose, mlx);
 	mlx_loop(mlx->mlx);

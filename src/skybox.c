@@ -34,7 +34,6 @@ void				draw_skybox(t_mlx *mlx, int x)
 	float			angle;
 	t_pos			off;
 
-	// angle = -atan2(mlx->player->dir.x, mlx->player->dir.y);
 	angle = -atan2(mlx->player.anglesin, mlx->player.anglecos);
 	off.x = (mlx->tab_bmp[SKY]->header.width_px * angle) / M_PI;
 	tex.x = (mlx->tab_bmp[SKY]->header.width_px * x) /

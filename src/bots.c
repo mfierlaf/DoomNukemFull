@@ -25,9 +25,9 @@ void				moving_bot(int sprite, t_mlx *mlx)
 
 void				bot_shooting(int sprite, t_mlx *mlx)
 {
-	t_line			shot;
-	t_pos			in;
-	t_pos pl_pos;
+	t_line		shot;
+	t_pos		in;
+	t_pos		pl_pos;
 
 	pl_pos.x = mlx->player.where.x;
 	pl_pos.y = mlx->player.where.y;
@@ -59,10 +59,12 @@ void				bot(int sprite, t_mlx *mlx)
 	pl_pos.y = mlx->player.where.y;
 	if (mlx->objects[mlx->objects[sprite].order].life)
 	{
-		dist_bot = get_dist(pl_pos, mlx->objects[mlx->objects[sprite].order].pos);
+		dist_bot =
+		get_dist(pl_pos, mlx->objects[mlx->objects[sprite].order].pos);
 		mlx->sleep.shoot++;
 	}
-	if (mlx->objects[mlx->objects[sprite].order].life && mlx->player.sector == mlx->objects[mlx->objects[sprite].order].sector) //dist_bot < 5)
+	if (mlx->objects[mlx->objects[sprite].order].life && mlx->player.sector ==
+		mlx->objects[mlx->objects[sprite].order].sector)
 		moving_bot(sprite, mlx);
 	if (mlx->objects[mlx->objects[sprite].order].isbot)
 	{
@@ -73,7 +75,8 @@ void				bot(int sprite, t_mlx *mlx)
 	if (mlx->objects[mlx->objects[sprite].order].isbot == 1)
 	{
 		sprite_anim_walk(sprite, mlx);
-		if (dist_bot < 5 && mlx->player.sector == mlx->objects[mlx->objects[sprite].order].sector)
+		if (dist_bot < 5 && mlx->player.sector ==
+			mlx->objects[mlx->objects[sprite].order].sector)
 			bot_shooting(sprite, mlx);
 	}
 	if (mlx->objects[mlx->objects[sprite].order].isbot == 2)

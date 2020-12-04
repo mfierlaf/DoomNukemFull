@@ -14,29 +14,22 @@
 
 void	draw_deco(int x, t_mlx *mlx)
 {
-	int i;
-	float dist;
-	float line_height;
-	float draw_start;
-	float draw_end;
-	t_pos inter;
-	t_pos pl_pos;
-	t_line deco_line;
+	int		i;
+	float	dist;
+	float	line_height;
+	float	draw_start;
+	float	draw_end;
+	t_pos	inter;
+	t_pos	pl_pos;
+	t_line	deco_line;
 
 	i = -1;
 	while (++i < NB_DECO)
 	{
-		// 	decos_pos.orig.x = walls_pos.orig.x += (walls_pos.orig.x - walls_pos.end.x) * -mlx->decos[deco].origin_offset + 0.0001;
-	// 	decos_pos.orig.y = walls_pos.orig.y += (walls_pos.orig.y - walls_pos.end.y) * -mlx->decos[deco].origin_offset + 0.0001;
 		deco_line.orig.x = mlx->decos[i].origin.x + 0.0001;
 		deco_line.orig.y = mlx->decos[i].origin.y;
 		deco_line.end.x = mlx->decos[i].end.x;
 		deco_line.end.y = mlx->decos[i].end.y;
-
-		// printf("deco_line.orig.x: %f\n", deco_line.orig.x);
-		// printf("deco_line.orig.y: %f\n", deco_line.orig.y);
-
-
 		inter = get_intersection(mlx->ray, deco_line,
 		get_slope(mlx->ray), get_slope(deco_line));
 		if (!isinf(inter.x) && mlx->player.sector == mlx->objects[i].sector)
@@ -48,10 +41,9 @@ void	draw_deco(int x, t_mlx *mlx)
 			line_height = (float)H / dist;
 			draw_start = H * 0.5 - line_height * 0.5;
 			draw_end = draw_start + line_height;
-			vertical_sprite_lines(mlx, x, deco_line.orig, deco_line.end, draw_start, draw_end, inter, mlx->tab_bmp[mlx->decos[i].tex], i);
-			// vertical_sprite_lines(mlx, x, decos_pos.orig, decos_pos.end,
-			// draw_start, draw_end, inter,
-			// 	mlx->tab_bmp[mlx->sectors[draw->now.sectorno].decos[deco].tex]);
+			vertical_sprite_lines(mlx, x, deco_line.orig, deco_line.end,
+				draw_start, draw_end, inter,
+				mlx->tab_bmp[mlx->decos[i].tex], i);
 		}
 	}
 }

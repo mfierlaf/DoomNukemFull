@@ -102,6 +102,7 @@
 # define MULTI_6 63
 # define MULTI_7 64
 # define MULTI_8 65
+# define MINECRAFT 66
 
 # define NOEVENTMASK 0L
 # define KPMASK (1L<<0)
