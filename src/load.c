@@ -57,7 +57,13 @@ struct	xy*	read_vertices(int *j, struct xy *vert, char **split_line, t_mlx *mlx)
 	}
 	return (vert);
 }
-
+static int		read_decos(int i, char **split_line, t_mlx *mlx)
+{
+	mlx->decos[i].sector = atof(split_line[1]);
+	mlx->decos[i].wall = atof(split_line[2]);
+	mlx->decos[i].tex = ft_atoi(split_line[3]);
+	return (i++);
+}
 int			read_sector(int *k, struct xy *vert, char **split_line, t_mlx *mlx)
 {
 	int			vertex_len;
@@ -124,10 +130,12 @@ void		load_data(t_mlx *mlx)
 	int			j;
 	int			k;
 	int			i;
+	int			l;
 
 	j = 0;
 	k = -1;
 	i = 1;
+	l = 0;
 	if ((fd = open("./map-clear.txt", O_RDONLY)) < 0)
 		kill_mlx("ERROR IN MAP\n", mlx);
 	while (get_next_line(fd, &line) > 0)
@@ -142,6 +150,8 @@ void		load_data(t_mlx *mlx)
 			n = read_sector(&k, vert, split_line, mlx);
 		else if (split_line[0][0] == 'o')
 			read_object(&i, split_line, mlx);
+		else if (split_line[0][0] == 'd')
+			l = read_decos(l, split_line, mlx);
 		else if (split_line[0][0] == 'p')
 			read_player(n, split_line, mlx);
 	}

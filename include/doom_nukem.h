@@ -26,6 +26,7 @@
 # define K5_LN 40
 
 # define NB_OBJ 4
+# define NB_DECO 1
 # define DIFF_BMP 66
 # define FILTER_COLOR 0x980088
 # define W 1200
@@ -157,6 +158,14 @@ typedef struct        s_obj
   int           nb_anim_walk;
   int           nb_anim;
 }               t_obj;
+typedef struct        s_deco
+{
+  int           tex;
+  int           sector;
+  int           wall;
+  t_pos         origin;
+  t_pos         end;
+}               t_deco;
 
 typedef struct s_music  {
   int           mute;
@@ -356,6 +365,7 @@ typedef	struct s_mlx
   t_bmp *tab_anim[ANIM_NB];
   t_bmp   *tab_bmp[DIFF_BMP];
   t_obj   objects[NB_OBJ];
+  t_deco   decos[NB_DECO];
 
   t_editor editor;
   t_point mouse;
@@ -449,6 +459,7 @@ int      shoot_key(int key, int x, int y, t_mlx *mlx);
 //SPRITES.C
 void draw_sprites(int x, t_mlx *mlx);
 void sort_sprites(t_mlx *mlx);
+void                vertical_sprite_lines(t_mlx *mlx, int x, t_pos sp_orig, t_pos sp_end, int draw_start, int draw_end, t_pos inter, t_bmp *curr_bmp, int i);
 int  double_swap(t_mlx *mlx, int i, int j);
 // BOTS.C
 void        bot(int sprite, t_mlx *mlx);
@@ -465,6 +476,7 @@ void        send_bullet(t_mlx *mlx);
 void        shoot_direction(t_mlx *mlx);
 //SKYBOX.C
 void        draw_skybox(t_mlx *mlx, int x);
-
+//DECO.C
+void  draw_deco(int x, t_mlx *mlx);
 //struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 #endif //DOOM_NUKEM_H

@@ -58,7 +58,22 @@ void		sprite_var(int sprite, t_mlx *mlx)
 	mlx->objects[mlx->objects[sprite].order].initial_tex = mlx->objects[mlx->objects[sprite].order].tex;
 	enemy_anim_num(sprite, mlx);
 }
+static void	init_shot(t_mlx *mlx)
+{
+	mlx->objects[0].tex = -1;
+	mlx->objects[0].sector = 0;
+	mlx->objects[0].lootable = 0;
+	mlx->objects[0].pos.x = 0;
+	mlx->objects[0].pos.y = 0;
+	mlx->objects[0].order = 0;
+	mlx->objects[0].distance = 0;
+	mlx->objects[0].life = 0;
+	mlx->objects[0].isbot = 0;
+	mlx->objects[0].initial_tex = 0;
+	mlx->objects[0].nb_anim_walk = 0;
+	mlx->objects[0].nb_anim = 0;
 
+}
 void	init(t_mlx *mlx)
 {
 	mlx->txty = 0;
@@ -100,4 +115,5 @@ void	init(t_mlx *mlx)
 	mlx->anim.curr_anim_walk = 0;
 	mlx->anim.curr_anim = 0;
 	mlx->flying = 0;
+	init_shot(mlx);
 }

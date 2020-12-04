@@ -97,6 +97,7 @@ void	boucle_drawing(t_mlx *mlx, t_draw *draw, int x)
 	}
 	draw_vline(mlx, draw, x);
 	draw_sprites(x, mlx);
+	draw_deco(x, mlx);
 }
 
 void	drawing(t_mlx *mlx, t_draw *draw)
@@ -243,7 +244,16 @@ void	render_declaration(t_mlx *mlx, t_draw *draw, int s)
 	float vx2;
 	float vy1;
 	float vy2;
+	int i;
 
+	i = -1;
+	while (++i < NB_DECO)
+    {
+        mlx->decos[i].origin.x = mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall].x - mlx->player.where.x;
+        mlx->decos[i].origin.y = mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall].y - mlx->player.where.y;
+        mlx->decos[i].end.x = mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall + 1].x - mlx->player.where.x;
+        mlx->decos[i].end.y = mlx->sectors[mlx->decos[i].sector].vertex[mlx->decos[i].wall + 1].y - mlx->player.where.y;
+	}
 	draw->u0 = 0;
 	draw->u1 = TEXTURE_SIZE - 1;
 	vx1 = draw->sect->vertex[s + 0].x - mlx->player.where.x;
