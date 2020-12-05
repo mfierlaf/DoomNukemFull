@@ -48,6 +48,20 @@ t_load		init_load(void)
 	return (load);
 }
 
+void		free_lines(t_load *load)
+{
+	int		i;
+
+	i = 0;
+	free(load->line);
+	while (load->split_line[i])
+	{
+		free(load->split_line[i]);
+		i++;
+	}
+	free(load->split_line);
+}
+
 void		load_data(t_mlx *mlx)
 {
 	t_load	load;
@@ -71,10 +85,10 @@ void		load_data(t_mlx *mlx)
 			load.l = read_decos(load.l, load.split_line, mlx);
 		else if (load.split_line[0][0] == 'p')
 			read_player(load.n, load.split_line, mlx);
+		free_lines(&load);
 	}
 	close(load.fd);
 	free(load.vert);
-	free(load.line);
 }
 
 void		unload_data(t_mlx *mlx)

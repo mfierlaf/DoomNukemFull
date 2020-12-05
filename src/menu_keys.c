@@ -20,6 +20,7 @@ void		enter_menu(t_mlx *mlx)
 		if (mlx->player.is_dead > 0)
 		{
 			//UNLOAD DATA
+			unload_data(mlx);
 			init(mlx);
 			load_data(mlx);
 			mlx->menu.on = 0;
