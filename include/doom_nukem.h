@@ -154,20 +154,20 @@ typedef struct			s_vsl
 
 typedef struct			s_vl
 {
-	int x;
-	int y1;
-	int y2;
-	unsigned txtx;
+	int					x;
+	int					y1;
+	int					y2;
+	unsigned			txtx;
 }						t_vl;
 
 typedef struct			s_inter
 {
-	float			c1;
-	float			c2;
-	float			slope1;
-	float			slope2;
-	t_line			line1;
-	t_line			line2;
+	float				c1;
+	float				c2;
+	float				slope1;
+	float				slope2;
+	t_line				line1;
+	t_line				line2;
 }						t_inter;
 typedef struct			s_obj
 {
@@ -269,18 +269,17 @@ typedef struct			s_player
 	unsigned			sector;
 	int					life;
 	int					is_dead;
-	t_pos				dir;
-	t_pos				old_dir;
 }						t_player;
 
-typedef struct 			s_scale
+typedef struct			s_scale
 {
-	int a;
-	int b;
-	int c;
-	int d;
-	int f;
+	int					a;
+	int					b;
+	int					c;
+	int					d;
+	int					f;
 }						t_scale;
+
 typedef struct			s_sector
 {
 	int					brightness;
@@ -292,6 +291,27 @@ typedef struct			s_sector
 	signed char			*neighbors;
 	unsigned			npoints;
 }						t_sector;
+
+typedef struct			s_expose
+{
+	float				eyeheight;
+	float				nextz;
+	float				px;
+	float				py;
+	float				dx;
+	float				dy;
+	t_xy				*vert;
+	float				yaw;
+	unsigned			s;
+	float				hole_low;
+	float				hole_high;
+	float				xd;
+	float				yd;
+	float				move_vec[2];
+	int					pushing;
+	float				acceleration;
+	t_sector			*sect;
+}						t_expose;
 
 typedef struct			s_tex
 {
@@ -330,7 +350,7 @@ typedef struct			s_scaler
 	int					cache;
 }						t_scaler;
 
-typedef struct 			s_load
+typedef struct			s_load
 {
 	int					n;
 	int					i;
@@ -342,6 +362,7 @@ typedef struct 			s_load
 	char				**split_line;
 	t_xy				*vert;
 }						t_load;
+
 typedef struct			s_draw
 {
 	float				mapx;
@@ -455,7 +476,8 @@ int						stop_movement(int key, t_mlx *mlx);
 /*
 ** VLINE.C
 */
-void					vertical_line(t_draw *draw, t_vl vl, t_scaler ty, t_mlx *mlx);
+void					vertical_line(t_draw *draw, t_vl vl,
+							t_scaler ty, t_mlx *mlx);
 t_vl					new_vl(int x, int y1, int y2, unsigned txtx);
 t_point					new_point(int x, int y);
 t_scale					new_scale(int a, int b, int c, t_point de);
@@ -510,7 +532,8 @@ void					draw_pixel(int x, int y, t_mlx *mlx);
 void					draw_hud(t_mlx *mlx);
 int						shoot_key(int key, int x, int y, t_mlx *mlx);
 void					deco_while(t_mlx *mlx);
-
+void					game(t_mlx *mlx, t_expose ex);
+void					gameplay(t_mlx *mlx);
 /*
 ** SPRITES.C
 */

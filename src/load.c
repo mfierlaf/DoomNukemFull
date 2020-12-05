@@ -18,8 +18,8 @@ static void	read_object(int *i, char **split_line, t_mlx *mlx)
 
 	pl_pos.x = mlx->player.where.x;
 	pl_pos.y = mlx->player.where.y;
-	mlx->objects[*i].pos.x = atof(split_line[1]);
-	mlx->objects[*i].pos.y = atof(split_line[2]);
+	mlx->objects[*i].pos.x = ft_atof(split_line[1]);
+	mlx->objects[*i].pos.y = ft_atof(split_line[2]);
 	mlx->objects[*i].sector = ft_atoi(split_line[3]);
 	mlx->objects[*i].tex = ft_atoi(split_line[4]);
 	mlx->objects[*i].life = ft_atoi(split_line[5]);
@@ -31,8 +31,8 @@ static void	read_object(int *i, char **split_line, t_mlx *mlx)
 
 static int	read_decos(int i, char **split_line, t_mlx *mlx)
 {
-	mlx->decos[i].sector = atof(split_line[1]);
-	mlx->decos[i].wall = atof(split_line[2]);
+	mlx->decos[i].sector = ft_atof(split_line[1]);
+	mlx->decos[i].wall = ft_atof(split_line[2]);
 	mlx->decos[i].tex = ft_atoi(split_line[3]);
 	return (i++);
 }

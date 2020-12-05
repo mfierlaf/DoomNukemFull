@@ -19,7 +19,6 @@
 
 int		mouse_hook(int x, int y, t_mlx *mlx)
 {
-	mlx->player.old_dir.x = mlx->mouse.x;
 	mlx->mouse.x = x;
 	mlx->mouse.y = y;
 	return (0);

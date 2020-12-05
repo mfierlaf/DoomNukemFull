@@ -34,8 +34,8 @@ t_xy		*read_vertices(int *j, t_xy *vert,
 	while (split_line[i])
 	{
 		mlx->vert_tex[*j] = ft_atoi(split_line[i + 1]);
-		vert[*j].y = atof(split_line[1]);
-		vert[*j].x = atof(split_line[i]);
+		vert[*j].y = ft_atof(split_line[1]);
+		vert[*j].x = ft_atof(split_line[i]);
 		++*j;
 		i += 2;
 	}
@@ -76,8 +76,8 @@ int			read_sector(int *k, t_xy *vert, char **split_line, t_mlx *mlx)
 	int		n;
 
 	++*k;
-	mlx->sectors[*k].floor = atof(split_line[1]);
-	mlx->sectors[*k].ceil = atof(split_line[2]);
+	mlx->sectors[*k].floor = ft_atof(split_line[1]);
+	mlx->sectors[*k].ceil = ft_atof(split_line[2]);
 	mlx->sectors[*k].brightness = ft_atoi(split_line[3]);
 	if (mlx->sectors[*k].ceil < 0)
 	{
@@ -99,8 +99,7 @@ void		read_player(int n, char **split_line, t_mlx *mlx)
 	v.y = ft_atoi(split_line[2]);
 	angle = ft_atoi(split_line[3]);
 	n = ft_atoi(split_line[4]);
-	mlx->player = (struct s_player) {
-		{v.x, v.y, 0}, {0, 0, 0}, angle, 0, 0, 0, n,
-		100, 0, {0, 0, 0}, {0, 0, 0}};
+	mlx->player = (t_player) { {v.x, v.y, 0}, {0, 0, 0},
+		angle, 0, 0, 0, n, 100, 0};
 	mlx->player.where.z = mlx->sectors[mlx->player.sector].floor + EYEHEIGHT;
 }

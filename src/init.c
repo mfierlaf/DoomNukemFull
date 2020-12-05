@@ -115,8 +115,6 @@ void		init(t_mlx *mlx)
 	mlx->player.is_dead = 0;
 	mlx->editor.on = 0;
 	mlx->editor.map_img_width = ((3 * W) / 4);
-	mlx->player.dir.x = 1.0;
-	mlx->player.dir.y = 0.0;
 	mlx->sleep.death = 0;
 	mlx->sleep.walk = 0;
 	mlx->sleep.shoot = 0;
