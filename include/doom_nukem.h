@@ -509,6 +509,8 @@ void					line(t_point o, t_point e, t_mlx *mlx);
 void					draw_pixel(int x, int y, t_mlx *mlx);
 void					draw_hud(t_mlx *mlx);
 int						shoot_key(int key, int x, int y, t_mlx *mlx);
+void					deco_while(t_mlx *mlx);
+
 /*
 ** SPRITES.C
 */
