@@ -480,6 +480,8 @@ t_bmp_header_f			convert_to_header(t_bmp_header src);
 ** BMP_3.C
 */
 t_bmp					*read_header_bmp(char *file);
+void					valid_anim(t_mlx *mlx);
+void					valid_bmp(t_mlx *mlx);
 /*
 ** BOTS.C
 */
@@ -556,20 +558,20 @@ void					load_texture(t_mlx *mlx);
 ** LOOT.C
 */
 void					pick_up_loot(t_mlx *mlx);
-/* 
-**MENU.C
+/*
+** MENU.C
 */
 void					story(t_mlx *mlx);
 void					menu(t_mlx *mlx);
-/* 
-**MENU2.C
+/*
+** MENU2.C
 */
 void					menu_strings(t_mlx *mlx);
 void					music(t_mlx *mlx);
 void					draw_image(t_point point, float zoom, t_bmp *bmp, \
 							t_mlx *mlx);
-/* 
-**MENU_KEYS.C
+/*
+** MENU_KEYS.C
 */
 void					menu_key_hook(int key, t_mlx *mlx);
 /*
@@ -591,6 +593,10 @@ void					read_player(int n, char **split_line, t_mlx *mlx);
 t_xy					*read_vertices(int *j, t_xy *vert,
 							char **split_line, t_mlx *mlx);
 t_xy					*read_map(char **split_line, t_mlx *mlx);
+/*
+** SECTOR_MALLOC.C
+*/
+void					sector_malloc(t_mlx *mlx, int v_l, int *k);
 /*
 ** SHAPE.C
 */

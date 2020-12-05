@@ -115,4 +115,5 @@ void			load_texture(t_mlx *mlx)
 	mlx->tab_anim[KNIFE_ANIM_2] = new_bmp("textures/knife_2.bmp");
 	mlx->tab_anim[KNIFE_ANIM_3] = new_bmp("textures/knife_3.bmp");
 	mlx->tab_anim[KNIFE_ANIM_4] = new_bmp("textures/knife_4.bmp");
+	valid_bmp(mlx);
 }

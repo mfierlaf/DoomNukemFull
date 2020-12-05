@@ -96,7 +96,8 @@ void	draw_screen(t_mlx *mlx)
 		draw.ytop[x] = 0;
 	}
 	x = -1;
-	draw.renderedsectors = malloc(sizeof(int) * mlx->num_sectors);
+	if ((draw.renderedsectors = malloc(sizeof(int) * mlx->num_sectors)) == NULL)
+		kill_mlx("draw_rendered_sectors_malloc fail\n", mlx);
 	while (++x < W)
 	{
 		draw.ybottom[x] = H - 1;

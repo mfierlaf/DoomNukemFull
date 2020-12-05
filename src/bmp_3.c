@@ -39,3 +39,42 @@ t_bmp					*read_header_bmp(char *file)
 	bmp = read_img_bmp(file, header);
 	return (bmp);
 }
+
+void					valid_anim(t_mlx *mlx)
+{
+	int i;
+
+	i = -1;
+	while (++i < ANIM_NB)
+	{
+		if (!mlx->tab_anim[i])
+		{
+			i = -1;
+			while (++i < ANIM_NB)
+			{
+				free(mlx->tab_anim[i]);
+			}
+			kill_mlx("fail in load bmp anim\n", mlx);
+		}
+	}
+}
+
+void					valid_bmp(t_mlx *mlx)
+{
+	int i;
+
+	i = -1;
+	while (++i < DIFF_BMP)
+	{
+		if (!mlx->tab_bmp[i])
+		{
+			i = -1;
+			while (++i < DIFF_BMP)
+			{
+				free(mlx->tab_bmp[i]);
+			}
+			kill_mlx("fail in load bmp\n", mlx);
+		}
+	}
+	valid_anim(mlx);
+}

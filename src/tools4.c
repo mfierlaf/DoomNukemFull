@@ -25,9 +25,9 @@ int		kill_mlx(char *message, t_mlx *mlx)
 {
 	ft_putstr(message);
 	system("pkill afplay");
-	unload_data(mlx);
+	if (mlx != NULL)
+		unload_data(mlx);
 	mlx = NULL;
-	// TODO free shit
 	exit(1);
 	return (0);
 }

@@ -91,6 +91,7 @@ void		unload_data(t_mlx *mlx)
 	while (++a < mlx->num_sectors)
 		free(mlx->sectors[a].v_id);
 	free(mlx->sectors);
+	free(mlx->vert_tex);
 	mlx->sectors = NULL;
 	mlx->num_sectors = 0;
 }

@@ -18,10 +18,13 @@ t_xy		*read_map(char **split_line, t_mlx *mlx)
 	t_xy	*vert;
 
 	num_vertices = ft_atoi(split_line[1]);
-	vert = malloc(num_vertices * sizeof(*vert));
-	mlx->vert_tex = malloc(num_vertices * sizeof(mlx->vert_tex));
+	if ((vert = malloc(num_vertices * sizeof(*vert))) == NULL)
+		kill_mlx("vert malloc fail\n", mlx);
+	if (!(mlx->vert_tex = malloc(num_vertices * sizeof(mlx->vert_tex))))
+		kill_mlx("vert_tex malloc fail\n", mlx);
 	mlx->num_sectors = ft_atoi(split_line[2]);
-	mlx->sectors = malloc(mlx->num_sectors * sizeof(*mlx->sectors));
+	if (!(mlx->sectors = malloc(mlx->num_sectors * sizeof(*mlx->sectors))))
+		kill_mlx("sectors malloc fail\n", mlx);
 	return (vert);
 }
 
@@ -42,7 +45,7 @@ t_xy		*read_vertices(int *j, t_xy *vert,
 	return (vert);
 }
 
-static int	sector_malloc(int *k, t_xy *vert, char **split_line, t_mlx *mlx)
+static int	read_map_atoi(int *k, t_xy *vert, char **split_line, t_mlx *mlx)
 {
 	int		v_l;
 	int		n;
@@ -52,11 +55,7 @@ static int	sector_malloc(int *k, t_xy *vert, char **split_line, t_mlx *mlx)
 		v_l++;
 	mlx->sectors[*k].npoints = (v_l - 4) / 2;
 	v_l = (v_l - 4) / 2;
-	mlx->sectors[*k].neighbors = malloc((v_l) *\
-		sizeof(*mlx->sectors[*k].neighbors));
-	mlx->sectors[*k].vertex = malloc((v_l + 1) *\
-		sizeof(*mlx->sectors[*k].vertex));
-	mlx->sectors[*k].v_id = malloc((v_l + 1) * sizeof(*mlx->sectors[*k].v_id));
+	sector_malloc(mlx, v_l, k);
 	n = -1;
 	while (++n < v_l)
 		mlx->sectors[*k].neighbors[n] = ft_atoi(split_line[v_l + n + 4]);
@@ -86,7 +85,7 @@ int			read_sector(int *k, t_xy *vert, char **split_line, t_mlx *mlx)
 	}
 	else
 		mlx->sectors[*k].sky = 0;
-	n = sector_malloc(k, vert, split_line, mlx);
+	n = read_map_atoi(k, vert, split_line, mlx);
 	return (n);
 }
 

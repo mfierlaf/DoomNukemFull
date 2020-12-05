@@ -16,7 +16,8 @@ t_bmp				*new_bmp(char *str)
 {
 	t_bmp			*bmp;
 
-	bmp = read_header_bmp(str);
+	if ((bmp = read_header_bmp(str)) == NULL)
+		return (NULL);
 	return (bmp);
 }
 
