@@ -288,7 +288,7 @@ typedef struct			s_sector
 	float				floor;
 	float				ceil;
 	t_xy				*vertex;
-	int					*vert_id;
+	int					*v_id;
 	signed char			*neighbors;
 	unsigned			npoints;
 }						t_sector;
@@ -330,6 +330,18 @@ typedef struct			s_scaler
 	int					cache;
 }						t_scaler;
 
+typedef struct 			s_load
+{
+	int					n;
+	int					i;
+	int					j;
+	int					k;
+	int					l;
+	int					fd;
+	char				*line;
+	char				**split_line;
+	t_xy				*vert;
+}						t_load;
 typedef struct			s_draw
 {
 	float				mapx;
@@ -445,6 +457,8 @@ int						stop_movement(int key, t_mlx *mlx);
 */
 void					vertical_line(t_draw *draw, t_vl vl, t_scaler ty, t_mlx *mlx);
 t_vl					new_vl(int x, int y1, int y2, unsigned txtx);
+t_point					new_point(int x, int y);
+t_scale					new_scale(int a, int b, int c, t_point de);
 /*
 ** DRAW.C
 */
@@ -577,8 +591,13 @@ int						kill_mlx(char *message, t_mlx *mlx);
 float					yaw(float y, float z, t_mlx *mlx);
 t_pos					new_pos(float x, float y);
 t_line					new_line(t_pos orig, t_pos end);
+/*
+** READ_MAP.C
+*/
 int						read_sector(int *k, t_xy *vert,
-	char **split_line, t_mlx *mlx);
-t_point					new_point(int x, int y);
-t_scale					new_scale(int a, int b, int c, t_point de);
+							char **split_line, t_mlx *mlx);
+void					read_player(int n, char **split_line, t_mlx *mlx);
+t_xy					*read_vertices(int *j, t_xy *vert,
+							char **split_line, t_mlx *mlx);
+t_xy					*read_map(char **split_line, t_mlx *mlx);
 #endif

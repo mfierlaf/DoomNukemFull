@@ -12,9 +12,9 @@
 
 #include "../include/doom_nukem.h"
 
-static void		read_object(int *i, char **split_line, t_mlx *mlx)
+static void	read_object(int *i, char **split_line, t_mlx *mlx)
 {
-	t_pos pl_pos;
+	t_pos	pl_pos;
 
 	pl_pos.x = mlx->player.where.x;
 	pl_pos.y = mlx->player.where.y;
@@ -29,37 +29,7 @@ static void		read_object(int *i, char **split_line, t_mlx *mlx)
 	++*i;
 }
 
-t_xy		*read_map(char **split_line, t_mlx *mlx)
-{
-	int			num_vertices;
-	t_xy	*vert;
-
-	num_vertices = ft_atoi(split_line[1]);
-	vert = malloc(num_vertices * sizeof(vert));
-	mlx->vert_tex = malloc(num_vertices * sizeof(mlx->vert_tex));
-	mlx->num_sectors = ft_atoi(split_line[2]);
-	mlx->sectors = malloc(mlx->num_sectors * sizeof(*mlx->sectors));
-	return (vert);
-}
-
-t_xy		*read_vertices(int *j, t_xy *vert,
-	char **split_line, t_mlx *mlx)
-{
-	int			i;
-
-	i = 2;
-	while (split_line[i])
-	{
-		mlx->vert_tex[*j] = ft_atoi(split_line[i + 1]);
-		vert[*j].y = atof(split_line[1]);
-		vert[*j].x = atof(split_line[i]);
-		++*j;
-		i += 2;
-	}
-	return (vert);
-}
-
-static int		read_decos(int i, char **split_line, t_mlx *mlx)
+static int	read_decos(int i, char **split_line, t_mlx *mlx)
 {
 	mlx->decos[i].sector = atof(split_line[1]);
 	mlx->decos[i].wall = atof(split_line[2]);
@@ -67,105 +37,47 @@ static int		read_decos(int i, char **split_line, t_mlx *mlx)
 	return (i++);
 }
 
-int				read_sector(int *k, t_xy *vert,
-	char **split_line, t_mlx *mlx)
+t_load		init_load(void)
 {
-	int			vertex_len;
-	int			n;
+	t_load	load;
 
-	vertex_len = 0;
-	++*k;
-	mlx->sectors[*k].floor = atof(split_line[1]);
-	mlx->sectors[*k].ceil = atof(split_line[2]);
-	mlx->sectors[*k].brightness = ft_atoi(split_line[3]);
-	if (mlx->sectors[*k].ceil < 0)
-	{
-		mlx->sectors[*k].ceil = -mlx->sectors[*k].ceil;
-		mlx->sectors[*k].sky = 1;
-	}
-	else
-		mlx->sectors[*k].sky = 0;
-	while (split_line[vertex_len] != NULL)
-		vertex_len++;
-	vertex_len -= 4;
-	mlx->sectors[*k].npoints = vertex_len / 2;
-	vertex_len /= 2;
-	mlx->sectors[*k].neighbors = malloc((vertex_len) * \
-		sizeof(*mlx->sectors[*k].neighbors));
-	mlx->sectors[*k].vertex = malloc((vertex_len + 1) * \
-		sizeof(*mlx->sectors[*k].vertex));
-	mlx->sectors[*k].vert_id = malloc((vertex_len + 1) * \
-		sizeof(*mlx->sectors[*k].vert_id));
-	n = -1;
-	while (++n < vertex_len)
-		mlx->sectors[*k].neighbors[n] = ft_atoi(split_line[vertex_len + n + 4]);
-	n = -1;
-	while (++n < vertex_len)
-	{
-		mlx->sectors[*k].vertex[n + 1] = vert[ft_atoi(split_line[n + 4])];
-		mlx->sectors[*k].vert_id[n + 1] = ft_atoi(split_line[n + 4]);
-	}
-	mlx->sectors[*k].vertex[0] = mlx->sectors[*k].vertex[vertex_len];
-	mlx->sectors[*k].vert_id[0] = mlx->sectors[*k].vert_id[vertex_len];
-	return (n);
+	load.j = 0;
+	load.k = -1;
+	load.i = 1;
+	load.l = 0;
+	return (load);
 }
 
-void			read_player(int n, char **split_line, t_mlx *mlx)
+void		load_data(t_mlx *mlx)
 {
-	float		angle;
-	t_xy	v;
+	t_load	load;
 
-	v.x = ft_atoi(split_line[1]);
-	v.y = ft_atoi(split_line[2]);
-	angle = ft_atoi(split_line[3]);
-	n = ft_atoi(split_line[4]);
-	mlx->player = (struct s_player) {
-		{v.x, v.y, 0}, {0, 0, 0}, angle, 0, 0, 0, n,
-		100, 0, {0, 0, 0}, {0, 0, 0}};
-	mlx->player.where.z = mlx->sectors[mlx->player.sector].floor + EYEHEIGHT;
-}
-
-void			load_data(t_mlx *mlx)
-{
-	int			fd;
-	char		*line;
-	char		**split_line;
-	t_xy	*vert;
-	int			n;
-	int			j;
-	int			k;
-	int			i;
-	int			l;
-
-	j = 0;
-	k = -1;
-	i = 1;
-	l = 0;
-	if ((fd = open("./map-clear.txt", O_RDONLY)) < 0)
+	load = init_load();
+	if ((load.fd = open("./map-clear.txt", O_RDONLY)) < 0)
 		kill_mlx("ERROR IN MAP\n", mlx);
-	while (get_next_line(fd, &line) > 0)
+	while (get_next_line(load.fd, &load.line) > 0)
 	{
-		if (!(split_line = ft_strsplit(line, ' ')))
+		if (!(load.split_line = ft_strsplit(load.line, ' ')))
 			kill_mlx("ERROR IN MAP\n", mlx);
-		if (split_line[0][0] == 'm')
-			vert = read_map(split_line, mlx);
-		else if (split_line[0][0] == 'v')
-			vert = read_vertices(&j, vert, split_line, mlx);
-		else if (split_line[0][0] == 's')
-			n = read_sector(&k, vert, split_line, mlx);
-		else if (split_line[0][0] == 'o')
-			read_object(&i, split_line, mlx);
-		else if (split_line[0][0] == 'd')
-			l = read_decos(l, split_line, mlx);
-		else if (split_line[0][0] == 'p')
-			read_player(n, split_line, mlx);
+		if (load.split_line[0][0] == 'm')
+			load.vert = read_map(load.split_line, mlx);
+		else if (load.split_line[0][0] == 'v')
+			load.vert = read_vertices(&load.j, load.vert, load.split_line, mlx);
+		else if (load.split_line[0][0] == 's')
+			load.n = read_sector(&load.k, load.vert, load.split_line, mlx);
+		else if (load.split_line[0][0] == 'o')
+			read_object(&load.i, load.split_line, mlx);
+		else if (load.split_line[0][0] == 'd')
+			load.l = read_decos(load.l, load.split_line, mlx);
+		else if (load.split_line[0][0] == 'p')
+			read_player(load.n, load.split_line, mlx);
 	}
-	close(fd);
-	free(vert);
-	free(line);
+	close(load.fd);
+	free(load.vert);
+	free(load.line);
 }
 
-void			unload_data(t_mlx *mlx)
+void		unload_data(t_mlx *mlx)
 {
 	unsigned	a;
 
