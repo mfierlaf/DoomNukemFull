@@ -152,6 +152,14 @@ typedef struct			s_vsl
 	float				rel_y;
 }						t_vsl;
 
+typedef struct			s_vl
+{
+	int x;
+	int y1;
+	int y2;
+	unsigned txtx;
+}						t_vl;
+
 typedef struct			s_inter
 {
 	float			c1;
@@ -177,6 +185,18 @@ typedef struct			s_obj
 	int					nb_anim;
 }						t_obj;
 
+typedef struct			s_shoot
+{
+	float			off_angle;
+	float			angle;
+	float			slice;
+	int				sprite;
+	t_pos			inter;
+	t_pos			pl_pos;
+	t_line			straight_ray;
+	t_line			small_ray;
+	t_pos			dir;
+}						t_shoot;
 typedef struct			s_deco
 {
 	int					tex;
@@ -253,6 +273,14 @@ typedef struct			s_player
 	t_pos				old_dir;
 }						t_player;
 
+typedef struct 			s_scale
+{
+	int a;
+	int b;
+	int c;
+	int d;
+	int f;
+}						t_scale;
 typedef struct			s_sector
 {
 	int					brightness;
@@ -415,10 +443,8 @@ int						stop_movement(int key, t_mlx *mlx);
 /*
 ** VLINE.C
 */
-void					vline(int x, int y1, int y2, int top, int middle,\
-							int bottom, t_mlx *mlx);
-void					vertical_line(t_draw *draw, int x, int y1, int y2,\
-							t_scaler ty, unsigned txtx, t_mlx *mlx);
+void					vertical_line(t_draw *draw, t_vl vl, t_scaler ty, t_mlx *mlx);
+t_vl					new_vl(int x, int y1, int y2, unsigned txtx);
 /*
 ** DRAW.C
 */
@@ -444,9 +470,7 @@ int						expose(t_mlx *mlx);
 void					init(t_mlx *mlx);
 void					sprite_var(int sprite, t_mlx *mlx);
 int						scaler_next(t_scaler *i);
-void					vline2(int x, int y1, int y2, t_scaler ty, \
-							unsigned txtx, t_mlx *mlx);
-t_scaler				scaler_init(int a, int b, int c, int d, int f);
+t_scaler				scaler_init(t_scale scale);
 int						get_color(t_bmp *bmp, int x, int y);
 t_bmp					*new_bmp(char *str);
 t_bmp					*read_header_bmp(char *file);
@@ -505,6 +529,10 @@ void					shoot(t_mlx *mlx);
 void					send_bullet(t_mlx *mlx);
 void					shoot_direction(t_mlx *mlx);
 /*
+** WEAPON2.C
+*/
+void					shoot_while(t_shoot *shoot, t_mlx *mlx);
+/*
 ** SKYBOX.C
 */
 void					draw_skybox(t_mlx *mlx, int x);
@@ -549,5 +577,8 @@ int						kill_mlx(char *message, t_mlx *mlx);
 float					yaw(float y, float z, t_mlx *mlx);
 t_pos					new_pos(float x, float y);
 t_line					new_line(t_pos orig, t_pos end);
-
+int						read_sector(int *k, t_xy *vert,
+	char **split_line, t_mlx *mlx);
+t_point					new_point(int x, int y);
+t_scale					new_scale(int a, int b, int c, t_point de);
 #endif

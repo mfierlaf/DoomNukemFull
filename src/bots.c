@@ -50,6 +50,16 @@ void				bot_shooting(int sprite, t_mlx *mlx)
 	}
 }
 
+static void			bot_wds(t_mlx *mlx, int sprite)
+{
+	if (mlx->objects[mlx->objects[sprite].order].isbot)
+	{
+		mlx->sleep.walk++;
+		mlx->sleep.death++;
+		mlx->sleep.shoot++;
+	}
+}
+
 void				bot(int sprite, t_mlx *mlx)
 {
 	float dist_bot;
@@ -66,12 +76,7 @@ void				bot(int sprite, t_mlx *mlx)
 	if (mlx->objects[mlx->objects[sprite].order].life && mlx->player.sector ==
 		mlx->objects[mlx->objects[sprite].order].sector)
 		moving_bot(sprite, mlx);
-	if (mlx->objects[mlx->objects[sprite].order].isbot)
-	{
-		mlx->sleep.walk++;
-		mlx->sleep.death++;
-		mlx->sleep.shoot++;
-	}
+	bot_wds(mlx, sprite);
 	if (mlx->objects[mlx->objects[sprite].order].isbot == 1)
 	{
 		sprite_anim_walk(sprite, mlx);

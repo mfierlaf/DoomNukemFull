@@ -68,30 +68,27 @@ void				weapon_choice(t_mlx *mlx)
 		mlx->weapon.damage = 70;
 }
 
+static void			shoot_calc(t_shoot *shoot, t_mlx *mlx)
+{
+	shoot->pl_pos.x = mlx->player.where.x;
+	shoot->pl_pos.y = mlx->player.where.y;
+	shoot->slice = M_PI / (3.0 * (float)W);
+	shoot->angle = atan2(mlx->player.anglesin, mlx->player.anglecos);
+	shoot->off_angle = ((W * 0.5)) * shoot->slice;
+	shoot->dir.x = shoot->pl_pos.x + cos(shoot->off_angle + shoot->angle) * 50;
+	shoot->dir.y = shoot->pl_pos.y + sin(shoot->off_angle + shoot->angle) * 50;
+	shoot->straight_ray = new_line(shoot->pl_pos, shoot->dir);
+	shoot->dir.x = shoot->pl_pos.x + cos(shoot->off_angle + shoot->angle) * 10;
+	shoot->dir.y = shoot->pl_pos.y + sin(shoot->off_angle + shoot->angle) * 10;
+	shoot->small_ray = new_line(shoot->pl_pos, shoot->dir);
+	shoot->sprite = 0;
+}
+
 void				shoot(t_mlx *mlx)
 {
-	int				sprite;
-	t_pos			inter;
-	t_pos			pl_pos;
-	t_line			straight_ray;
-	t_line			small_ray;
-	t_pos			dir;
-	float			off_angle;
-	float			angle;
-	float			slice;
+	t_shoot		shoot;
 
-	pl_pos.x = mlx->player.where.x;
-	pl_pos.y = mlx->player.where.y;
-	slice = M_PI / (3.0 * (float)W);
-	angle = atan2(mlx->player.anglesin, mlx->player.anglecos);
-	off_angle = ((W * 0.5)) * slice;
-	dir.x = pl_pos.x + cos(off_angle + angle) * 50;
-	dir.y = pl_pos.y + sin(off_angle + angle) * 50;
-	straight_ray = new_line(pl_pos, dir);
-	dir.x = pl_pos.x + cos(off_angle + angle) * 10;
-	dir.y = pl_pos.y + sin(off_angle + angle) * 10;
-	small_ray = new_line(pl_pos, dir);
-	sprite = 0;
+	shoot_calc(&shoot, mlx);
 	if (mlx->inventory.ammo || mlx->weapon.anim == 15)
 	{
 		if (mlx->weapon.anim < 15)
@@ -101,36 +98,10 @@ void				shoot(t_mlx *mlx)
 		}
 		else if (mlx->weapon.anim <= 15 && !mlx->music.mute)
 			system("afplay ./music/stab.mp3 &");
-		while (sprite < NB_OBJ)
+		while (shoot.sprite < NB_OBJ)
 		{
-			if (mlx->weapon.anim >= 15)
-				inter = get_intersection(straight_ray,
-					mlx->objects[mlx->objects[sprite].order].sprite_line,
-					get_slope(straight_ray),
-					get_slope(mlx->objects[mlx->objects[
-						sprite].order].sprite_line));
-			else
-				inter = get_intersection(small_ray,
-					mlx->objects[mlx->objects[sprite].order].sprite_line,
-					get_slope(small_ray),
-					get_slope(mlx->objects[mlx->objects[
-						sprite].order].sprite_line));
-			if (!isnan(inter.x) && mlx->objects[
-				mlx->objects[sprite].order].life > 0)
-			{
-				mlx->objects[mlx->objects[sprite].order].life -=
-				mlx->weapon.damage;
-				if (mlx->objects[mlx->objects[sprite].order].life <= 0)
-				{
-					mlx->objects[mlx->objects[sprite].order].initial_tex =
-					mlx->objects[mlx->objects[sprite].order].initial_tex +
-					mlx->objects[mlx->objects[sprite].order].nb_anim_walk;
-					mlx->objects[mlx->objects[sprite].order].isbot = 2;
-				}
-				if (!mlx->music.mute)
-					system("afplay ./music/death.mp3 &");
-			}
-			sprite++;
+			shoot_while(&shoot, mlx);
+			shoot.sprite++;
 		}
 	}
 }

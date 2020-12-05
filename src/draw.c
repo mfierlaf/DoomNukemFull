@@ -43,20 +43,20 @@ void	draw_vline(t_mlx *mlx, t_draw *draw, int x)
 			(draw->x2 - draw->x1) + draw->ny1b;
 		draw->cnya = clamp(draw->nya, draw->ytop[x], draw->ybottom[x]);
 		cnyb = clamp(draw->nyb, draw->ytop[x], draw->ybottom[x]);
-		vertical_line(draw, x, draw->cya, draw->cnya - 1,
-			(t_scaler)scaler_init(draw->ya, draw->cya,
-				draw->yb, 0, TEXTURE_SIZE - 1), draw->txtx, mlx);
+		vertical_line(draw, new_vl(x, draw->cya, draw->cnya - 1, draw->txtx),
+			(t_scaler)scaler_init(new_scale(draw->ya, draw->cya,
+							draw->yb, new_point(0, TEXTURE_SIZE - 1))), mlx);
 		draw->ytop[x] = clamp(max(draw->cya, draw->cnya), draw->ytop[x], H - 1);
-		vertical_line(draw, x, cnyb + 1, draw->cyb, (t_scaler)scaler_init(\
-			draw->ya, cnyb + 1, draw->yb, 0, TEXTURE_SIZE - 1),\
-				draw->txtx, mlx);
+		vertical_line(draw, new_vl(x, cnyb + 1, draw->cyb, draw->txtx), (t_scaler)scaler_init(\
+			new_scale(draw->ya, cnyb + 1, draw->yb, new_point(0, TEXTURE_SIZE - 1))), mlx);
 		draw->ybottom[x] = clamp(min(draw->cyb, cnyb), 0, draw->ybottom[x]);
 	}
 	else
 	{
-		vertical_line(draw, x, draw->cya, draw->cyb,
-			(t_scaler)scaler_init(draw->ya, draw->cya, draw->yb, 0,
-				TEXTURE_SIZE - 1), draw->txtx, mlx);
+		vertical_line(draw, new_vl(x, draw->cya, draw->cyb, draw->txtx),
+			(t_scaler)scaler_init(
+				new_scale(draw->ya, draw->cya, draw->yb, 
+					new_point(0, TEXTURE_SIZE - 1))), mlx);
 	}
 }
 
@@ -108,10 +108,8 @@ void	drawing(t_mlx *mlx, t_draw *draw)
 	t_pos	pl_pos;
 
 	x = draw->beginx - 1;
-	draw->ya_int = scaler_init(draw->x1, draw->beginx, draw->x2,\
-		draw->y1a, draw->y2a);
-	draw->yb_int = scaler_init(draw->x1, draw->beginx, draw->x2,\
-			draw->y1b, draw->y2b);
+	draw->ya_int = scaler_init(new_scale(draw->x1, draw->beginx, draw->x2, new_point(draw->y1a, draw->y2a)));
+	draw->yb_int = scaler_init(new_scale(draw->x1, draw->beginx, draw->x2, new_point(draw->y1b, draw->y2b)));
 	pl_pos.x = mlx->player.where.x;
 	pl_pos.y = mlx->player.where.y;
 	i = -1;

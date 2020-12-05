@@ -20,7 +20,15 @@
 ** that is outside the sector and 0 or 1 for a point that is inside.
 */
 
-void	move_player(t_mlx *mlx, float dx, float dy)
+static void	mv_player(t_mlx *mlx, float dx, float dy)
+{
+	mlx->player.where.x += dx;
+	mlx->player.where.y += dy;
+	mlx->player.anglesin = sinf(mlx->player.angle);
+	mlx->player.anglecos = cosf(mlx->player.angle);
+}
+
+void		move_player(t_mlx *mlx, float dx, float dy)
 {
 	float		px;
 	float		py;
@@ -45,8 +53,5 @@ void	move_player(t_mlx *mlx, float dx, float dy)
 			mlx->player.sector = sect->neighbors[s];
 			break ;
 		}
-	mlx->player.where.x += dx;
-	mlx->player.where.y += dy;
-	mlx->player.anglesin = sinf(mlx->player.angle);
-	mlx->player.anglecos = cosf(mlx->player.angle);
+	mv_player(mlx, dx, dy);
 }
