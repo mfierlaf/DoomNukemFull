@@ -18,7 +18,7 @@ t_xy		*read_map(char **split_line, t_mlx *mlx)
 	t_xy	*vert;
 
 	num_vertices = ft_atoi(split_line[1]);
-	vert = malloc(num_vertices * sizeof(vert));
+	vert = malloc(num_vertices * sizeof(*vert));
 	mlx->vert_tex = malloc(num_vertices * sizeof(mlx->vert_tex));
 	mlx->num_sectors = ft_atoi(split_line[2]);
 	mlx->sectors = malloc(mlx->num_sectors * sizeof(*mlx->sectors));
