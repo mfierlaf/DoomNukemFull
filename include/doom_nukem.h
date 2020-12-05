@@ -20,7 +20,6 @@
 ** # include "../minilibx_macos/mlx.h"
 */
 # include "define.h"
-# include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
 # include "../libft/incl/libft.h"
@@ -456,100 +455,6 @@ typedef struct			s_mlx
 	t_player			player;
 	t_sector			*sectors;
 }						t_mlx;
-
-/*
-** LOAD.C
-*/
-void					load_data(t_mlx *ml);
-void					load_texture(t_mlx *mlx);
-void					unload_data(t_mlx *mlx);
-/*
-** MOVE.C
-*/
-void					move_player(t_mlx *mlx, float dx, float dy);
-/*
-** MOUSE_HOOK.C
-*/
-int						mouse_hook(int x, int y, t_mlx *mlx);
-int						ft_key_hook(int key, t_mlx *mlx);
-int						stop_movement(int key, t_mlx *mlx);
-/*
-** VLINE.C
-*/
-void					vertical_line(t_draw *draw, t_vl vl,
-							t_scaler ty, t_mlx *mlx);
-t_vl					new_vl(int x, int y1, int y2, unsigned txtx);
-t_point					new_point(int x, int y);
-t_scale					new_scale(int a, int b, int c, t_point de);
-/*
-** DRAW.C
-*/
-void					draw_screen(t_mlx *mlx);
-void					drawing(t_mlx *mlx, t_draw *draw);
-void					boucle_drawing(t_mlx *mlx, t_draw *draw, int x);
-void					draw_vline(t_mlx *mlx, t_draw *draw, int x);
-void					check_edge(t_mlx *mlx, t_draw *draw);
-int						perspective(t_mlx *mlx, t_draw *draw, int s);
-void					players_view_tz2(t_draw *draw);
-void					players_view(t_draw *draw);
-void					behind_player(t_draw *draw);
-void					render(t_mlx *mlx, t_draw *draw);
-void					render_declaration(t_mlx *mlx, t_draw *draw, int s);
-void					draw_start(t_mlx *mlx, t_draw *draw);
-/*
-** EXPOSE.C
-*/
-int						expose(t_mlx *mlx);
-/*
-** INIT.C
-*/
-void					init(t_mlx *mlx);
-void					sprite_var(int sprite, t_mlx *mlx);
-int						scaler_next(t_scaler *i);
-t_scaler				scaler_init(t_scale scale);
-int						get_color(t_bmp *bmp, int x, int y);
-t_bmp					*new_bmp(char *str);
-t_bmp					*read_header_bmp(char *file);
-t_bmp					*read_img_bmp(char *file, t_bmp_header_f header);
-int						convert_to_32(uint16_t left, uint16_t right);
-t_bmp_header_f			convert_to_header(t_bmp_header src);
-int						check_tab_bmp(t_mlx *mlx);
-int						read_color_vertical(t_bmp *bmp, int x, int y, \
-							unsigned char *data);
-int						check_tab_sprite(t_mlx *mlx);
-void					*free_bmp(t_bmp *bmp, int *data, unsigned char *tmp);
-void					menu(t_mlx *mlx);
-void					draw_image(t_point point, float zoom, t_bmp *bmp, \
-							t_mlx *mlx);
-void					menu_key_hook(int key, t_mlx *mlx);
-void					menu_strings(t_mlx *mlx);
-void					story(t_mlx *mlx);
-void					music(t_mlx *mlx);
-void					filled_rect(t_point size, int x, int y, t_mlx *mlx);
-void					draw_rect(t_point size, int x, int y, t_mlx *mlx);
-void					line(t_point o, t_point e, t_mlx *mlx);
-void					draw_pixel(int x, int y, t_mlx *mlx);
-void					draw_hud(t_mlx *mlx);
-int						shoot_key(int key, int x, int y, t_mlx *mlx);
-void					deco_while(t_mlx *mlx);
-void					game(t_mlx *mlx, t_expose ex);
-void					gameplay(t_mlx *mlx);
-/*
-** SPRITES.C
-*/
-void					draw_sprites(int x, t_mlx *mlx);
-void					vertical_sprite_lines(t_mlx *mlx, int x,
-							t_sprites sprite, int i);
-/*
-** MULTI_SPRITES.C
-*/
-void					sort_sprites(t_mlx *mlx);
-int						double_swap(t_mlx *mlx, int i, int j);
-void					multi_sprites(int sprite, t_mlx *mlx);
-/*
-** BOTS.C
-*/
-void					bot(int sprite, t_mlx *mlx);
 /*
 ** ANIM.C
 */
@@ -557,32 +462,153 @@ void					shoot_anim(t_mlx *mlx);
 void					sprite_anim_death(int sprite, t_mlx *mlx);
 void					sprite_anim_walk(int sprite, t_mlx *mlx);
 /*
-** LOOT.C
+** BMP.C
 */
-void					pick_up_loot(t_mlx *mlx);
+t_bmp					*new_bmp(char *str);
+int						get_color(t_bmp *bmp, int x, int y);
+int						check_tab_bmp(t_mlx *mlx);
+int						read_color_vertical(t_bmp *bmp, int x, int y, \
+							unsigned char *data);
 /*
-** WEAPON.C
+** BMP_2.C
 */
-void					weapon_choice(t_mlx *mlx);
-void					shoot(t_mlx *mlx);
-void					send_bullet(t_mlx *mlx);
-void					shoot_direction(t_mlx *mlx);
+void					*free_bmp(t_bmp *bmp, int *data, unsigned char *tmp);
+t_bmp					*read_img_bmp(char *file, t_bmp_header_f header);
+int						convert_to_32(uint16_t left, uint16_t right);
+t_bmp_header_f			convert_to_header(t_bmp_header src);
 /*
-** WEAPON2.C
+** BMP_3.C
 */
-void					shoot_while(t_shoot *shoot, t_mlx *mlx);
+t_bmp					*read_header_bmp(char *file);
 /*
-** SKYBOX.C
+** BOTS.C
 */
-void					draw_skybox(t_mlx *mlx, int x);
+void					bot(int sprite, t_mlx *mlx);
 /*
 ** DECO.C
 */
 void					draw_deco(int x, t_mlx *mlx);
 /*
+** DRAW.C
+*/
+void					draw_screen(t_mlx *mlx);
+void					render(t_mlx *mlx, t_draw *draw);
+void					render_declaration(t_mlx *mlx, t_draw *draw, int s);
+void					draw_start(t_mlx *mlx, t_draw *draw);
+/*
+** DRAW2.C
+*/
+void					boucle_drawing(t_mlx *mlx, t_draw *draw, int x);
+void					draw_vline(t_mlx *mlx, t_draw *draw, int x);
+/*
+** DRAW3.C
+*/
+void					check_edge(t_mlx *mlx, t_draw *draw);
+int						perspective(t_mlx *mlx, t_draw *draw, int s);
+void					players_view_tz2(t_draw *draw);
+void					players_view(t_draw *draw);
+/*
+** DRAW4.C
+*/
+void					deco_while(t_mlx *mlx);
+void					behind_player(t_draw *draw);
+void					drawing(t_mlx *mlx, t_draw *draw);
+/*
+** EVENT.C
+*/
+int						mouse_hook(int x, int y, t_mlx *mlx);
+int						ft_key_hook(int key, t_mlx *mlx);
+int						stop_movement(int key, t_mlx *mlx);
+int						button_mouse(int key, int x, int y, t_mlx *mlx);
+/*
+** EXPOSE.C
+*/
+int						expose(t_mlx *mlx);
+void					gameplay(t_mlx *mlx);
+/*
 ** FREE.C
 */
 void					free_draw(t_draw *draw);
+void					free_lines(t_load *load);
+/*
+** GAME.C
+*/
+void					game(t_mlx *mlx, t_expose ex);
+/*
+** HUD.C
+*/
+void					draw_hud(t_mlx *mlx);
+/*
+** INIT.C
+*/
+void					init(t_mlx *mlx);
+void					sprite_var(int sprite, t_mlx *mlx);
+/*
+** LOAD.C
+*/
+void					load_data(t_mlx *ml);
+void					unload_data(t_mlx *mlx);
+/*
+** LOAD_TEXTURES.C
+*/
+void					load_texture(t_mlx *mlx);
+/*
+** LOOT.C
+*/
+void					pick_up_loot(t_mlx *mlx);
+/* 
+**MENU.C
+*/
+void					story(t_mlx *mlx);
+void					menu(t_mlx *mlx);
+/* 
+**MENU2.C
+*/
+void					menu_strings(t_mlx *mlx);
+void					music(t_mlx *mlx);
+void					draw_image(t_point point, float zoom, t_bmp *bmp, \
+							t_mlx *mlx);
+/* 
+**MENU_KEYS.C
+*/
+void					menu_key_hook(int key, t_mlx *mlx);
+/*
+** MOVE.C
+*/
+void					move_player(t_mlx *mlx, float dx, float dy);
+/*
+** MULTI_SPRITES.C
+*/
+void					sort_sprites(t_mlx *mlx);
+int						double_swap(t_mlx *mlx, int i, int j);
+void					multi_sprites(int sprite, t_mlx *mlx);
+/*
+** READ_MAP.C
+*/
+int						read_sector(int *k, t_xy *vert,
+							char **split_line, t_mlx *mlx);
+void					read_player(int n, char **split_line, t_mlx *mlx);
+t_xy					*read_vertices(int *j, t_xy *vert,
+							char **split_line, t_mlx *mlx);
+t_xy					*read_map(char **split_line, t_mlx *mlx);
+/*
+** SHAPE.C
+*/
+void					draw_pixel(int x, int y, t_mlx *mlx);
+t_point					new_point(int x, int y);
+void					line(t_point o, t_point e, t_mlx *mlx);
+void					filled_rect(t_point size, int x, int y, t_mlx *mlx);
+void					draw_rect(t_point size, int x, int y, t_mlx *mlx);
+/*
+** SKYBOX.C
+*/
+void					draw_skybox(t_mlx *mlx, int x);
+/*
+** SPRITES.C
+*/
+void					draw_sprites(int x, t_mlx *mlx);
+void					vertical_sprite_lines(t_mlx *mlx, int x,
+							t_sprites sprite, int i);
 /*
 ** TOOLS.C
 */
@@ -617,12 +643,23 @@ float					yaw(float y, float z, t_mlx *mlx);
 t_pos					new_pos(float x, float y);
 t_line					new_line(t_pos orig, t_pos end);
 /*
-** READ_MAP.C
+** VLINE.C
 */
-int						read_sector(int *k, t_xy *vert,
-							char **split_line, t_mlx *mlx);
-void					read_player(int n, char **split_line, t_mlx *mlx);
-t_xy					*read_vertices(int *j, t_xy *vert,
-							char **split_line, t_mlx *mlx);
-t_xy					*read_map(char **split_line, t_mlx *mlx);
+void					vertical_line(t_draw *draw, t_vl vl,
+							t_scaler ty, t_mlx *mlx);
+t_vl					new_vl(int x, int y1, int y2, unsigned txtx);
+t_scale					new_scale(int a, int b, int c, t_point de);
+int						scaler_next(t_scaler *i);
+t_scaler				scaler_init(t_scale scale);
+/*
+** WEAPON.C
+*/
+void					weapon_choice(t_mlx *mlx);
+void					shoot(t_mlx *mlx);
+void					send_bullet(t_mlx *mlx);
+void					shoot_direction(t_mlx *mlx);
+/*
+** WEAPON2.C
+*/
+void					shoot_while(t_shoot *shoot, t_mlx *mlx);
 #endif

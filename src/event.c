@@ -77,7 +77,7 @@ int		ft_key_hook(int key, t_mlx *mlx)
 	return (0);
 }
 
-int		shoot_key(int key, int x, int y, t_mlx *mlx)
+int		button_mouse(int key, int x, int y, t_mlx *mlx)
 {
 	x += 0;
 	y += 0;

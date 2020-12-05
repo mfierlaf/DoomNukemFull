@@ -12,7 +12,21 @@
 
 #include "../include/doom_nukem.h"
 
-void	free_draw(t_draw *draw)
+void		free_draw(t_draw *draw)
 {
 	free(draw->renderedsectors);
+}
+
+void		free_lines(t_load *load)
+{
+	int		i;
+
+	i = 0;
+	free(load->line);
+	while (load->split_line[i])
+	{
+		free(load->split_line[i]);
+		i++;
+	}
+	free(load->split_line);
 }

@@ -35,7 +35,7 @@ int			main(void)
 	load_data(mlx);
 	init_mlx(mlx);
 	load_texture(mlx);
-	mlx_hook(mlx->win, BUTTONPRESS, (1L << 2), shoot_key, mlx);
+	mlx_hook(mlx->win, BUTTONPRESS, (1L << 2), button_mouse, mlx);
 	mlx_hook(mlx->win, MOTIONNOTIFY, (1L << 6), mouse_hook, mlx);
 	mlx_hook(mlx->win, KP, (1L << 0), ft_key_hook, mlx);
 	mlx_hook(mlx->win, KEYRELEASE, (1L << 1), stop_movement, mlx);

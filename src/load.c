@@ -48,20 +48,6 @@ t_load		init_load(void)
 	return (load);
 }
 
-void		free_lines(t_load *load)
-{
-	int		i;
-
-	i = 0;
-	free(load->line);
-	while (load->split_line[i])
-	{
-		free(load->split_line[i]);
-		i++;
-	}
-	free(load->split_line);
-}
-
 void		load_data(t_mlx *mlx)
 {
 	t_load	load;
@@ -101,6 +87,9 @@ void		unload_data(t_mlx *mlx)
 	a = -1;
 	while (++a < mlx->num_sectors)
 		free(mlx->sectors[a].neighbors);
+	a = -1;
+	while (++a < mlx->num_sectors)
+		free(mlx->sectors[a].v_id);
 	free(mlx->sectors);
 	mlx->sectors = NULL;
 	mlx->num_sectors = 0;
