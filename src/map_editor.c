@@ -19,10 +19,9 @@ void			draw_dashed_wall(t_mlx *mlx, int sector, int wall, int color)
 
 void			draw_dashed_line_sector(t_mlx *mlx)
 {
-	int			sector;
-	int			vertex;
+	unsigned	sector;
+	unsigned	vertex;
 	float		dist;
-	float		dist2;
 	float		closest_dist;
 	float		closest_dist2;
 
@@ -83,7 +82,7 @@ void        draw_wall(t_mlx *mlx, int sector, int wall)
 	mlx->editor.start.y = mlx->sectors[sector].vertex[wall].y *
 		mlx->editor.sqr_size - mlx->editor.off_y;
 
-	if (wall != mlx->sectors[sector].npoints - 1)
+	if (wall != (int)mlx->sectors[sector].npoints - 1)
 	{
 		mlx->editor.end.x = mlx->sectors[sector].vertex[wall + 1].x *
 			mlx->editor.sqr_size - mlx->editor.off_x;
@@ -148,7 +147,7 @@ static t_button	new_button(t_point orig, t_point end, int color)
 
 	b.orig = orig;
 	b.end = end;
-	b.color = DEFAULT_BUTTON_COLOUR;
+	b.color = color;
 	b.pressed = 0;
 	b.toggled = 0;
 	return (b);
@@ -235,8 +234,8 @@ static void	draw_buttons(t_mlx *mlx)
 
 void		map_editor(t_mlx *mlx)
 {
-	int sector;
-	int vertex;
+	unsigned sector;
+	unsigned vertex;
 
 	sector = 0;
 	draw_grid(mlx);

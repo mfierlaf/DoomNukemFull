@@ -39,7 +39,7 @@ int		mouse_hook(int x, int y, t_mlx *mlx)
 			(y - mlx->editor.off_y + (mlx->editor.sqr_size / 2)) / mlx->editor.sqr_size;
 		mlx->mouse_map.y *= -1.0;
 	}
-	if (mlx->editor.on == 1 && mlx->events.but1 == 1)
+	if (mlx->editor.on == 1)
 	{
 		mlx->editor.off_x += (x - mlx->editor.old_x);
 		mlx->editor.off_y += (y - mlx->editor.old_y);
@@ -106,16 +106,17 @@ int		ft_key_hook(int key, t_mlx *mlx)
 
 int		button_mouse(int key, int x, int y, t_mlx *mlx)
 {
+	int	button;
+
 	x += 0;
 	y += 0;
 	if (key == BUT1_KEY)
 	{
 		if (mlx->editor.on)
 		{
-			mlx->events.but1 = 1;
 			mlx->editor.old_x = x;
 			mlx->editor.old_y = y;
-			if (button = check_button_pressed(mlx))
+			if ((button = check_button_pressed(mlx)))
 			{
 				if (button == 2)
 					toggle_button(mlx, button);
@@ -137,9 +138,9 @@ int		button_mouse(int key, int x, int y, t_mlx *mlx)
 			system("afplay ./music/click.mp3 &");
 	}
 	if (key == SCROLLUP_KEY && mlx->editor.on && mlx->editor.sqr_size > 1)
-        mlx->editor.sqr_size -= 1;
-    if (key == SCROLLDOWN_KEY && mlx->editor.on)
-        mlx->editor.sqr_size += 1;
+        	mlx->editor.sqr_size -= 1;
+    	if (key == SCROLLDOWN_KEY && mlx->editor.on)
+        	mlx->editor.sqr_size += 1;
 	return (0);
 }
 
@@ -147,10 +148,11 @@ int			mouse_release(int key, int x, int y, t_mlx *mlx)
 {
 	int		button;
 
+	x += 0;
+	y += 0;
 	button = -1;
 	if (key == BUT1_KEY)
 	{
-		mlx->events.but1 = 0;
 		if (mlx->editor.on)
 		{
 			while (++button < NB_BUTTON)

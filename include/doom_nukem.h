@@ -105,6 +105,12 @@ typedef struct			s_point
 	int					y;
 }						t_point;
 
+typedef struct			s_fpoint
+{
+	float					x;
+	float					y;
+}						t_fpoint;
+
 typedef struct			s_line
 {
 	t_pos				orig;
@@ -257,12 +263,6 @@ typedef struct			s_xy
 	float				y;
 }						t_xy;
 
-typedef struct        	s_line
-{
-    t_fpoint            orig;
-    t_fpoint            end;
-}                    	t_line;
-
 typedef struct			s_player
 {
 	t_xyz				where;
@@ -356,9 +356,6 @@ typedef struct			s_editor
 	int					endian;
 	int					sl;
 	int					bpp;
-	int					map_img_width;
-	int					buttons_img_width;
-	int					on;
 	int 				sqr_size;
 	int					off_x;
 	int					off_y;
@@ -368,9 +365,7 @@ typedef struct			s_editor
 	int					*data_map;
 	void				*img_buttons;
 	int					*data_buttons;
-	int					endian;
-	int					sl;
-	int					bpp;
+	int					buttons_img_width;
 	int					closest_sector;
 	int					closest_vertex;
 	int					closest_sector2;
@@ -503,6 +498,7 @@ typedef struct			s_mlx
 	t_player			player;
 	t_sector			*sectors;
 	t_bham 				bham;
+	t_fpoint			mouse_map;
 }						t_mlx;
 /*
 ** ANIM.C
@@ -536,6 +532,11 @@ void					valid_bmp(t_mlx *mlx);
 */
 void					bot(int sprite, t_mlx *mlx);
 /*
+** BRESENHAM.C
+*/
+void					bresenham(t_mlx *mlx, int color);
+void					dashed_bresenham(t_mlx *mlx, int color);
+/*
 ** DECO.C
 */
 void					draw_deco(int x, t_mlx *mlx);
@@ -568,6 +569,7 @@ void					drawing(t_mlx *mlx, t_draw *draw);
 ** EVENT.C
 */
 int						mouse_hook(int x, int y, t_mlx *mlx);
+int						mouse_release(int key, int x, int y, t_mlx *mlx);
 int						ft_key_hook(int key, t_mlx *mlx);
 int						stop_movement(int key, t_mlx *mlx);
 int						button_mouse(int key, int x, int y, t_mlx *mlx);
@@ -585,6 +587,13 @@ void					free_lines(t_load *load);
 ** GAME.C
 */
 void					game(t_mlx *mlx, t_expose ex);
+/*
+** GEOMETRY.C
+*/
+//t_line					new_line(t_fpoint pos1, t_fpoint pos2);
+float					get_dist_mouse_to_map(t_fpoint p1, t_fpoint p2);
+t_fpoint				new_fpoint(float x, float y);
+int					is_inside(t_point p, t_button b);
 /*
 ** HUD.C
 */
@@ -607,6 +616,13 @@ void					load_texture(t_mlx *mlx);
 ** LOOT.C
 */
 void					pick_up_loot(t_mlx *mlx);
+/*
+** MAP_EDITOR.C
+*/
+int					check_button_pressed(t_mlx *mlx);
+void					init_buttons(t_mlx *mlx);
+void					toggle_button(t_mlx *mlx, int button);
+void					map_editor(t_mlx *mlx);
 /*
 ** MENU.C
 */
@@ -692,7 +708,7 @@ double					min(double a, double b);
 /*
 ** TOOLS4.C
 */
-void					clear_img(t_mlx *mlx);
+void					clear_img(int *data, int w, int h);
 int						kill_mlx(char *message, t_mlx *mlx);
 float					yaw(float y, float z, t_mlx *mlx);
 t_pos					new_pos(float x, float y);

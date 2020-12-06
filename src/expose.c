@@ -59,7 +59,7 @@ int		expose(t_mlx *mlx)
 		ex.s = -1;
 		ex.yaw = 0;
 		mlx->player.angle = 0;
-		clear_img(mlx);
+		clear_img(mlx->data, W, H);
 		ex.eyeheight = mlx->ducking ? DUCKHEIGHT : EYEHEIGHT;
 		mlx->ground = !mlx->falling;
 		game(mlx, ex);

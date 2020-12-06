@@ -319,4 +319,15 @@
 # define NKPT_KEY					65
 # define NKNTR_KEY					76
 
+# define APPLE						0x3FF73F
+# define ORANGE						0xFF9950
+# define RED						0xFF0000
+# define TEAL						0x1392A5
+
+# define NB_BUTTON					5
+# define BUTTON_ADD_SECTOR				2
+
+# define DEFAULT_BUTTON_COLOUR				RED
+# define PRESSED_BUTTON_COLOUR				ORANGE
+
 #endif
