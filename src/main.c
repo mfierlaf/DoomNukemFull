@@ -23,7 +23,7 @@ static void	init_mlx(t_mlx *mlx)
 		kill_mlx("mlx_get_data_addr fail\n", mlx);
 	if (!(mlx->editor.img_map = mlx_new_image(mlx->mlx, ((3 * W) / 4), H)))
 		kill_mlx("mlx_new_image fail\n", mlx);
-	if (!(mlx->editor.data_map = (int *)mlx_get_data_addr(mlx->editor.img,
+	if (!(mlx->editor.data_map = (int *)mlx_get_data_addr(mlx->editor.img_map,
 		&mlx->editor.bpp, &mlx->editor.sl, &mlx->editor.endian)))
 		kill_mlx("editor_get_data_addr fail\n", mlx);
 	mlx->editor.img_buttons = mlx_new_image(mlx->mlx, (W / 4), H);

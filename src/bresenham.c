@@ -25,9 +25,14 @@ void	dashed_bresenham(t_mlx *mlx, int color)
 		-mlx->bham.dy) / 2;
 	while (1)
 	{
-		if (mlx->editor.start.y >= 0 && mlx->editor.start.x >= 0 && mlx->editor.start.y < H && mlx->editor.start.x < mlx->editor.map_img_width && i < 2)
-			mlx->editor.data_map[(int)mlx->editor.start.y * mlx->editor.map_img_width + (int)mlx->editor.start.x] = color;
-		if (mlx->editor.start.x == mlx->editor.end.x && mlx->editor.start.y == mlx->editor.end.y)
+		if (mlx->editor.start.y >= 0 && mlx->editor.start.x >= 0 &&
+			 mlx->editor.start.y < H && mlx->editor.start.x < 
+			mlx->editor.map_img_width && i < 2)
+			mlx->editor.data_map[(int)mlx->editor.start.y * 
+				mlx->editor.map_img_width + 
+				(int)mlx->editor.start.x] = color;
+		if (mlx->editor.start.x == mlx->editor.end.x &&
+			mlx->editor.start.y == mlx->editor.end.y)
 			break ;
 		mlx->bham.e2 = mlx->bham.err;
 		if (mlx->bham.e2 > -mlx->bham.dx)
@@ -57,9 +62,13 @@ void	bresenham(t_mlx *mlx, int color)
 		-mlx->bham.dy) / 2;
 	while (1)
 	{
-		if (mlx->editor.start.y >= 0 && mlx->editor.start.x >= 0 && mlx->editor.start.y < H && mlx->editor.start.x < mlx->editor.map_img_width)
-			mlx->editor.data_map[(int)mlx->editor.start.y * mlx->editor.map_img_width + (int)mlx->editor.start.x] = color;
-		if (mlx->editor.start.x == mlx->editor.end.x && mlx->editor.start.y == mlx->editor.end.y)
+		if (mlx->editor.start.y >= 0 && mlx->editor.start.x >= 0 &&
+			 mlx->editor.start.y < H && mlx->editor.start.x < 
+			mlx->editor.map_img_width)
+			mlx->editor.data_map[(int)mlx->editor.start.y * 
+			mlx->editor.map_img_width + (int)mlx->editor.start.x] = color;
+		if (mlx->editor.start.x == mlx->editor.end.x &&
+			 mlx->editor.start.y == mlx->editor.end.y)
 			break ;
 		mlx->bham.e2 = mlx->bham.err;
 		if (mlx->bham.e2 > -mlx->bham.dx)
@@ -74,3 +83,4 @@ void	bresenham(t_mlx *mlx, int color)
 		}
 	}
 }
+

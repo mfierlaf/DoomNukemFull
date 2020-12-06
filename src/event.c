@@ -39,7 +39,7 @@ int		mouse_hook(int x, int y, t_mlx *mlx)
 			(y - mlx->editor.off_y + (mlx->editor.sqr_size / 2)) / mlx->editor.sqr_size;
 		mlx->mouse_map.y *= -1.0;
 	}
-	if (mlx->editor.on == 1)
+	if (mlx->editor.on == 1 && mlx->editor.mouse_button_pressed && !mlx->editor.button_toggled)
 	{
 		mlx->editor.off_x += (x - mlx->editor.old_x);
 		mlx->editor.off_y += (y - mlx->editor.old_y);
@@ -122,6 +122,8 @@ int		button_mouse(int key, int x, int y, t_mlx *mlx)
 					toggle_button(mlx, button);
 				mlx->editor.buttons[button].color = PRESSED_BUTTON_COLOUR;
 			}
+			else
+				mlx->editor.mouse_button_pressed = 1;
 		}
 		if (mlx->inventory.ammo || mlx->weapon.anim == 15)
 		{
@@ -160,6 +162,7 @@ int			mouse_release(int key, int x, int y, t_mlx *mlx)
 				if (!mlx->editor.buttons[button].toggled)
 					mlx->editor.buttons[button].color = DEFAULT_BUTTON_COLOUR;
 			}
+			mlx->editor.mouse_button_pressed = 0;
 		}
 		
 	}

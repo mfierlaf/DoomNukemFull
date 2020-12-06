@@ -14,19 +14,6 @@ int 	is_vertex(t_mlx *mlx, int i)
 	if (i >=  H)
 		if (mlx->editor.data_map[i - H] == 0xFF0000)
 			return (1);
-
-		return (0);
+	return (0);
 }
 
-void	save_map(t_mlx *mlx)
-{
-	int i;
-
-	i = mlx->editor.map_img_width * H - 1;
-	while (i >= 0)
-	{
-		if (mlx->editor.data_map[i] == 0xFFFFFF && is_vertex(mlx, i))
-
-		i--;
-	}
-}

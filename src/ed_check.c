@@ -50,4 +50,3 @@ int		ed_check_can_add(t_mlx *mlx, t_sector sect)
 	return (1);
 }
 
-

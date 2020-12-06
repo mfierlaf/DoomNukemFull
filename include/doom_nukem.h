@@ -374,6 +374,7 @@ typedef struct			s_editor
 	t_fpoint			end;
 	t_button			buttons[NB_BUTTON];
 	int					button_toggled;
+	int					mouse_button_pressed;
 }						t_editor;
 
 typedef struct			s_item
@@ -591,7 +592,7 @@ void					game(t_mlx *mlx, t_expose ex);
 ** GEOMETRY.C
 */
 //t_line					new_line(t_fpoint pos1, t_fpoint pos2);
-float					get_dist_mouse_to_map(t_fpoint p1, t_fpoint p2);
+float					get_dist_mouse_to_map(t_fpoint p1, t_xy p2);
 t_fpoint				new_fpoint(float x, float y);
 int					is_inside(t_point p, t_button b);
 /*
