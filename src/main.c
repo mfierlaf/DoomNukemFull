@@ -21,11 +21,14 @@ static void	init_mlx(t_mlx *mlx)
 	if (!(mlx->data = (int *)mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->sl,
 		&mlx->endian)))
 		kill_mlx("mlx_get_data_addr fail\n", mlx);
-	if (!(mlx->editor.img = mlx_new_image(mlx->mlx, ((3 * W) / 4), H)))
+	if (!(mlx->editor.img_map = mlx_new_image(mlx->mlx, ((3 * W) / 4), H)))
 		kill_mlx("mlx_new_image fail\n", mlx);
-	if (!(mlx->editor.data = (int *)mlx_get_data_addr(mlx->editor.img,
+	if (!(mlx->editor.data_map = (int *)mlx_get_data_addr(mlx->editor.img,
 		&mlx->editor.bpp, &mlx->editor.sl, &mlx->editor.endian)))
 		kill_mlx("editor_get_data_addr fail\n", mlx);
+	mlx->editor.img_buttons = mlx_new_image(mlx->mlx, (W / 4), H);
+	mlx->editor.data_buttons = (int *)mlx_get_data_addr(mlx->editor.img_buttons, &mlx->editor.bpp, &mlx->editor.sl,
+	 	&mlx->editor.endian);
 }
 
 int			main(void)
@@ -41,6 +44,7 @@ int			main(void)
 	init_mlx(mlx);
 	load_texture(mlx);
 	mlx_hook(mlx->win, BUTTONPRESS, (1L << 2), button_mouse, mlx);
+	mlx_hook(mlx->win, BUTTONRELEASE, BUTTONRELEASEMASK, mouse_release, mlx);
 	mlx_hook(mlx->win, MOTIONNOTIFY, (1L << 6), mouse_hook, mlx);
 	mlx_hook(mlx->win, KP, (1L << 0), ft_key_hook, mlx);
 	mlx_hook(mlx->win, KEYRELEASE, (1L << 1), stop_movement, mlx);

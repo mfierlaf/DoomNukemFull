@@ -57,40 +57,40 @@ typedef struct			s_bmp_header
 	uint16_t			important_colors2;
 }						t_bmp_header;
 
-typedef struct			s_bmp_header_f
+typedef struct        s_bmp_header_f
 {
-	int					type;
-	int					size;
-	uint16_t			reserved1;
-	uint16_t			reserved2;
-	int					offset;
-	int					dib_header_size;
-	int					width_px;
-	int					height_px;
-	int					num_planes;
-	int					bits_per_pixel;
-	int					compression;
-	int					image_size_bytes;
-	int					x_res;
-	int					y_res;
-	int					num_colors;
-	int					important_colors;
-	int					padding;
-}						t_bmp_header_f;
+  int           type;
+  int           size;
+  uint16_t        reserved1;
+  uint16_t        reserved2;
+  int           offset;
+  int           dib_header_size;
+  int           width_px;
+  int           height_px;
+  int           num_planes;
+  int           bits_per_pixel;
+  int           compression;
+  int           image_size_bytes;
+  int           x_res;
+  int           y_res;
+  int           num_colors;
+  int           important_colors;
+  int           padding;
+}             t_bmp_header_f;
 
-typedef struct			s_bmp
+typedef struct        s_bmp
 {
-	t_bmp_header_f		header;
-	int					*data;
-	int					nb;
-}						t_bmp;
+  t_bmp_header_f      header;
+  int           *data;
+  int           nb;
+}             t_bmp;
 
-typedef struct			s_color
+typedef struct        s_color
 {
-	int					off_r;
-	int					off_b;
-	int					off_g;
-}						t_color;
+  int           off_r;
+  int           off_b;
+  int           off_g;
+}             t_color;
 
 typedef struct			s_pos
 {
@@ -257,6 +257,12 @@ typedef struct			s_xy
 	float				y;
 }						t_xy;
 
+typedef struct        	s_line
+{
+    t_fpoint            orig;
+    t_fpoint            end;
+}                    	t_line;
+
 typedef struct			s_player
 {
 	t_xyz				where;
@@ -322,6 +328,25 @@ typedef struct			s_tex
 	int					*tex_ternary;
 }						t_tex;
 
+typedef	struct			s_bham
+{
+	int					dx;
+	int					dy;
+	int					err;
+	int					sx;
+	int					sy;
+	int					e2;
+}						t_bham;
+
+typedef struct			s_button
+{
+	t_point				orig;
+	t_point				end;
+	int					color;
+	int					pressed;
+	int					toggled;
+}						t_button;
+
 typedef struct			s_editor
 {
 	int					map_img_width;
@@ -331,6 +356,29 @@ typedef struct			s_editor
 	int					endian;
 	int					sl;
 	int					bpp;
+	int					map_img_width;
+	int					buttons_img_width;
+	int					on;
+	int 				sqr_size;
+	int					off_x;
+	int					off_y;
+	int					old_x;
+	int					old_y;
+	void				*img_map;
+	int					*data_map;
+	void				*img_buttons;
+	int					*data_buttons;
+	int					endian;
+	int					sl;
+	int					bpp;
+	int					closest_sector;
+	int					closest_vertex;
+	int					closest_sector2;
+	int					closest_vertex2;
+	t_fpoint			start;
+	t_fpoint			end;
+	t_button			buttons[NB_BUTTON];
+	int					button_toggled;
 }						t_editor;
 
 typedef struct			s_item
@@ -454,6 +502,7 @@ typedef struct			s_mlx
 	t_point				mouse;
 	t_player			player;
 	t_sector			*sectors;
+	t_bham 				bham;
 }						t_mlx;
 /*
 ** ANIM.C

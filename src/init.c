@@ -98,6 +98,24 @@ static void	init_menu(t_mlx *mlx)
 	mlx->player.is_dead = 0;
 }
 
+static void	init_editor(t_mlx *mlx)
+{
+	mlx->editor.buttons_img_width = (W / 4);
+	mlx->editor.start.x = -1;
+	mlx->editor.start.y = -1;
+	mlx->editor.end.x = -1;
+	mlx->editor.end.x = -1;
+	mlx->editor.off_x = mlx->editor.map_img_width - 10;
+	mlx->editor.off_y = H - 10;
+	mlx->editor.old_x = 0;
+	mlx->editor.old_y = 0;
+	mlx->editor.sqr_size = 60;
+	mlx->editor.button_toggled = 0;
+	mlx->events.but1 = 0;
+	mlx->events.new_sector = 0;
+	init_buttons(mlx);
+}
+
 void		init(t_mlx *mlx)
 {
 	mlx->txty = 0;
@@ -123,4 +141,5 @@ void		init(t_mlx *mlx)
 	mlx->flying = 0;
 	init_menu(mlx);
 	init_shot(mlx);
+	init_editor(mlx);
 }

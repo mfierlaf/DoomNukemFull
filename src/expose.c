@@ -45,6 +45,15 @@ int		expose(t_mlx *mlx)
 		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 		menu_strings(mlx);
 	}
+	else if (mlx->editor.on)
+	{
+		mlx_clear_window(mlx->mlx, mlx->win);
+		clear_img(mlx->editor.data_map, mlx->editor.map_img_width, H);
+		clear_img(mlx->editor.data_buttons, mlx->editor.buttons_img_width, H);
+		map_editor(mlx);
+		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->editor.img_map, 0, 0);
+		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->editor.img_buttons, mlx->editor.map_img_width, 0);
+	}
 	else
 	{
 		ex.s = -1;

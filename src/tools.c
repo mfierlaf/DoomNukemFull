@@ -75,3 +75,9 @@ char	check_valid_inter(t_pos inter, t_line line1, t_line line2)
 		return (0);
 	return (1);
 }
+
+/*struct xy	Intersect(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
+{
+    return (vxs(vxs(x1,y1, x2,y2), (x1)-(x2), vxs(x3,y3, x4,y4), (x3)-(x4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)), \
+    vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)));
+}*/
