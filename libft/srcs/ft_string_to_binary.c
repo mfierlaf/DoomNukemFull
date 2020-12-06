@@ -12,27 +12,25 @@
 
 #include "../incl/libft.h"
 
-void ft_string_to_binary(char *text, char **binary)
+void	ft_string_to_binary(char *text, char **binary)
 {
-	char *tmp;
-	char *octet = malloc(9);
-	char *tmp_octet;
+	char	*tmp;
+	char	*octet;
+	char	*tmp_octet;
 
+	octet = malloc(9);
 	*binary = malloc(strlen(text) * 9 + 1);
-
-	if(*binary == NULL)
+	if (*binary == NULL)
 		exit(1);
-
 	tmp = *binary;
-	while(*text)
+	while (*text)
 	{
 		tmp_octet = octet;
 		ft_char_to_binary(*text, octet);
-		while(*tmp_octet)
+		while (*tmp_octet)
 			*tmp++ = *tmp_octet++;
 		*tmp++ = ' ';
 		text++;
 	}
 	*tmp = 0;
-	//free(octet);
 }

@@ -27,7 +27,7 @@ SRC =	ft_isalpha.c ft_putendl_fd.c ft_putstr_fd.c ft_strdup.c ft_strstr.c ft_isd
 		ft_freechararray.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c ft_lstiter.c ft_lstmap.c \
 		ft_print_table.c ft_sqrt.c ft_strjoin_free.c ft_printf.c get_next_line.c ft_strlcpy.c \
 		ft_string_to_binary.c ft_char_to_binary.c ft_binary_to_string.c ft_binary_to_char.c \
-		ft_pow.c ft_encode_to_bin.c
+		ft_pow.c ft_encode_to_bin.c ft_encode_file.c ft_decode_file.c ft_file_size.c
 
 FILES = $(addprefix $(SRC_DIR),$(SRC))
 OBJ_DIR = ./obj/

@@ -11,46 +11,41 @@
 /* ************************************************************************** */
 
 #include "../incl/libft.h"
+#include <fcntl.h>
 
-void ft_encode_to_bin(char *directory)
+void	ft_convert_and_write(char *directory, int fp_bin)
 {
-	
-	int read_bytes;
-	char ch;
-	char *octet = malloc(9);
+	char	*octet;
 
-	FILE* fp = fopen(directory, "r");
-	FILE* fp_bin = fopen("data.bin", "a");
-	if(!fp || !fp_bin)
+	octet = malloc(9);
+	ft_char_to_binary(*directory, octet);
+	write(fp_bin, octet, 8);
+}
+
+void	ft_encode_to_bin(char *directory)
+{
+	char	ch;
+	int		fp;
+	int		fp_bin;
+
+	fp = open(directory, O_RDONLY);
+	fp_bin = open("data.bin", O_CREAT | O_WRONLY | O_APPEND);
+	if (fp < 0 || fp_bin < 0)
 	{
 		perror(directory);
 		exit(1);
 	}
-
-	do
+	while (*directory != 0)
 	{
-		ft_char_to_binary(*directory, octet);
-		fwrite(octet, 1, 8, fp_bin);
+		ft_convert_and_write(directory, fp_bin);
 		directory++;
-	}while(*directory != 0);
-	
-	ft_char_to_binary('\n', octet);
-	fwrite(octet, 1, 8, fp_bin);
-
-	do
-	{
-		read_bytes = fread(&ch, 1,1, fp);
-		ft_char_to_binary(ch, octet);
-		//printf(" %s\n", octet);
-		fwrite(octet, 1, 8, fp_bin);
-		//printf("%s", octet);
 	}
-	while(read_bytes != 0);
-
-	ft_char_to_binary('\n', octet);
-	fwrite(octet, 1, 8, fp_bin);
-	fwrite(octet, 1, 8, fp_bin);
-
-	fclose(fp);
-	fclose(fp_bin);
+	ft_convert_and_write("\n", fp_bin);
+	while (read(fp, &ch, 1) > 0)
+	{
+		ft_convert_and_write(&ch, fp_bin);
+	}
+	ft_convert_and_write("\n", fp_bin);
+	close(fp);
+	close(fp_bin);
 }

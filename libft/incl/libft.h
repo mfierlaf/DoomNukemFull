@@ -75,11 +75,14 @@ char			**ft_strsplit(char const *s, char c);
 size_t			ft_strlen(const char *s);
 size_t			ft_strlcat(char *dst, const char *src, size_t size);
 void			ft_string_to_binary(char *text, char **binary);
-void			ft_char_to_binary(char character, char *octet);
+void			ft_char_to_binary(int character, char *octet);
 void			ft_binary_to_string(char **string, char *binary);
 void			ft_binary_to_char(char *chaine, char *pt_char);
 int				ft_pow(int x, unsigned int y);
 void			ft_encode_to_bin(char *directory);
+void			ft_encode_file();
+void			ft_decode_file();
+int				ft_file_size_line(char *file);
 typedef struct	s_list
 {
 	void			*content;
@@ -97,6 +100,7 @@ int				ft_sqrt(int nb);
 void			ft_print_table(char **tab);
 char			*ft_strjoin_free(char const *s1, char const *s2, int n);
 int				get_next_line(const int fd, char **line);
+int				get_next_line_bin(const int fd, char **line);
 void			ft_printf(const char *s, ...);
 size_t			ft_strlcpy(char *dst, const char*src, size_t size);
 

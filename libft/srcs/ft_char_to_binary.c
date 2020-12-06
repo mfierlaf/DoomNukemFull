@@ -12,28 +12,24 @@
 
 #include "../incl/libft.h"
 
-void ft_char_to_binary(char character, char *octet)
+void	ft_char_to_binary(int character, char *octet)
 {
-	int decimal;
-	decimal = (int)character;
 	int i;
 
 	i = 8;
-	while(i > 0)
+	while (i > 0)
 	{
 		*octet = '0';
 		octet++;
 		i--;
 	}
-
-	while(decimal > 0)
+	while (character > 0)
 	{
 		--octet;
-		*octet = decimal % 2 + '0';
-		decimal = decimal / 2;
+		*octet = character % 2 + '0';
+		character = character / 2;
 	}
-
-	if(decimal == 0)
+	if (character == 0)
 	{
 		--octet;
 		*octet = '0';

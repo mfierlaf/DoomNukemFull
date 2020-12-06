@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_binary_to_string.c                              :+:      :+:    :+:   */
+/*   ft_file_size.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdelvenn <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mfierlaf <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 18:49:07 by sdelvenn          #+#    #+#             */
-/*   Updated: 2019/02/28 13:26:13 by sdelvenn         ###   ########.fr       */
+/*   Created: 2018/10/08 14:11:51 by mfierlaf          #+#    #+#             */
+/*   Updated: 2019/10/11 12:07:45 by mfierlaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/libft.h"
+#include <fcntl.h>
 
-void	ft_binary_to_string(char **string, char *binary)
+int	ft_file_size_line(char *file)
 {
-	char	*tmp;
+	int		fd;
+	int		result;
+	char	*line;
 
-	*string = malloc(strlen(binary) / 9 + 1);
-	if (*string == NULL)
-		exit(1);
-	tmp = *string;
-	while (*binary)
+	result = 0;
+	if ((fd = open(file, O_RDONLY)) < 0)
+		return (0);
+	while (get_next_line(fd, &line) > 0)
 	{
-		ft_binary_to_char(binary, tmp);
-		binary += 9;
-		tmp++;
+		result++;
 	}
-	*tmp = 0;
+	return (result);
 }

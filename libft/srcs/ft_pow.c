@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_pow(int x, unsigned int y)
+int	ft_pow(int x, unsigned int y)
 {
-	int temp;
+	int	temp;
 
 	if (y == 0)
 		return (1);
