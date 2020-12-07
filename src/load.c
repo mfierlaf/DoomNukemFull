@@ -55,6 +55,8 @@ void		load_data(t_mlx *mlx)
 	load = init_load();
 	if ((load.fd = open("./map-clear.txt", O_RDONLY)) < 0)
 		kill_mlx("ERROR IN MAP\n", mlx);
+	//if ((load.fd = open("./map_test", O_RDONLY)) < 0)
+	//	kill_mlx("ERROR IN MAP\n", mlx);
 	while (get_next_line(load.fd, &load.line) > 0)
 	{
 		if (!(load.split_line = ft_strsplit(load.line, ' ')))

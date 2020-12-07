@@ -233,4 +233,6 @@ void			map_editor(t_mlx *mlx)
 	}
 	if (mlx->editor.buttons[BUTTON_ADD_SECTOR].toggled)
 		draw_dashed_line_sector(mlx);
+	else if (mlx->editor.buttons[BUTTON_MOD_VERTEX].toggled)
+		ed_mod_vertex(mlx);
 }

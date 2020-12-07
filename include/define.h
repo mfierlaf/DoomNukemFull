@@ -326,8 +326,11 @@
 
 # define NB_BUTTON					5
 # define BUTTON_ADD_SECTOR				2
+# define BUTTON_MOD_VERTEX				3
 
 # define DEFAULT_BUTTON_COLOUR				RED
 # define PRESSED_BUTTON_COLOUR				ORANGE
+
+# define NB_SECT_MAX					50
 
 #endif

@@ -1,3 +1,5 @@
+#include "../include/doom_nukem.h"
+
 static int	ed_check_sector_integrity(t_sector sect)
 {
 	int	i_vertex;
@@ -9,8 +11,8 @@ static int	ed_check_sector_integrity(t_sector sect)
 		i_iterator = i_vertex;
 		while (++i_iterator < sect.npoints)
 		{
-			if (sect[i_vertex].x == sect[i_iterator].x && 
-				sect[i_vertex].y == sect[i_iterator].y)
+			if (sect.vertex[i_vertex].x == sect.vertex[i_iterator].x && 
+				sect.vertex[i_vertex].y == sect.vertex[i_iterator].y)
 				return (0);
 		}
 	}
@@ -26,13 +28,13 @@ static int	ed_check_if_is_line(t_sector sect)
 	if (sect.npoints <= 3)
 		return (1);
 	slope = get_slope(new_line(
-			new_fpoint(sect[sect.npoints - 1].x, sect[sect.npoints - 1].y),
-			new_fpoint(sect[i_vertex].x, sect[i_vertex].y)));
+			new_pos(sect.vertex[sect.npoints - 1].x, sect.vertex[sect.npoints - 1].y),
+			new_pos(sect.vertex[i_vertex].x, sect.vertex[i_vertex].y)));
 	while (i_vertex < sect.npoints - 1)
 	{
 		if (slope != get_slope(new_line(
-			new_fpoint(sect[i_vertex].x, sect[i_vertex].y),
-			new_fpoint(sect[i_vertex + 1].x, sect[i_vertex].y))))
+			new_pos(sect.vertex[i_vertex].x, sect.vertex[i_vertex].y),
+			new_pos(sect.vertex[i_vertex + 1].x, sect.vertex[i_vertex].y))))
 			return (0);
 		i_vertex++;
 	}

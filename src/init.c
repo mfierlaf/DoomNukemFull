@@ -111,6 +111,8 @@ static void	init_editor(t_mlx *mlx)
 	mlx->editor.old_y = 0;
 	mlx->editor.sqr_size = 60;
 	mlx->editor.button_toggled = 0;
+	mlx->editor.mouse_button_pressed = 0;
+	mlx->editor.moving_vertex = 0;
 	init_buttons(mlx);
 }
 

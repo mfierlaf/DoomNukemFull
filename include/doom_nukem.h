@@ -261,6 +261,7 @@ typedef struct			s_xy
 {
 	float				x;
 	float				y;
+	int				to_be_moved;
 }						t_xy;
 
 typedef struct			s_player
@@ -375,6 +376,7 @@ typedef struct			s_editor
 	t_button			buttons[NB_BUTTON];
 	int					button_toggled;
 	int					mouse_button_pressed;
+	int					moving_vertex;
 }						t_editor;
 
 typedef struct			s_item
@@ -567,6 +569,16 @@ void					deco_while(t_mlx *mlx);
 void					behind_player(t_draw *draw);
 void					drawing(t_mlx *mlx, t_draw *draw);
 /*
+** ED_CHECK.C
+*/
+
+/*
+** ED_MOD_MAP.C
+*/
+int					ed_auth_move_vertex(t_mlx *mlx);
+void					ed_mod_vertex(t_mlx *mlx);
+void					ed_reset_to_be_moved(t_mlx *mlx);
+/*
 ** EVENT.C
 */
 int						mouse_hook(int x, int y, t_mlx *mlx);
@@ -659,6 +671,10 @@ void					read_player(int n, char **split_line, t_mlx *mlx);
 t_xy					*read_vertices(int *j, t_xy *vert,
 							char **split_line, t_mlx *mlx);
 t_xy					*read_map(char **split_line, t_mlx *mlx);
+/*
+** REALLOC_MAP.C
+*/
+int					add_sector_to_map(t_mlx *mlx, t_sector sector);
 /*
 ** SECTOR_MALLOC.C
 */

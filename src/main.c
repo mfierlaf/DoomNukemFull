@@ -44,6 +44,22 @@ int			main(void)
 	load_data(mlx);
 	init_mlx(mlx);
 	load_texture(mlx);
+	//
+	t_sector sector;
+	sector.brightness = 0;
+	sector.sky = 0;
+	sector.floor = 0;
+	sector.ceil = 0;
+	sector.vertex = malloc(sizeof(t_xy));
+	sector.vertex[0].x = 0;
+	sector.vertex[0].y = 0;
+	sector.vertex[0].to_be_moved = 0;
+	sector.v_id = malloc(sizeof(int));
+	sector.v_id[0] = 0;
+	sector.neighbors = malloc(sizeof(signed char));
+	sector.neighbors[0] = '0';
+//	add_sector_to_map(mlx, sector);
+	//
 	mlx_hook(mlx->win, BUTTONPRESS, (1L << 2), button_mouse, mlx);
 	mlx_hook(mlx->win, BUTTONRELEASE, (1L << 3), mouse_release, mlx);
 	mlx_hook(mlx->win, MOTIONNOTIFY, (1L << 6), mouse_hook, mlx);
