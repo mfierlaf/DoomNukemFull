@@ -12,74 +12,73 @@
 
 #include "../include/doom_nukem.h"
 
-/* vline: Draw a vertical line on screen, with a different color pixel in top & bottom */
-void vline(int x, int y1, int y2, int top, int middle, int bottom, t_mlx *mlx)
+t_vl			new_vl(int x, int y1, int y2, unsigned txtx)
 {
-  int y;
+	t_vl vl;
 
-  y = y1;
-  y1 = clamp(y1, 0, H - 1);
-  y2 = clamp(y2, 0, H - 1);
-  if (y2 == y1)
-		mlx->data[y1 * W + x] = middle;
-  else if (y2 > y1)
-  {
-    mlx->data[y1 * W + x] = top;
-    while (++y < y2)
-    {
-      mlx->data[y * W + x] = middle;
-    }
-    mlx->data[y2 * W + x] = bottom;
-  }
+	vl.x = x;
+	vl.y1 = y1;
+	vl.y2 = y2;
+	vl.txtx = txtx;
+	return (vl);
 }
 
-
-struct Scaler Scaler_Init(int a, int b, int c, int d, int f)
+t_scale			new_scale(int a, int b, int c, t_point df)
 {
-  struct Scaler scaler;
+	t_scale scale;
 
-  scaler.result = d + (b-1 - a) * (f-d) / (c-a);
-  scaler.bop = ((f<d) ^ (c<a)) ? -1 : 1;
-  scaler.fd = abs(f-d);
-  scaler.ca = abs(c-a); 
-  scaler.cache = (int)((b-1-a) * abs(f-d)) % abs(c-a);
-  return (scaler);
+	scale.a = a;
+	scale.b = b;
+	scale.c = c;
+	scale.d = df.x;
+	scale.f = df.y;
+	return (scale);
 }
 
-// Scaler_Next: Return (b++ - a) * (f-d) / (c-a) + d using the initial values passed to Scaler_Init().
-int Scaler_Next(struct Scaler *i)
+t_scaler		scaler_init(t_scale scale)
 {
-    for (i->cache += i->fd; i->cache >= i->ca; i->cache -= i->ca)
-      i->result += i->bop;
-    return i->result;
+	t_scaler scaler;
+
+	scaler.result = scale.d + (scale.b - 1 -
+		scale.a) * (scale.f - scale.d) / (scale.c - scale.a);
+	scaler.bop = ((scale.f < scale.d) ^
+		(scale.c < scale.a)) ? -1 : 1;
+	scaler.fd = abs(scale.f - scale.d);
+	scaler.ca = abs(scale.c - scale.a);
+	scaler.cache = (int)((scale.b - 1 - scale.a) *
+		abs(scale.f - scale.d)) % abs(scale.c - scale.a);
+	return (scaler);
 }
 
-
-// void vline2(int x, int y1, int y2, struct Scaler ty /*scaler_init*/, unsigned txtx, t_mlx *mlx)
-// {
-//     y1 = clamp(y1, 0, H - 1);
-//     y2 = clamp(y2, 0, H - 1);
-//     for (int y = y1; y <= y2; ++y)
-//     {
-//         mlx->txty = Scaler_Next(&ty);
-//         mlx->data[y * W + x] = mlx->tex[1].data[(mlx->txty % TEXTURE_SIZE) * TEXTURE_SIZE + (txtx % TEXTURE_SIZE)];
-//     }
-// }
-
-void        vertical_line(t_draw *draw, int x, int y1, int y2, struct Scaler ty /*scaler_init*/, unsigned txtx, t_mlx *mlx)
+int				scaler_next(t_scaler *i)
 {
-    int color;
-
-    y1 = clamp(y1, 0, H - 1);
-    y2 = clamp(y2, 0, H - 1);
-    for (int y = y1; y <= y2; ++y)
-    {
-      mlx->txty = Scaler_Next(&ty);
-      color = get_color(mlx->tab_bmp[draw->tex], (txtx % mlx->tab_bmp[draw->tex]->header.width_px), (mlx->txty % mlx->tab_bmp[draw->tex]->header.height_px));
-      if (mlx->sectors[draw->now.sectorno].brightness == 0)
-        color = (color >> 1) & 8355711;
-      if (color != FILTER_COLOR)
-        mlx->data[y * W + x] = color;
-    }
+	i->cache += i->fd;
+	while (i->cache >= i->ca)
+	{
+		i->result += i->bop;
+		i->cache -= i->ca;
+	}
+	return (i->result);
 }
 
+void			vertical_line(t_draw *draw, t_vl vl, t_scaler ty, t_mlx *mlx)
+{
+	int	color;
+	int	y;
+
+	vl.y1 = clamp(vl.y1, 0, H - 1);
+	vl.y2 = clamp(vl.y2, 0, H - 1);
+	y = vl.y1;
+	while (y <= vl.y2)
+	{
+		mlx->txty = scaler_next(&ty);
+		color = get_color(mlx->tab_bmp[draw->tex],
+			(vl.txtx % mlx->tab_bmp[draw->tex]->header.width_px),
+			(mlx->txty % mlx->tab_bmp[draw->tex]->header.height_px));
+		if (mlx->sectors[draw->now.sectorno].brightness == 0)
+			color = (color >> 1) & 8355711;
+		if (color != FILTER_COLOR)
+			mlx->data[y * W + vl.x] = color;
+		y++;
+	}
+}

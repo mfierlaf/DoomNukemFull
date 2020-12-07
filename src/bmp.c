@@ -16,7 +16,8 @@ t_bmp				*new_bmp(char *str)
 {
 	t_bmp			*bmp;
 
-	bmp = read_header_bmp(str);
+	if ((bmp = read_header_bmp(str)) == NULL)
+		return (NULL);
 	return (bmp);
 }
 
@@ -24,20 +25,6 @@ int					get_color(t_bmp *bmp, int x, int y)
 {
 	return (bmp->data[x + y * bmp->header.width_px]);
 }
-
-// int					check_tab_sprite(t_mlx *mlx)
-// {
-// 	int				i;
-
-// 	i = 0;
-// 	while (i < DIFF_SPRITE)
-// 	{
-// 		if (!mlx->tab_sprite[i])
-// 			return (-1);
-// 		i++;
-// 	}
-// 	return (1);
-// }
 
 int					check_tab_bmp(t_mlx *mlx)
 {
@@ -50,7 +37,6 @@ int					check_tab_bmp(t_mlx *mlx)
 			return (-1);
 		i++;
 	}
-	// return (check_tab_sprite(mlx));
 	return (1);
 }
 

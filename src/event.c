@@ -19,17 +19,13 @@
 
 int		mouse_hook(int x, int y, t_mlx *mlx)
 {
-
-	mlx->player.old_dir.x = mlx->mouse.x;
 	mlx->mouse.x = x;
 	mlx->mouse.y = y;
 	return (0);
 }
 
-int		ft_key_hook(int key, t_mlx *mlx)
+void	mvt_hook(int key, t_mlx *mlx)
 {
-	if (key == ESC_KEY || key == ESC)
-		kill_mlx("", mlx);
 	if (key == UP_KEY || key == W_KEY || key == UP_ARROW || key == W_LN)
 		mlx->wasd[0] = 1;
 	if (key == LEFT_KEY || key == A_KEY || key == LEFT_ARROW || key == A_LN)
@@ -51,8 +47,15 @@ int		ft_key_hook(int key, t_mlx *mlx)
 			mlx->falling = 1;
 		}
 	}
-	if (key == F_KEY) // || key == F_LN)
+	if (key == F_KEY || key == F_LN)
 		mlx->flying = !mlx->flying;
+}
+
+int		ft_key_hook(int key, t_mlx *mlx)
+{
+	if (key == ESC_KEY || key == ESC)
+		kill_mlx("", mlx);
+	mvt_hook(key, mlx);
 	if (key == LCTRL_KEY || key == LCTRL)
 	{
 		if (mlx->flying)
@@ -68,12 +71,13 @@ int		ft_key_hook(int key, t_mlx *mlx)
 	if (key == E_KEY || key == E_LN)
 		pick_up_loot(mlx);
 	if (key == L_KEY || key == L_LN)
-		mlx->sectors[mlx->player.sector].brightness = !mlx->sectors[mlx->player.sector].brightness;
+		mlx->sectors[mlx->player.sector].brightness =
+			!mlx->sectors[mlx->player.sector].brightness;
 	menu_key_hook(key, mlx);
 	return (0);
 }
 
-int			shoot_key(int key, int x, int y, t_mlx *mlx)
+int		button_mouse(int key, int x, int y, t_mlx *mlx)
 {
 	x += 0;
 	y += 0;

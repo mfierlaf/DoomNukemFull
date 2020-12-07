@@ -12,123 +12,42 @@
 
 #include "../include/doom_nukem.h"
 
-void				draw_decos(int wall, int sect, int x, t_mlx *mlx)
+static t_line	get_deco_line(int i, t_mlx *mlx)
 {
-	int					deco;
-	int					sector;
-	// t_wall_and_sector	ws;
-	// float				dist;
+	t_line deco_line;
 
-	// ws.wall = wall;
-	// ws.sector = sect;
-	deco = -1;
-	sector = -1;
-	while (++sector < mlx->num_sectors)
+	deco_line.orig.x = mlx->decos[i].origin.x + 0.0001 - mlx->decos[i].offset;
+	deco_line.orig.y = mlx->decos[i].origin.y + mlx->decos[i].offset;
+	deco_line.end.x = mlx->decos[i].end.x - mlx->decos[i].offset;
+	deco_line.end.y = mlx->decos[i].end.y + mlx->decos[i].offset;
+	return (deco_line);
+}
+
+void			draw_deco(int x, t_mlx *mlx)
+{
+	int			i;
+	t_sprites	deco;
+
+	i = -1;
+	while (++i < NB_DECO)
 	{
-		while (++deco < mlx->nb_deco)
+		deco.deco_line = get_deco_line(i, mlx);
+		deco.inter = get_intersection(mlx->ray, deco.deco_line,
+		get_slope(mlx->ray), get_slope(deco.deco_line));
+		if (!isinf(deco.inter.x) && (int)mlx->player.sector ==
+			mlx->decos[i].sector)
 		{
-			//Opening gate or door
-			// if (mlx->open_door && mlx->inventory.keys && CURR_WALL.is_portal)
-			// {
-			// 	dist = get_dist(mlx->player->pos, CURR_WALL.origin);
-			// 	if (dist < 1.5)
-			// 	{
-			// 		if (mlx->deco[deco].wall_num == wall)
-			// 		{
-			// 			mlx->deco[deco].moving_offset = 1;
-			// 			mlx->inventory.keys--;
-			// 			mlx->walls[wall].is_portal = 1;
-			// 		}
-			// 	}
-			// 	else
-			// 		mlx->open_door = 0;
-			// }
-			if (mlx->deco[deco].wall_num == wall)
-				draw_deco(deco, wall, sect, mlx, x);
+			deco.pl_pos.x = mlx->player.where.x;
+			deco.pl_pos.y = mlx->player.where.y;
+			deco.dist = get_dist(deco.pl_pos, deco.inter);
+			deco.dist == 0.0 ? deco.dist = 0.01 : 0;
+			deco.line_height = ((float)H / deco.dist) * mlx->decos[i].height;
+			deco.draw_start = H * 0.5 - deco.line_height * 0.5;
+			deco.draw_end = deco.draw_start + deco.line_height;
+			deco.curr_bmp = mlx->tab_bmp[mlx->decos[i].tex];
+			deco.a = deco.deco_line.orig;
+			deco.b = deco.deco_line.end;
+			vertical_sprite_lines(mlx, x, deco, i);
 		}
 	}
 }
-
-void				draw_deco(int deco, wall, sect,
-										t_mlx *mlx, int x)
-{
-	t_line		decos_pos;
-	t_line		walls_pos;
-	t_pos		inter;
-	// t_draw		d;
-
-	walls_pos.orig = mlx->sectors[sect].walls[wall].origin;
-	walls_pos.end = mlx->sectors[sect].walls[wall].end;
-
-	decos_pos.orig.x = walls_pos.orig.x += (walls_pos.orig.x - walls_pos.end.x) * -mlx->sectors[sect].deco[deco].origin_offset + 0.0001;
-	decos_pos.orig.y = walls_pos.orig.y += (walls_pos.orig.y - walls_pos.end.y) * -mlx->sectors[sect].deco[deco].origin_offset;
-	decos_pos.end.x = walls_pos.end.x += (walls_pos.end.x - walls_pos.orig.x) * -mlx->sectors[sect].deco[deco].end_offset;
-	decos_pos.end.y = walls_pos.end.y += (walls_pos.end.y - walls_pos.orig.y) * -mlx->sectors[sect].deco[deco].end_offset;
-
-	// gate opening
-	// if (MAP->sectors[sect].deco[deco].tex == 91 && MAP->sectors[sect].deco[deco].origin_offset < 1 && MAP->sectors[sect].deco[deco].moving_offset == 1)
-	// {
-	// 	MAP->sectors[sect].deco[deco].origin_offset += 0.00008;
-	// 	MAP->sectors[sect].deco[deco].end_offset -= 0.00008;
-	// 	if (MAP->sectors[sect].deco[deco].origin_offset >=  0.99)
-	// 	{
-	// 		mlx->open_door = 0;
-	// 		MAP->sectors[sect].deco[deco].moving_offset = 0;
-	// 	}
-	// }
-	inter = get_intersection(mlx->ray, decos_pos,
-		get_slope(mlx->ray), get_slope(decos_pos));
-	if (!isinf(inter.x))
-	{
-		// d = draw_deco2(inter, mlx);
-		dist = get_dist(mlx->player->pos, inter);
-		dist == 0.0 ? d.dist = 0.01 : 0;
-		line_height = (float)IMG_H / d.dist;
-		draw_start = IMG_H * 0.5 - d.line_height * 0.5;
-		draw_end = d.draw_start + d.line_height;
-		vertical_sprite_lines(mlx, x, decos_pos.orig, decos_pos.end,
-		d.draw_start, d.draw_end, inter,
-			mlx->tab_sprite[mlx->sectors[sect].deco[deco].tex]);
-	}
-}
-
-// t_draw				draw_deco2(t_pos inter, t_mlx *mlx)
-// {
-// 	t_draw		d;
-
-// 	d.dist = get_dist(mlx->player->pos, inter);
-// 	d.dist == 0.0 ? d.dist = 0.01 : 0;
-// 	d.line_height = (float)IMG_H / d.dist;
-// 	d.draw_start = IMG_H * 0.5 - d.line_height * 0.5;
-// 	d.draw_end = d.draw_start + d.line_height;
-// 	return (d);
-// }
-
-// void				bullet_deco(t_line ray, t_mlx *mlx)
-// {
-// 	int				wall;
-// 	int				sect;
-// 	t_pos			inter;
-// 	float			offset;
-
-// 	sect = -1;
-// 	while (++sect < mlx->map->nb_sectors)
-// 	{
-// 		wall = -1;
-// 		while (++wall < CURR_SECT.nb_walls)
-// 		{
-// 			inter = get_intersection(ray, new_line(CURR_WALL.origin,
-// 				CURR_WALL.end), get_slope(ray), get_slope(new_line(
-// 					CURR_WALL.origin, CURR_WALL.end)));
-// 			if (!isnan(inter.x) && !CURR_WALL.is_portal)
-// 			{
-// 				CURR_SECT.deco[0].wall_num = wall;
-// 				CURR_SECT.deco[0].tex = 90;
-// 				offset = get_dist(inter, CURR_WALL.origin) /
-// 				get_dist(CURR_WALL.origin, CURR_WALL.end) + 0.1;
-// 				CURR_SECT.deco[0].origin_offset = offset;
-// 				CURR_SECT.deco[0].end_offset = 1 - offset;
-// 			}
-// 		}
-// 	}
-// }

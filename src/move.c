@@ -20,12 +20,20 @@
 ** that is outside the sector and 0 or 1 for a point that is inside.
 */
 
-void	move_player(t_mlx *mlx, float dx, float dy)
+static void	mv_player(t_mlx *mlx, float dx, float dy)
+{
+	mlx->player.where.x += dx;
+	mlx->player.where.y += dy;
+	mlx->player.anglesin = sinf(mlx->player.angle);
+	mlx->player.anglecos = cosf(mlx->player.angle);
+}
+
+void		move_player(t_mlx *mlx, float dx, float dy)
 {
 	float		px;
 	float		py;
 	unsigned	s;
-	struct xy	*vert;
+	t_xy		*vert;
 	t_sector	*sect;
 
 	s = -1;
@@ -35,16 +43,15 @@ void	move_player(t_mlx *mlx, float dx, float dy)
 	vert = sect->vertex;
 	while (++s < sect->npoints)
 		if (sect->neighbors[s] >= 0
-				&& intersect_box(px, py, px + dx, py + dy, vert[s + 0].x,
-					vert[s + 0].y, vert[s + 1].x, vert[s + 1].y)
-				&& point_side(px + dx, py + dy, vert[s + 0].x, vert[s + 0].y,
-					vert[s + 1].x, vert[s + 1].y) < 0)
+				&& intersect_box(new_pos(px, py), new_pos(px + dx, py + dy),
+				new_pos(vert[s + 0].x, vert[s + 0].y),
+				new_pos(vert[s + 1].x, vert[s + 1].y))
+				&& point_side(new_pos(px + dx, py + dy),
+					new_pos(vert[s + 0].x, vert[s + 0].y),
+					new_pos(vert[s + 1].x, vert[s + 1].y)) < 0)
 		{
 			mlx->player.sector = sect->neighbors[s];
 			break ;
 		}
-	mlx->player.where.x += dx;
-	mlx->player.where.y += dy;
-	mlx->player.anglesin = sinf(mlx->player.angle);
-	mlx->player.anglecos = cosf(mlx->player.angle);
+	mv_player(mlx, dx, dy);
 }

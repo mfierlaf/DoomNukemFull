@@ -14,8 +14,8 @@
 
 void				shoot_anim(t_mlx *mlx)
 {
-	int zoom;
-	t_point coord;
+	int		zoom;
+	t_point	coord;
 
 	zoom = W / 213.3;
 	if (mlx->anim.started == 1)
@@ -37,7 +37,9 @@ void				sprite_anim_death(int sprite, t_mlx *mlx)
 {
 	if (mlx->sleep.death >= 30000)
 	{
-		mlx->objects[mlx->objects[sprite].order].tex = mlx->objects[mlx->objects[sprite].order].initial_tex + mlx->anim.curr_anim;
+		mlx->objects[mlx->objects[sprite].order].tex =
+		mlx->objects[mlx->objects[sprite].order].initial_tex
+		+ mlx->anim.curr_anim;
 		if (mlx->anim.curr_anim <
 			mlx->objects[mlx->objects[sprite].order].nb_anim - 1)
 			mlx->anim.curr_anim++;
@@ -54,8 +56,11 @@ void				sprite_anim_walk(int sprite, t_mlx *mlx)
 {
 	if (mlx->sleep.walk >= 30000)
 	{
-		mlx->objects[mlx->objects[sprite].order].tex = mlx->objects[mlx->objects[sprite].order].initial_tex + mlx->anim.curr_anim_walk;
-		if (mlx->anim.curr_anim_walk < mlx->objects[mlx->objects[sprite].order].nb_anim_walk - 1)
+		mlx->objects[mlx->objects[sprite].order].tex =
+		mlx->objects[mlx->objects[sprite].order].initial_tex
+		+ mlx->anim.curr_anim_walk;
+		if (mlx->anim.curr_anim_walk <
+		mlx->objects[mlx->objects[sprite].order].nb_anim_walk - 1)
 			mlx->anim.curr_anim_walk++;
 		else
 			mlx->anim.curr_anim_walk = 0;

@@ -55,23 +55,29 @@ void		sprite_var(int sprite, t_mlx *mlx)
 		mlx->objects[mlx->objects[sprite].order].isbot = 1;
 	else
 		mlx->objects[mlx->objects[sprite].order].isbot = 0;
-	mlx->objects[mlx->objects[sprite].order].initial_tex = mlx->objects[mlx->objects[sprite].order].tex;
+	mlx->objects[mlx->objects[sprite].order].initial_tex =
+		mlx->objects[mlx->objects[sprite].order].tex;
 	enemy_anim_num(sprite, mlx);
 }
 
-void	init(t_mlx *mlx)
+static void	init_shot(t_mlx *mlx)
 {
-	mlx->txty = 0;
-	mlx->moving = 0;
-	mlx->wasd[0] = 0;
-	mlx->wasd[1] = 0;
-	mlx->wasd[2] = 0;
-	mlx->wasd[3] = 0;
-	mlx->ground = 0;
-	mlx->falling = 0;
-	mlx->ducking = 0;
-	mlx->sectors = NULL;
-	mlx->num_sectors = 0;
+	mlx->objects[0].tex = -1;
+	mlx->objects[0].sector = 0;
+	mlx->objects[0].lootable = 0;
+	mlx->objects[0].pos.x = 0;
+	mlx->objects[0].pos.y = 0;
+	mlx->objects[0].order = 0;
+	mlx->objects[0].distance = 0;
+	mlx->objects[0].life = 0;
+	mlx->objects[0].isbot = 0;
+	mlx->objects[0].initial_tex = 0;
+	mlx->objects[0].nb_anim_walk = 0;
+	mlx->objects[0].nb_anim = 0;
+}
+
+static void	init_menu(t_mlx *mlx)
+{
 	mlx->menu.on = 1;
 	mlx->menu.gun_pointer = 0;
 	mlx->menu.bot_level = 38000;
@@ -90,14 +96,31 @@ void	init(t_mlx *mlx)
 	mlx->weapon.damage = 50;
 	mlx->player.life = 100;
 	mlx->player.is_dead = 0;
+}
+
+void		init(t_mlx *mlx)
+{
+	mlx->txty = 0;
+	mlx->moving = 0;
+	mlx->wasd[0] = 0;
+	mlx->wasd[1] = 0;
+	mlx->wasd[2] = 0;
+	mlx->wasd[3] = 0;
+	mlx->ground = 0;
+	mlx->falling = 0;
+	mlx->ducking = 0;
+	mlx->sectors = NULL;
+	mlx->num_sectors = 0;
+	mlx->player.life = 100;
+	mlx->player.is_dead = 0;
 	mlx->editor.on = 0;
 	mlx->editor.map_img_width = ((3 * W) / 4);
-	mlx->player.dir.x = 1.0;
-	mlx->player.dir.y = 0.0;
 	mlx->sleep.death = 0;
 	mlx->sleep.walk = 0;
 	mlx->sleep.shoot = 0;
 	mlx->anim.curr_anim_walk = 0;
 	mlx->anim.curr_anim = 0;
 	mlx->flying = 0;
+	init_menu(mlx);
+	init_shot(mlx);
 }

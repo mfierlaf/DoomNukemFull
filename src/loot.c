@@ -53,7 +53,8 @@ static void			loot_power(int sprite, t_mlx *mlx)
 		else
 			mlx->player.life = 100;
 	}
-	else if (mlx->objects[mlx->objects[sprite].order].tex == BLUE_KEY || mlx->objects
+	else if (mlx->objects[mlx->objects[sprite].order].tex ==
+		BLUE_KEY || mlx->objects
 			[mlx->objects[sprite].order].tex == GOLDEN_KEY)
 		mlx->inventory.keys++;
 	loot_power2(sprite, mlx);
@@ -66,8 +67,10 @@ void				pick_up_loot(t_mlx *mlx)
 	sprite = 0;
 	while (sprite < NB_OBJ)
 	{
-		if (((int)mlx->player.where.x == (int)mlx->objects[mlx->objects[sprite].order].pos.x 
-			&& (int)mlx->player.where.y == (int)mlx->objects[mlx->objects[sprite].order].pos.y) &&
+		if (((int)mlx->player.where.x ==
+			(int)mlx->objects[mlx->objects[sprite].order].pos.x
+			&& (int)mlx->player.where.y ==
+			(int)mlx->objects[mlx->objects[sprite].order].pos.y) &&
 				mlx->objects[mlx->objects[sprite].order].lootable)
 		{
 			loot_power(sprite, mlx);
